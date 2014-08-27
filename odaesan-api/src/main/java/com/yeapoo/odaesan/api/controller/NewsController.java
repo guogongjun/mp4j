@@ -1,0 +1,160 @@
+package com.yeapoo.odaesan.api.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.yeapoo.odaesan.api.service.NewsService;
+import com.yeapoo.odaesan.common.model.DataWrapper;
+import com.yeapoo.odaesan.common.model.Pagination;
+
+@Controller
+@RequestMapping("{infoId}/news")
+public class NewsController {
+
+    @Autowired
+    private NewsService service;
+
+    /**
+     * 
+     * @param file
+     * @return {"code":200, "message":"OK", "data":{"id":"$ID", "url":"$URL"}}
+     */
+    @RequestMapping(value = "image", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper uploadImage(@PathVariable String infoId, @RequestParam MultipartFile file) {
+        Map<String, Object> data = service.saveImage(infoId, file);
+        return new DataWrapper(data);
+    }
+
+    /**
+     * 
+     * @param itemMap {
+     *   "title":"$TITLE",
+     *   "author":"$AUTHOR",
+     *   "image_id":"$IMAGE_ID",
+     *   "digest":"$DIGEST",
+     *   "content":"$CONTENT",
+     *   "content_source_url":"$URL"}
+     * @return {"code":200, "message":"OK", "data":"$ID"}
+     */
+    @RequestMapping(value = "single", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper createSingle(@PathVariable String infoId, @RequestBody Map<String, Object> itemMap) {
+        String id = service.save(infoId, itemMap);
+        return new DataWrapper(id);
+    }
+
+    /**
+     * 
+     * @param itemMapList [{
+     *   "title":"$TITLE",
+     *   "author":"$AUTHOR",
+     *   "image_id":"$IMAGE_ID",
+     *   "digest":"$DIGEST",
+     *   "content":"$CONTENT",
+     *   "content_source_url":"$URL"}, ...]
+     * @return {"code":200, "message":"OK", "data":"$ID"}
+     */
+    @RequestMapping(value = "multiple", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper createMultiple(@PathVariable String infoId, @RequestBody List<Map<String, Object>> itemMapList) {
+        String id = service.save(infoId, itemMapList);
+        return new DataWrapper(id);
+    }
+
+    /**
+     * 
+     * @param index optional, default 1
+     * @param size optional, default 10
+     * @return {"code":200, "message":"OK", "data":{
+     *      "pagination": {
+     *          "index": $INDEX,
+     *          "size": $SIZE,
+     *          "count": $COUNT
+     *      },
+     *      "news": {"$ID1":[{...}], "$ID2":[{...},{...}]}
+     *   }}
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public DataWrapper list(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
+        Pagination pagination = new Pagination(index, size);
+        MultiValueMap<String, Map<String, Object>> list = service.list(infoId, pagination);
+        Map<String, Object> data = new HashMap<String, Object>();
+        data.put("news", list);
+        data.put("pagination", pagination);
+        return new DataWrapper(data);
+    }
+
+    /**
+     * 
+     * @return {"code":200, "message":"OK", "data":[{...}]}
+     */
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public DataWrapper get(@PathVariable String infoId, @PathVariable String id) {
+        List<Map<String, Object>> data = service.get(infoId, id);
+        return new DataWrapper(data);
+    }
+
+    /**
+     * 
+     * @param id
+     * @param updatedItemMap {
+     *   "title":"$TITLE",
+     *   "author":"$AUTHOR",
+     *   "image_id":"$IMAGE_ID",
+     *   "digest":"$DIGEST",
+     *   "content":"$CONTENT",
+     *   "content_source_url":"$URL"}
+     * @return {"code":200, "message":"OK"}
+     */
+    @RequestMapping(value = "single/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public DataWrapper editSingle(@PathVariable String infoId, @PathVariable String id, @RequestBody Map<String, Object> updatedItemMap) {
+        service.update(infoId, id, updatedItemMap);
+        return new DataWrapper();
+    }
+
+    /**
+     * 
+     * @param id
+     * @param updatedItemMapList [{
+     *   "title":"$TITLE",
+     *   "author":"$AUTHOR",
+     *   "image_id":"$IMAGE_ID",
+     *   "digest":"$DIGEST",
+     *   "content":"$CONTENT",
+     *   "content_source_url":"$URL"}, ...]
+     * @return {"code":200, "message":"OK"}
+     */
+    @RequestMapping(value = "multiple/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public DataWrapper editMultiple(@PathVariable String infoId, @PathVariable String id, @RequestBody List<Map<String, Object>> updatedItemMapList) {
+        service.update(infoId, id, updatedItemMapList);
+        return new DataWrapper();
+    }
+
+    /**
+     * @param id
+     * @return {"code":200, "message":"OK"}
+     */
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public DataWrapper delete(@PathVariable String infoId, @PathVariable String id) {
+        service.delete(infoId, id);
+        return new DataWrapper();
+    }
+}
