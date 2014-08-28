@@ -99,10 +99,66 @@ public class UserController {
     }
 
     /**
+     * @param params {"openid":"$OPENID", "group_id":"$GROUP1"}
+     * @return {"code":200, "message":"OK"}
+     */
+    @RequestMapping(value = "rm", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper removeUserFromGroup(@PathVariable String infoId, @RequestBody Map<String, String> params) {
+        String openid = params.get("openid");
+        String groupId = params.get("group_id");
+        service.fakeRemoveUserFromGroup(infoId, openid, groupId);
+        return new DataWrapper();
+    }
+
+    /**
+     * @param params {"openid":["$OPENID1","$OPENID2"], "group_id":"$GROUP1"}
+     * @return {"code":200, "message":"OK"}
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "rm/batch", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper batchRemoveUserFromGroup(@PathVariable String infoId, @RequestBody Map<String, Object> params) {
+        List<String> openidList = MapUtil.get(params, "openid", List.class);
+        String groupId = MapUtil.get(params, "group_id");
+        service.fakeBatchRemoveUserFromGroup(infoId, openidList, groupId);
+        return new DataWrapper();
+    }
+
+    /**
+     * 
+     * @param params {"openid":"$OPENID", "group_id":"$GROUPID"}
+     * @return {"code":200, "message":"OK"}
+     */
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper addUserToGroup(@PathVariable String infoId, @RequestBody Map<String, String> params) {
+        String openid = params.get("openid");
+        String groupId = params.get("group_id");
+        service.fakeAddUserToGroup(infoId, openid, groupId);
+        return new DataWrapper();
+    }
+
+    /**
+     * @param params {"openid":["$OPENID1","$OPENID2"], "group_id":"$GROUP"}
+     * @return {"code":200, "message":"OK"}
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping(value = "add/batch", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper batchAddUserFromGroup(@PathVariable String infoId, @RequestBody Map<String, Object> params) {
+        List<String> openidList = MapUtil.get(params, "openid", List.class);
+        String groupId = MapUtil.get(params, "group_id");
+        service.fakeBatchAddUserToGroup(infoId, openidList, groupId);
+        return new DataWrapper();
+    }
+
+    /**
      * 
      * @param params {"openid":"$OPENID", "current":"$GROUP1", "target":"$GROUP2"}
      * @return {"code":200, "message":"OK"}
      */
+    @Deprecated
     @RequestMapping(value = "mv", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper moveUserToGroup(@PathVariable String infoId, @RequestBody Map<String, String> params) {
@@ -118,6 +174,7 @@ public class UserController {
      * @param params {"openid":"$USER_ID", "current":"$GROUP1", "target":"$GROUP2"}
      * @return {"code":200, "message":"OK"}
      */
+    @Deprecated
     @RequestMapping(value = "cp", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper copyUserToGroup(@PathVariable String infoId, @RequestBody Map<String, String> params) {
@@ -133,6 +190,7 @@ public class UserController {
      * @param params {"openid":["$USER_ID"], "current":"$GROUP1", "target":"$GROUP2"}
      * @return {"code":200, "message":"OK"}
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "mv/batch", method = RequestMethod.POST)
     @ResponseBody
@@ -149,6 +207,7 @@ public class UserController {
      * @param params {"openid":["$USER_ID"], "current":"$GROUP1", "target":"$GROUP2"}
      * @return {"code":200, "message":"OK"}
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     @RequestMapping(value = "cp/batch", method = RequestMethod.POST)
     @ResponseBody

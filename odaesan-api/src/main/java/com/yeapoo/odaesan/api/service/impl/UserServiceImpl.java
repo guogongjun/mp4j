@@ -135,4 +135,28 @@ public class UserServiceImpl implements UserService {
         mappingDao.batchInsert(infoId, openidList, target);
     }
 
+    @Transactional
+    @Override
+    public void fakeRemoveUserFromGroup(String infoId, String openid, String groupId) {
+        mappingDao.delete(infoId, openid, groupId);
+    }
+
+    @Transactional
+    @Override
+    public void fakeBatchRemoveUserFromGroup(String infoId, List<String> openidList, String groupId) {
+        mappingDao.batchDelete(infoId, openidList, groupId);
+    }
+
+    @Transactional
+    @Override
+    public void fakeAddUserToGroup(String infoId, String openid, String groupId) {
+        mappingDao.insert(infoId, openid, groupId);
+    }
+
+    @Transactional
+    @Override
+    public void fakeBatchAddUserToGroup(String infoId, List<String> openidList, String groupId) {
+        mappingDao.batchInsert(infoId, openidList, groupId);
+    }
+
 }

@@ -83,51 +83,47 @@
 - 返回示例:
         {"code":200,"message":"OK","data":["$GROUP1","$GROUP2"]}
 
-### 移动用户到特定分组
+### 添加用户到特定分组
 - HTTP Method: POST/Raw
-- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/mv
+- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/add
 - HTTP Header:
     - Content-Type: application/json
 - Params: JSON Object, key-value格式如下
     - openid, string, 必须
-    - current, string, 必须
-    - target, string, 必须
+    - group_id, string, 必须
 - 返回示例:
         {"code":200,"message":"OK","data":null}
 
-### 复制用户到特定分组
+### 批量添加用户到特定分组
 - HTTP Method: POST/Raw
-- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/cp
-- HTTP Header:
-    - Content-Type: application/json
-- Params: JSON Object, key-value格式如下
-    - openid, string, 必须
-    - current, string, 必须
-    - target, string, 必须
-- 返回示例:
-        {"code":200,"message":"OK","data":null}
-
-### 批量移动用户到特定分组
-- HTTP Method: POST/Raw
-- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/mv
+- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/add/batch
 - HTTP Header:
     - Content-Type: application/json
 - Params: JSON Object, key-value格式如下
     - openid, json array, 必须, 其中每个item都是一个openid
-    - current, string, 必须
-    - target, string, 必须
+    - group_id, string, 必须
 - 返回示例:
         {"code":200,"message":"OK","data":null}
 
-### 批量复制用户到特定分组
+### 将用户从特定分组中删除
 - HTTP Method: POST/Raw
-- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/cp
+- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/rm
 - HTTP Header:
     - Content-Type: application/json
 - Params: JSON Object, key-value格式如下
     - openid, json array, 必须, 其中每个item都是一个openid
-    - current, string, 必须
-    - target, string, 必须
+    - group_id, string, 必须
+- 返回示例:
+        {"code":200,"message":"OK","data":null}
+
+### 批量将用户从特定分组中删除
+- HTTP Method: POST/Raw
+- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/rm/batch
+- HTTP Header:
+    - Content-Type: application/json
+- Params: JSON Object, key-value格式如下
+    - openid, json array, 必须, 其中每个item都是一个openid
+    - group_id, string, 必须
 - 返回示例:
         {"code":200,"message":"OK","data":null}
 

@@ -14,6 +14,8 @@ public interface UserService {
 
     void save(String infoId, List<Follower> followerList);
 
+    void save(List<Object[]> groupMappingList);
+
     void reset(String infoId);
 
     List<Map<String, Object>> listByGroup(String infoId, String groupId, Pagination pagination);
@@ -30,6 +32,11 @@ public interface UserService {
 
     void fakeBatchCopyUserToGroup(String infoId, List<String> openidList, String current, String target);
 
-    void save(List<Object[]> groupMappingList);
+    void fakeRemoveUserFromGroup(String infoId, String openid, String groupId);
 
+    void fakeBatchRemoveUserFromGroup(String infoId, List<String> openidList, String groupId);
+
+    void fakeAddUserToGroup(String infoId, String openid, String groupId);
+
+    void fakeBatchAddUserToGroup(String infoId, List<String> openidList, String groupId);
 }

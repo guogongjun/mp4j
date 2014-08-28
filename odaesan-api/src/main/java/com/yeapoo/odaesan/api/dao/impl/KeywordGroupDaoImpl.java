@@ -26,7 +26,7 @@ public class KeywordGroupDaoImpl implements KeywordGroupDao {
 
     @Override
     public Map<String, Object> get(String infoId, String id) {
-        String sql = "SELECT `name`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `id` = ?";
+        String sql = "SELECT `name`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `id` = ? AND `delete_time` IS NULL";
         try {
             return jdbcTemplate.queryForMap(sql, id);
         } catch (DataAccessException e) {
@@ -36,7 +36,7 @@ public class KeywordGroupDaoImpl implements KeywordGroupDao {
 
     @Override
     public Map<String, Object> getInfo(String infoId, String ruleName) {
-        String sql = "SELECT `id`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `info_id` = ? AND `name` = ?";
+        String sql = "SELECT `id`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `info_id` = ? AND `name` = ? AND `delete_time` IS NULL";
         try {
             return jdbcTemplate.queryForMap(sql, infoId, ruleName);
         } catch (DataAccessException e) {
