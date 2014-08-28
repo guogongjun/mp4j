@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.api.dao;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserGroupMappingDao {
 
@@ -9,6 +10,8 @@ public interface UserGroupMappingDao {
     void batchInsert(List<Object[]> groupMappingList);
 
     void batchInsert(String infoId, List<String> openidList, String target);
+
+    List<Map<String, Object>> findByOpenid(String infoId, String openid);
 
     void batchDelete(String infoId, List<String> openidList, String current);
 

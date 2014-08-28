@@ -76,6 +76,13 @@
 - 返回示例:
         {"code":200,"message":"OK","data":{"openid":"$OPENID","nickname":"$NICK","country":"$","province":"$","city":"$","gender":1,"avatar":"$URL","language":"zh_CN","subscribed":true,"subscribe_time":1403163520000}}
 
+### 获取用户所属分组
+- HTTP Method: GET
+- HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/groups/$ID
+- Params: 无
+- 返回示例:
+        {"code":200,"message":"OK","data":["$GROUP1","$GROUP2"]}
+
 ### 移动用户到特定分组
 - HTTP Method: POST/Raw
 - HTTP URL: http://$BASE_URL/v1/$INFO_ID/user/mv

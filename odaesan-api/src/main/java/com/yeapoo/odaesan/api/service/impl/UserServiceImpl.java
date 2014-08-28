@@ -104,6 +104,11 @@ public class UserServiceImpl implements UserService {
         return userDao.get(infoId, openid);
     }
 
+    @Override
+    public List<Map<String, Object>> listGroups(String infoId, String openid) {
+        return mappingDao.findByOpenid(infoId, openid);
+    }
+
     @Transactional
     @Override
     public void fakeMoveUserToGroup(String infoId, String openid, String current, String target) {

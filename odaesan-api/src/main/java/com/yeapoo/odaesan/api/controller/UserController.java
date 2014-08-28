@@ -89,6 +89,17 @@ public class UserController {
 
     /**
      * 
+     * @return {"code":200, "message":"OK", "data":["$GROUP1","$GROUP2"]}
+     */
+    @RequestMapping(value = "groups/{openid}", method = RequestMethod.GET)
+    @ResponseBody
+    public DataWrapper listGroupsByOpenid(@PathVariable String infoId, @PathVariable String openid) {
+        List<Map<String, Object>> data = service.listGroups(infoId, openid);
+        return new DataWrapper(data);
+    }
+
+    /**
+     * 
      * @param params {"openid":"$OPENID", "current":"$GROUP1", "target":"$GROUP2"}
      * @return {"code":200, "message":"OK"}
      */

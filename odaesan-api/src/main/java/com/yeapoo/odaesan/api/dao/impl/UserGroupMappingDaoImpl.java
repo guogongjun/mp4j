@@ -2,6 +2,7 @@ package com.yeapoo.odaesan.api.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +40,12 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
             });
         }
         jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    @Override
+    public List<Map<String, Object>> findByOpenid(String infoId, String openid) {
+        String sql = "SELECT `group_id` FROM `user_group_mapping` WHERE `info_id` = ? AND `openid` = ?";
+        return jdbcTemplate.queryForList(sql, infoId, openid);
     }
 
     @Override

@@ -20,6 +20,8 @@ public interface UserService {
 
     Map<String, Object> get(String infoId, String openid);
 
+    List<Map<String, Object>> listGroups(String infoId, String openid);
+
     void fakeMoveUserToGroup(String infoId, String openid, String current, String target);
 
     void fakeCopyUserToGroup(String infoId, String openid, String current, String target);
