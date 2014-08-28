@@ -20,7 +20,7 @@ public class MaterialRepository {
     private JdbcTemplate jdbcTemplate;
 
     public Map<String, Object> getText(String infoId, String id) {
-        String sql = "SELECT `id`, `content` FROM `material_text` WHERE `id` = ?";
+        String sql = "SELECT `content` FROM `material_text` WHERE `id` = ?";
         return jdbcTemplate.queryForMap(sql, id);
     }
 
@@ -79,6 +79,11 @@ public class MaterialRepository {
         return jdbcTemplate.queryForObject(sql, String.class, id);
     }
 
+    public Map<String, Object> getVoiceInfo(String infoId, String id) {
+        String sql = "SELECT `name`, `url` FROM `material_voice` WHERE `id` = ?";
+        return jdbcTemplate.queryForMap(sql, id);
+    }
+
     public Map<String, Object> getVideo(String infoId, String id) {
         String sql = "SELECT `title`, `description` FROM `material_video` WHERE `id` = ?";
         return jdbcTemplate.queryForMap(sql, id);
@@ -87,5 +92,10 @@ public class MaterialRepository {
     public String getVideoUrl(String infoId, String id) {
         String sql = "SELECT `url` FROM `material_video` WHERE `id` = ?";
         return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
+    public Map<String, Object> getVideoAllInfo(String infoId, String id) {
+        String sql = "SELECT `title`, `description`, `url` FROM `material_video` WHERE `id` = ?";
+        return jdbcTemplate.queryForMap(sql, id);
     }
 }

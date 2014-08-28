@@ -47,7 +47,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Map<String, Object> get(String infoId, String id) {
-        return imageDao.get(infoId, id);
+        Map<String, Object> imageInfo = imageDao.get(infoId, id);
+        imageInfo.put("url", handler.getAbsoluteURL(MapUtil.get(imageInfo, "url")));
+        return imageInfo;
     }
 
     @Override

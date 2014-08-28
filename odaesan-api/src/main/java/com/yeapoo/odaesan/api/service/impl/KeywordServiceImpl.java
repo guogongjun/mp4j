@@ -25,7 +25,9 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public String save(String infoId, String ruleName, List<Map<String, Object>> keywordList, String replyId, String replyType) {
         String groupId = groupDao.insert(infoId, ruleName, replyId, replyType);
-        keywordDao.batchInsert(groupId, keywordList);
+        if (null != keywordList) {
+            keywordDao.batchInsert(groupId, keywordList);
+        }
         return groupId;
     }
 
@@ -57,8 +59,10 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public void update(String infoId, String id, String ruleName, List<Map<String, Object>> keywordList, String replyId, String replyType) {
         groupDao.update(infoId, id, ruleName, replyId, replyType);
-        keywordDao.delete(id);
-        keywordDao.batchInsert(id, keywordList);
+        if (null != keywordList) {
+            keywordDao.delete(id);
+            keywordDao.batchInsert(id, keywordList);
+        }
     }
 
     @Transactional

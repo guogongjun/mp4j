@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.yeapoo.common.util.MapUtil;
+
 @Component
 public class VoiceProcessor extends MaterialProcessor {
 
@@ -14,8 +16,9 @@ public class VoiceProcessor extends MaterialProcessor {
 
     @Override
     public Map<String, Object> enrichDisplayInfo(String infoId, String msgId) {
-        // TODO Auto-generated method stub
-        return null;
+        Map<String, Object> voiceInfo = repository.getVoiceInfo(infoId, msgId);
+        voiceInfo.put("url", handler.getAbsoluteURL(MapUtil.get(voiceInfo, "url")));
+        return voiceInfo;
     }
 
 }

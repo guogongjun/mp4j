@@ -71,7 +71,7 @@ public class NewsProcessor extends MaterialProcessor {
 
     @Override
     protected String getFileRelativePath(String infoId, String msgId) {
-        // TODO Auto-generated method stub
+        // NewsProcessor has implemented generateMediaId, so this is method do not need to implement.
         return null;
     }
 

@@ -31,6 +31,10 @@
     <entry key="image" value-ref="imageProcessor"></entry>
     <entry key="news" value-ref="newsProcessor"></entry>
     <entry key="mpnews" value-ref="newsProcessor"></entry>
+    <entry key="text" value-ref="textProcessor"></entry>
+    <entry key="video" value-ref="videoProcessor"></entry>
+    <entry key="mpvideo" value-ref="videoProcessor"></entry>
+    <entry key="voice" value-ref="voiceProcessor"></entry>
   </util:map>
 
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />

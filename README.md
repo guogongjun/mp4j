@@ -554,7 +554,7 @@
     - index, int, 可选, 默认1
     - index, int, 可选, 默认10
 - 返回示例:
-        {"code":200,"message":"OK","data":{"message":[{},{}],"pagination":{"index":$INDEX,"size":$SIZE,"count":$COUNT}}}
+        {"code":200,"message":"OK","data":{"message":[{"id":"$ID","msg_type":"image","msg_id":"$MSG_ID","create_time":"$TIMESTAMP","name":"$NAME","url":"$URL"},{"id":"$ID","msg_type":"news","msg_id":"$MSG_ID","create_time":"$TIMESTAMP","news":[{"update_time":"$TIMESTAMP","title":"$TITLE","author":"$AUTHOR","image_id":"$","url":"$URL","digest":"$","content":"$","content_source_url":"$"},{}]},{"id":"$ID","msg_type":"video","msg_id":"$MSG_ID","create_time":"$TIMESTAMP","title":"$","description":"$","url":"$"},{"id":"$ID","msg_type":"voice","msg_id":"$MSG_ID","create_time":"$TIMESTAMP","name":"$","url":"$"},{"id":"$ID","msg_type":"text","msg_id":"$MSG_ID","create_time":"$TIMESTAMP","content":"$"}],"pagination":{"index":$INDEX,"size":$SIZE,"count":$COUNT}}}
 
 ### 获取群发消息的统计状态
 - HTTP Method: GET
