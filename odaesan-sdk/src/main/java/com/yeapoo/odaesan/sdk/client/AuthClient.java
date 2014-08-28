@@ -2,28 +2,20 @@ package com.yeapoo.odaesan.sdk.client;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 
 @Component
-public class AuthClient implements BaseClient {
+public class AuthClient extends BaseClient {
     private static Logger logger = LoggerFactory.getLogger(AuthClient.class);
 
     @Value("${wx.access.token}")
     private String accessTokenURL;
-
-    @Autowired
-    private RestTemplate template;
-    @Autowired
-    private ObjectMapper mapper;
 
     /**
      * 获取access token

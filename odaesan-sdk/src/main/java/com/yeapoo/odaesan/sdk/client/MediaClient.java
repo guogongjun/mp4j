@@ -11,20 +11,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
 
 import com.yeapoo.common.util.RandomEngine;
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
@@ -34,7 +29,7 @@ import com.yeapoo.odaesan.sdk.model.MimeType;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendNews;
 
 @Component
-public class MediaClient implements BaseClient {
+public class MediaClient extends BaseClient {
     private static Logger logger = LoggerFactory.getLogger(MediaClient.class);
 
     private static final Pattern CONTENT_DISPOSITION_PATTERN = Pattern.compile("attachment;\\s*filename\\s*=\\s*\"([^\"]*)\"");
@@ -59,17 +54,6 @@ public class MediaClient implements BaseClient {
     private String mediaDownloadURL;
     @Value("${wx.messsend.news.create}")
     private String newsUploadURL;
-
-    @Autowired
-    private RestTemplate template;
-    @Autowired
-    private ObjectMapper mapper;
-
-    private HttpHeaders headers;
-    public MediaClient() {
-        headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-    }
 
     /**
      * 上传的多媒体文件，有格式和大小限制: <br/>

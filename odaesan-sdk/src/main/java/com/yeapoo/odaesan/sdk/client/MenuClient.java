@@ -5,16 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
@@ -26,7 +21,7 @@ import com.yeapoo.odaesan.sdk.model.menu.ClickButton;
 import com.yeapoo.odaesan.sdk.model.menu.ViewButton;
 
 @Component
-public class MenuClient implements BaseClient {
+public class MenuClient extends BaseClient {
     private static Logger logger = LoggerFactory.getLogger(MenuClient.class);
 
     @Value("${wx.menu.create}")
@@ -35,17 +30,6 @@ public class MenuClient implements BaseClient {
     private String getURL;
     @Value("${wx.menu.delete}")
     private String deleteURL;
-
-    @Autowired
-    private RestTemplate template;
-    @Autowired
-    private ObjectMapper mapper;
-
-    private HttpHeaders headers;
-    public MenuClient() {
-        headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-    }
 
     public boolean createMenu(Authorization authorization, List<Button> buttonList) {
         Map<String, List<Button>> menu = new HashMap<String, List<Button>>();

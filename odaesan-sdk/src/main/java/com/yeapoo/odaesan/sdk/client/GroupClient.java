@@ -3,17 +3,12 @@ package com.yeapoo.odaesan.sdk.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
@@ -23,7 +18,7 @@ import com.yeapoo.odaesan.sdk.model.Group;
 import com.yeapoo.odaesan.sdk.model.GroupContainer;
 
 @Component
-public class GroupClient implements BaseClient {
+public class GroupClient extends BaseClient {
     private static Logger logger = LoggerFactory.getLogger(GroupClient.class);
 
     @Value("${wx.group.create}")
@@ -36,17 +31,6 @@ public class GroupClient implements BaseClient {
     private String moveUserURL;
     @Value("${wx.group.getid}")
     private String getGroupIdURL;
-
-    @Autowired
-    private RestTemplate template;
-    @Autowired
-    private ObjectMapper mapper;
-
-    private HttpHeaders headers;
-    public GroupClient() {
-        headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-    }
 
     @SuppressWarnings("unchecked")
     public Group createGroup(Authorization authorization, String groupName) {

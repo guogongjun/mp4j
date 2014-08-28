@@ -1,31 +1,27 @@
 package com.yeapoo.odaesan.sdk.client;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
 import com.yeapoo.odaesan.sdk.model.Authorization;
+import com.yeapoo.odaesan.sdk.model.ErrorResponse;
 import com.yeapoo.odaesan.sdk.model.Follower;
 import com.yeapoo.odaesan.sdk.model.FollowerContainer;
 
 @Component
-public class FollowerClient implements BaseClient {
+public class FollowerClient extends BaseClient {
     private static Logger logger = LoggerFactory.getLogger(FollowerClient.class);
 
     @Value("${wx.follower.list}")
     private String followerListURL;
     @Value("${wx.follower.info}")
     private String followerInfoURL;
-
-    @Autowired
-    private RestTemplate template;
-    @Autowired
-    private ObjectMapper mapper;
+    @Value("${wx.follower.update.remark}")
+    private String updateRemarkURL;
 
     /**
      * 获取关注者列表，每次最多10,000个。
@@ -56,4 +52,18 @@ public class FollowerClient implements BaseClient {
         }
     }
 
+    /**
+     * 设置用户备注名
+     */
+    public ErrorResponse updateRemark(Authorization authorization, String openid, String remark) {
+        String body = String.format("{\"openid\":\"%s\",\"remark\":\"%s\"}", openid, remark);
+        HttpEntity<String> request = new HttpEntity<String>(body, headers);
+        String response = template.postForObject(updateRemarkURL, request, String.class, authorization.getAccessToken());
+        logger.debug(String.format("Weixin Response => %s", response));
+        try {
+            return mapper.readValue(response, ErrorResponse.class);
+        } catch (Exception e) {
+            throw new WeixinSDKException(e);
+        }
+    }
 }
