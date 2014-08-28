@@ -3,6 +3,7 @@ package com.yeapoo.odaesan.api.dao.impl;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,13 +27,21 @@ public class KeywordGroupDaoImpl implements KeywordGroupDao {
     @Override
     public Map<String, Object> get(String infoId, String id) {
         String sql = "SELECT `name`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `id` = ?";
-        return jdbcTemplate.queryForMap(sql, id);
+        try {
+            return jdbcTemplate.queryForMap(sql, id);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public Map<String, Object> getInfo(String infoId, String ruleName) {
         String sql = "SELECT `id`, `reply_id`, `reply_type` FROM `keyword_group` WHERE `info_id` = ? AND `name` = ?";
-        return jdbcTemplate.queryForMap(sql, infoId, ruleName);
+        try {
+            return jdbcTemplate.queryForMap(sql, infoId, ruleName);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override

@@ -14,9 +14,11 @@ import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.dao.UserGroupDao;
+import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
 import com.yeapoo.odaesan.api.service.UserGroupService;
 import com.yeapoo.odaesan.api.service.support.AppInfoProvider;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
+import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.sdk.client.GroupClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Group;
@@ -27,6 +29,8 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Autowired
     private UserGroupDao groupDao;
+    @Autowired
+    private UserGroupMappingDao mappingDao;
     @Autowired
     private AppInfoProvider infoProvider;
     @Autowired
@@ -48,6 +52,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         GroupContainer container = GroupContainer.class.cast(result);
         List<Group> groups = container.getGroups();
         groupDao.batchInsert(infoId, groups);
+        groupDao.insert(infoId, Constants.UserGroup.ALL_ID, Constants.UserGroup.ALL);
     }
 
     @Transactional
@@ -83,6 +88,7 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     public void delete(String infoId, String id) {
         groupDao.delete(infoId, id);
+        mappingDao.deleteByGroupId(infoId, id);
     }
 
     private Map<String, String> organize(List<Map<String, Object>> list) {

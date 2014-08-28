@@ -37,7 +37,7 @@
 - HTTP URL: http://$BASE_URL/v1/$INFO_ID/group
 - Params: 无
 - 返回示例:
-        {"code":200,"message":"OK","data":[{"id":"$ID1","name":"$NAME1"},{"id":"$ID2","name":"$NAME2"}]}
+        {"code":200,"message":"OK","data":[{"id":"$ID1","name":"$NAME1","num":$NUM1},{"id":"$ID2","name":"$NAME2","num":$NUM2}]}
 
 ### 更新分组名称
 - HTTP Method: PUT/Raw

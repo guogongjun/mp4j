@@ -14,6 +14,8 @@ public interface UserGroupMappingDao {
 
     void delete(String infoId, String openid, String current);
 
+    void deleteByGroupId(String infoId, String groupId);
+
     void truncate(String infoId);
 
 }

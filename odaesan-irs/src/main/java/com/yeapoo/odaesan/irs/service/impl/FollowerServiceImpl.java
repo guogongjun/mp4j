@@ -16,6 +16,7 @@ import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
+import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.irs.dao.UserDao;
 import com.yeapoo.odaesan.irs.dao.UserGroupDao;
 import com.yeapoo.odaesan.irs.dao.UserGroupMappingDao;
@@ -66,6 +67,7 @@ public class FollowerServiceImpl implements FollowerService {
         }
         userDao.insert(infoId, Follower.class.cast(infoResult));
         mappingDao.insert(infoId, openid, getByWxGroupId(infoId, groupResult.toString()));
+        mappingDao.insert(infoId, openid, Constants.UserGroup.ALL_ID);
     }
 
     @Override

@@ -9,6 +9,8 @@ public interface UserGroupDao {
 
     String insert(String infoId, String name);
 
+    void insert(String infoId, String id, String all);
+
     void batchInsert(String infoId, List<Group> groups);
 
     int count(String infoId);

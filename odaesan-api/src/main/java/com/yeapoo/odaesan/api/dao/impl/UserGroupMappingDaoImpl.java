@@ -62,6 +62,12 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
     }
 
     @Override
+    public void deleteByGroupId(String infoId, String groupId) {
+        String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
+        jdbcTemplate.update(sql, infoId, groupId);
+    }
+
+    @Override
     public void truncate(String infoId) {
         String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ?";
         jdbcTemplate.update(sql, infoId);

@@ -27,6 +27,12 @@ public class UserGroupDaoImpl implements UserGroupDao {
     }
 
     @Override
+    public void insert(String infoId, String id, String name) {
+        String sql = "INSERT INTO `user_group`(`id`,`info_id`,`name`,`create_time`) VALUES(?,?,?,NOW())";
+        jdbcTemplate.update(sql, id, infoId, name);
+    }
+
+    @Override
     public void batchInsert(String infoId, List<Group> groups) {
         String sql = "INSERT INTO `user_group`(`id`,`wx_group_id`,`info_id`,`name`,`create_time`) VALUES(?,?,?,?,NOW())";
         List<Object[]> batchArgs = new ArrayList<Object[]>();
@@ -49,7 +55,11 @@ public class UserGroupDaoImpl implements UserGroupDao {
 
     @Override
     public List<Map<String, Object>> list(String infoId) {
-        String sql = "SELECT `id`, `name` FROM `user_group` WHERE `info_id` = ? AND `delete_time` IS NULL";
+        String sql = "SELECT `g`.`id`, `g`.`name`, COUNT(`m`.`openid`) AS `num`"
+                + " FROM `user_group` `g`"
+                + " LEFT JOIN `user_group_mapping` `m` ON `g`.`id` = `m`.`group_id`"
+                + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL"
+                + " GROUP BY `g`.`id`;";
         return jdbcTemplate.queryForList(sql, infoId);
     }
 

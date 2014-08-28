@@ -6,4 +6,9 @@ public interface Constants {
         String SUBSCRIBE = "__subscribe";
         String DEFAULT = "__default";
     }
+
+    interface UserGroup {
+        String ALL_ID = "-1";
+        String ALL = "全部用户";
+    }
 }
