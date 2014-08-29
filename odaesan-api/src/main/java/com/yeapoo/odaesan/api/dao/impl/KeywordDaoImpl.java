@@ -36,7 +36,7 @@ public class KeywordDaoImpl implements KeywordDao {
                     groupId,
                     MapUtil.get(map, "content"),
                     keycode,
-                    MapUtil.get(map, "fuzzy", Boolean.class)
+                    MapUtil.get(map, "fuzzy")
             });
         }
         jdbcTemplate.batchUpdate(sql, batchArgs);

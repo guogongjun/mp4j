@@ -32,10 +32,10 @@ public class KeywordController {
      *      "keyword":[
      *          {
      *              "content":"$KEYWORD1",
-     *              "fuzzy":true
+     *              "fuzzy":"1"
      *          }, {
      *              "content":"$KEYWORD2",
-     *              "fuzzy":false
+     *              "fuzzy":"0"
      *          }
      *      ],
      *      "reply_id":"$REPLY_ID",
@@ -118,10 +118,10 @@ public class KeywordController {
      *      "keyword":[
      *          {
      *              "content":"$KEYWORD1",
-     *              "fuzzy":true
+     *              "fuzzy":"1"
      *          }, {
      *              "name":"$KEYWORD2",
-     *              "fuzzy":false
+     *              "fuzzy":"0"
      *          }
      *      ],
      *      "reply_id":"$REPLY_ID",

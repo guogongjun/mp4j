@@ -296,7 +296,7 @@
     - rule_name, string, 必须, 如果是关注回复, 此项固定为__subscribe, 如果是消息回复, 此项固定为__default
     - keyword, json array, 必须, 其中每个item的key-value格式如下, 注意: *如果是关注回复/消息回复, 此项不传*
         - content, string, 必须
-        - fuzzy, boolean, 必须
+        - fuzzy, string, 必须, "0"表示完全匹配, "1"表示模糊匹配
     - reply_id, string, 必须
     - reply_type, string, 必须, 值为(text,image,news,video,music)中的一个
 - 返回示例:
@@ -342,7 +342,7 @@
     - rule_name, string, 必须, 如果是关注回复, 此项固定为__subscribe, 如果是消息回复, 此项固定为__default
     - keyword, json array, 必须, 其中每个item的key-value格式如下, 注意: *如果是关注回复/消息回复, 此项不传*
         - content, string, 必须
-        - fuzzy, boolean, 必须
+        - fuzzy, string, 必须, "0"表示完全匹配, "1"表示模糊匹配
     - reply_id, string, 必须
     - reply_type, string, 必须, 值为(text,image,news,video,music)中的一个
 - 返回示例:
