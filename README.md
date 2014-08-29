@@ -49,13 +49,10 @@
 - 返回示例:
         {"code":200,"message":"OK","data":null}
 
-### 删除分组名称
+### 删除分组
 - HTTP Method: PUT/Raw
 - HTTP URL: http://$BASE_URL/v1/$INFO_ID/group/$ID
-- HTTP Header:
-    - Content-Type: application/json
-- Params: JSON Object, key-value格式如下
-    - name, string, 必须
+- Params: 无
 - 返回示例:
         {"code":200,"message":"OK","data":null}
 
@@ -111,7 +108,7 @@
 - HTTP Header:
     - Content-Type: application/json
 - Params: JSON Object, key-value格式如下
-    - openid, json array, 必须, 其中每个item都是一个openid
+    - openid, string, 必须
     - group_id, string, 必须
 - 返回示例:
         {"code":200,"message":"OK","data":null}
