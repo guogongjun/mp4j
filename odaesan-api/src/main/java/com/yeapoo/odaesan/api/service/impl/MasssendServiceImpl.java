@@ -19,10 +19,9 @@ import com.yeapoo.odaesan.api.service.MasssendService;
 import com.yeapoo.odaesan.api.service.support.AppInfoProvider;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.model.Pagination;
-import com.yeapoo.odaesan.material.processor.MaterialProcessor;
+import com.yeapoo.odaesan.material.processor.MaterialHandler;
 import com.yeapoo.odaesan.sdk.client.MasssendClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
-import com.yeapoo.odaesan.sdk.model.MimeType;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendOpenidArg;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendResponse;
 
@@ -40,18 +39,18 @@ public class MasssendServiceImpl implements MasssendService {
     @Autowired
     private MasssendClient masssendClient;
 
-    @Resource(name = "materialProcessors")
-    private Map<String, MaterialProcessor> materialProcessors;
+    @Resource(name = "materialHandlers")
+    private Map<String, MaterialHandler> materialHandlers;
 
     private Method masssendByOpenid = ReflectionUtils.findMethod(MasssendClient.class, "masssendByOpenid", new Class<?>[] {Authorization.class, MasssendOpenidArg.class});
 
     @Override
     public void submitMasssendTask(String infoId, String groupId, String gender, String msgType, String msgId) {
-        MaterialProcessor processor = materialProcessors.get(msgType);
-        Assert.notNull(processor, String.format("invalid msgType %s", msgType));
+        MaterialHandler handler = materialHandlers.get(msgType);
+        Assert.notNull(handler, String.format("invalid msgType %s", msgType));
 
         Map<String, Object> appInfo = infoProvider.provide(infoId);
-        String mediaId = processor.generateMediaId(appInfo, msgId, MimeType.valueOf(msgType));
+        String mediaId = handler.prepareForMasssend(appInfo, msgId, msgType);
 
         List<String> openidList = null;
         if (StringUtils.hasText(gender)) {
@@ -74,8 +73,8 @@ public class MasssendServiceImpl implements MasssendService {
         for (Map<String, Object> map : list) {
             String msgType = MapUtil.get(map, "msg_type");
             String msgId = MapUtil.get(map, "msg_id");
-            MaterialProcessor processor = materialProcessors.get(msgType);
-            Map<String, Object> additional = processor.enrichDisplayInfo(infoId, msgId);
+            MaterialHandler handler = materialHandlers.get(msgType);
+            Map<String, Object> additional = handler.enrichDisplayInfo(infoId, msgId);
             map.putAll(additional);
         }
         return list;

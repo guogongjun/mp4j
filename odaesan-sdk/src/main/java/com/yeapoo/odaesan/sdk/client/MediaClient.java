@@ -25,7 +25,6 @@ import com.yeapoo.common.util.RandomEngine;
 import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Media;
-import com.yeapoo.odaesan.sdk.model.MimeType;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendNews;
 
 @Component
@@ -54,6 +53,8 @@ public class MediaClient extends BaseClient {
     private String mediaDownloadURL;
     @Value("${wx.messsend.news.create}")
     private String newsUploadURL;
+    @Value("${wx.messsent.video.convert}")
+    private String videoConvertURL;
 
     /**
      * 上传的多媒体文件，有格式和大小限制: <br/>
@@ -66,12 +67,12 @@ public class MediaClient extends BaseClient {
      * 
      * @throws WeixinSDKException
      */
-    public Media upload(Authorization authorization, String filePath, MimeType mimeType) throws WeixinSDKException {
+    public Media upload(Authorization authorization, String filePath, String materialType) throws WeixinSDKException {
         MultiValueMap<String, Object> request = new LinkedMultiValueMap<String, Object>();
         FileSystemResource media = new FileSystemResource(new File(filePath));
         request.add("media", media);
 
-        String response = template.postForObject(mediaUploadURL, request, String.class, authorization.getAccessToken(), mimeType.toString());
+        String response = template.postForObject(mediaUploadURL, request, String.class, authorization.getAccessToken(), materialType);
         logger.debug(String.format("Weixin Response => %s", response));
         try {
             return mapper.readValue(response, Media.class);
@@ -85,6 +86,21 @@ public class MediaClient extends BaseClient {
      */
     public Media uploadNews(Authorization authorization, MasssendNews news) {
         HttpEntity<String> request = new HttpEntity<String>(news.toJSON(), headers);
+        String response = template.postForObject(newsUploadURL, request, String.class, authorization.getAccessToken());
+        logger.debug(String.format("Weixin Response => %s", response));
+        try {
+            return mapper.readValue(response, Media.class);
+        } catch (Exception e) {
+            throw new WeixinSDKException(e);
+        }
+    }
+
+    /**
+     * 上传图文消息，供群发使用
+     */
+    public Media uploadVideo(Authorization authorization, String originalMediaId, String title, String description) {
+        String body = String.format("\"media_id\":\"%s\",\"title\":\"%s\",\"description\":\"%s\"", originalMediaId, title, description);
+        HttpEntity<String> request = new HttpEntity<String>(body, headers);
         String response = template.postForObject(newsUploadURL, request, String.class, authorization.getAccessToken());
         logger.debug(String.format("Weixin Response => %s", response));
         try {

@@ -5,8 +5,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.yeapoo.odaesan.material.processor.ImageProcessor;
-import com.yeapoo.odaesan.sdk.model.MimeType;
+import com.yeapoo.odaesan.material.processor.ImageHandler;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 import com.yeapoo.odaesan.sdk.model.message.ImageMessage;
 import com.yeapoo.odaesan.sdk.model.message.Message;
 
@@ -14,11 +14,11 @@ import com.yeapoo.odaesan.sdk.model.message.Message;
 public class ImageConstructor implements MessageConstructor {
 
     @Autowired
-    private ImageProcessor processor;
+    private ImageHandler handler;
 
     @Override
     public Message construct(String msgId, Message input, Map<String, Object> appInfo) {
-        String mediaId = processor.generateMediaId(appInfo, msgId, MimeType.IMAGE);
+        String mediaId = handler.prepareForReply(appInfo, msgId, Constants.MaterialType.IMAGE);
         return new ImageMessage(input, mediaId);
     }
 

@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.material.processor.VideoProcessor;
+import com.yeapoo.odaesan.material.processor.VideoHandler;
 import com.yeapoo.odaesan.material.repository.MaterialRepository;
-import com.yeapoo.odaesan.sdk.model.MimeType;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 import com.yeapoo.odaesan.sdk.model.message.Message;
 import com.yeapoo.odaesan.sdk.model.message.VideoMessage;
 
@@ -16,7 +16,7 @@ import com.yeapoo.odaesan.sdk.model.message.VideoMessage;
 public class VideoConstructor implements MessageConstructor {
 
     @Autowired
-    private VideoProcessor processor;
+    private VideoHandler handler;
 
     @Autowired
     private MaterialRepository repository;
@@ -25,7 +25,7 @@ public class VideoConstructor implements MessageConstructor {
     public Message construct(String msgId, Message input, Map<String, Object> appInfo) {
         String infoId = MapUtil.get(appInfo, "id");
         Map<String, Object> videoInfo = repository.getVideo(infoId, msgId);
-        String mediaId = processor.generateMediaId(appInfo, msgId, MimeType.IMAGE);
+        String mediaId = handler.prepareForReply(appInfo, msgId, Constants.MaterialType.VIDEO);
 
         VideoMessage message = new VideoMessage(input);
         message.setMediaId(mediaId);

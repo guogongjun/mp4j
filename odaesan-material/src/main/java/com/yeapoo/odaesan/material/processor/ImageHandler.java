@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 import com.yeapoo.common.util.MapUtil;
 
 @Component
-public class ImageProcessor extends MaterialProcessor {
+public class ImageHandler extends MaterialHandler {
 
     @Override
     protected String getFileRelativePath(String infoId, String msgId) {
-        Map<String, Object> imageInfo = repository.getImage(infoId, msgId);
-        return MapUtil.get(imageInfo, "url");
+        return repository.getImageUrl(infoId, msgId);
     }
 
     @Override

@@ -59,38 +59,14 @@ public interface Constants {
         
     }
 
-    public static final String ARG_ACCESS_TOKEN = "access_token";
-    public static final String ARG_APP_ID = "appid";
-    public static final String ARG_APP_SECRET = "secret";
-    public static final String ARG_EXPIRES_IN = "expires_in";
-    public static final String ARG_MENU_BUTTON = "button";
-    public static final String ARG_TICKET = "ticket";
-    public static final String ARG_EXPIRE_SECONDS = "expire_seconds";
-    public static final String ARG_NEXT_OPENID = "next_openid";
-    public static final String ARG_OPENID = "openid";
-    public static final String ARG_TO_GROUP_ID = "to_groupid";
-    public static final String ARG_SUBSCRIBE = "subscribe";
-    public static final String ARG_TOTAL = "total";
-    public static final String ARG_MEDIA_TYPE = "type";
-    public static final String ARG_MEDIA_ID = "media_id";
-    public static final String ARG_GROUP = "group";
-
-    public static final String RESPONSE_MESSAGE_ERRCODE = "errcode";
-    public static final String RESPONSE_MESSAGE_ERRCODE_SUCCESS = "ok";
-
-    public static final String WECHAT_APP_ID = "app.id";
-    public static final String WECHAT_APP_SECRET = "app.secret";
-    public static final String API_ACCESS_TOKEN = "wechat.access.token";
-    public static final String API_CUSTOMER_SERVICE = "wechat.customer.service";
-    public static final String API_MENU_CREATE = "wechat.menu.create";
-    public static final String API_MENU_GET = "wechat.menu.get";
-    public static final String API_MENU_DELETE = "wechat.menu.delete";
-    public static final String API_QRCODE_TICKET_CREATE = "wechat.qrcocde.ticket.create";
-    public static final String API_QRCODE_TICKET_REDEEM = "wechat.qrcocde.ticket.redeem";
-    public static final String API_FOLOOLWER_LIST = "wechat.follower.list";
-    public static final String API_FOLOOLWER_INFO = "wechat.follower.info";
-    public static final String API_GROUP_GET = "wechat.group.get";
-    public static final String API_GROUP_CREATE = "wechat.group.create";
-    public static final String API_GROUP_UPDATE = "wechat.group.update";
-    public static final String API_GROUP_MOVE_USER = "wechat.group.mvuser";
+    interface MaterialType {
+        String TEXT = "text";
+        String IMAGE = "image";
+        String NEWS = "news";
+        String MP_NEWS = "mpnews";
+        String VIDEO = "video";
+        String MP_VIDEO = "mpvideo";
+        String MUSIC = "music";
+        String VOICE = "voice";
+    }
 }

@@ -13,20 +13,20 @@ import org.springframework.util.ReflectionUtils;
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.exception.MediaUploadException;
 import com.yeapoo.odaesan.sdk.client.MediaClient;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Media;
-import com.yeapoo.odaesan.sdk.model.MimeType;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendNews;
 import com.yeapoo.odaesan.sdk.model.masssend.MasssendNewsItem;
 
 @Component
-public class NewsProcessor extends MaterialProcessor {
-    private static Logger logger = LoggerFactory.getLogger(NewsProcessor.class);
+public class NewsHandler extends MaterialHandler {
+    private static Logger logger = LoggerFactory.getLogger(NewsHandler.class);
 
-    private Method uploadNews = ReflectionUtils.findMethod(MediaClient.class, "uploadNews", new Class<?>[] {Authorization.class, MasssendNews.class});
+    private static Method uploadNews = ReflectionUtils.findMethod(MediaClient.class, "uploadNews", new Class<?>[] {Authorization.class, MasssendNews.class});
 
     @Override
-    public String generateMediaId(Map<String, Object> appInfo, String msgId, MimeType mimeType) {
+    protected Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
         String infoId = MapUtil.get(appInfo, "id");
         List<Map<String, Object>> newsList = repository.getNewsForMasssend(infoId, msgId);
 
@@ -41,7 +41,7 @@ public class NewsProcessor extends MaterialProcessor {
             item.setContentSourceUrl(MapUtil.get(map, "content_source_url"));
             String relativePath = MapUtil.get(map, "url");
             String filePath = handler.getAbsolutePath(relativePath);
-            Object result = adapter.invoke(mediaClient, upload, new Object[] {null, filePath, MimeType.IMAGE}, appInfo);
+            Object result = adapter.invoke(mediaClient, upload, new Object[] {null, filePath, Constants.MaterialType.IMAGE}, appInfo);
             if (null != result) {
                 Media media = Media.class.cast(result);
                 item.setThumbMediaId(media.getMediaId());
@@ -54,8 +54,7 @@ public class NewsProcessor extends MaterialProcessor {
 
         Object result = adapter.invoke(mediaClient, uploadNews, new Object[] {null, news}, appInfo);
         if (null != result) {
-            Media media = Media.class.cast(result);
-            return media.getMediaId();
+            return Media.class.cast(result);
         } else {
             throw new MediaUploadException(String.format("failed to upload news ", msgId));
         }
@@ -71,7 +70,7 @@ public class NewsProcessor extends MaterialProcessor {
 
     @Override
     protected String getFileRelativePath(String infoId, String msgId) {
-        // NewsProcessor has implemented generateMediaId, so this is method do not need to implement.
+        // NewsProcessor has implemented uploadToWeixin, so this is method do not need to implement.
         return null;
     }
 

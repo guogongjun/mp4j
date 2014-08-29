@@ -27,14 +27,15 @@
   <task:executor id="executor" keep-alive="60" pool-size="20-40" queue-capacity="250" rejection-policy="CALLER_RUNS" />
   <!-- <task:annotation-driven scheduler="scheduler" /> <task:scheduler id="scheduler" pool-size="4" /> -->
 
-  <util:map id="materialProcessors">
-    <entry key="image" value-ref="imageProcessor"></entry>
-    <entry key="news" value-ref="newsProcessor"></entry>
-    <entry key="mpnews" value-ref="newsProcessor"></entry>
-    <entry key="text" value-ref="textProcessor"></entry>
-    <entry key="video" value-ref="videoProcessor"></entry>
-    <entry key="mpvideo" value-ref="videoProcessor"></entry>
-    <entry key="voice" value-ref="voiceProcessor"></entry>
+  <util:map id="materialHandlers">
+    <entry key="text" value-ref="textHandler"></entry>
+    <entry key="image" value-ref="imageHandler"></entry>
+    <entry key="news" value-ref="newsHandler"></entry>
+    <entry key="mpnews" value-ref="newsHandler"></entry>
+    <entry key="video" value-ref="videoHandler"></entry>
+    <entry key="mpvideo" value-ref="videoHandler"></entry>
+    <entry key="music" value-ref="voiceHandler"></entry>
+    <entry key="voice" value-ref="voiceHandler"></entry>
   </util:map>
 
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />

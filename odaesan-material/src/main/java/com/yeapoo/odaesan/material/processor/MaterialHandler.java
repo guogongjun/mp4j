@@ -3,6 +3,8 @@ package com.yeapoo.odaesan.material.processor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javax.activation.MimeType;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -17,10 +19,9 @@ import com.yeapoo.odaesan.material.support.StaticResourceHandler;
 import com.yeapoo.odaesan.sdk.client.MediaClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Media;
-import com.yeapoo.odaesan.sdk.model.MimeType;
 import com.yeapoo.odaesan.sdk.util.MediaExpireChecker;
 
-public abstract class MaterialProcessor implements BeanFactoryAware, InitializingBean {
+public abstract class MaterialHandler implements BeanFactoryAware, InitializingBean {
 
     private BeanFactory factory;
 
@@ -29,12 +30,46 @@ public abstract class MaterialProcessor implements BeanFactoryAware, Initializin
     protected MediaClient mediaClient;
     protected StaticResourceHandler handler;
 
-    protected Method upload = ReflectionUtils.findMethod(MediaClient.class, "upload", new Class<?>[] { Authorization.class, String.class, MimeType.class });
+    protected static Method upload = ReflectionUtils.findMethod(MediaClient.class, "upload", new Class<?>[] { Authorization.class, String.class, MimeType.class });
 
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        factory = beanFactory;
+    public String prepareForMasssend(Map<String, Object> appInfo, String msgId, String materialType) {
+        return prepareForReply(appInfo, msgId, materialType);
     }
+
+    public String prepareForReply(Map<String, Object> appInfo, String msgId, String materialType) {
+        String infoId = MapUtil.get(appInfo, "id");
+        Map<String, Object> mediaInfo = repository.getMedia(infoId, materialType, msgId);
+        if (null != mediaInfo) {
+            int createTime = MapUtil.get(mediaInfo, "create_time", Number.class).intValue();
+            if (MediaExpireChecker.check(createTime)) {
+                return MapUtil.get(mediaInfo, "media_id");
+            }
+        }
+
+        Media media = uploadToWeixin(appInfo, msgId, materialType);
+
+        String mediaId = media.getMediaId();
+        int createTime = media.getCreatedAt();
+        repository.insertMedia(infoId, materialType, msgId, mediaId, createTime);
+        return mediaId;
+    }
+
+    public abstract Map<String, Object> enrichDisplayInfo(String infoId, String msgId);
+
+    protected Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
+        String infoId = MapUtil.get(appInfo, "id");
+        String relativePath = getFileRelativePath(infoId, msgId);
+        String filePath = handler.getAbsolutePath(relativePath);
+
+        Object result = adapter.invoke(mediaClient, upload, new Object[] {null, filePath, materialType}, appInfo);
+        if (null != result) {
+            return Media.class.cast(result);
+        } else {
+            throw new MediaUploadException(String.format("failed to upload file ", msgId));
+        }
+    }
+
+    protected abstract String getFileRelativePath(String infoId, String msgId);
 
     @Override
     public void afterPropertiesSet() {
@@ -44,32 +79,8 @@ public abstract class MaterialProcessor implements BeanFactoryAware, Initializin
         handler = factory.getBean(StaticResourceHandler.class);
     }
 
-    public String generateMediaId(Map<String, Object> appInfo, String msgId, MimeType mimeType) {
-        String infoId = MapUtil.get(appInfo, "id");
-        Map<String, Object> mediaInfo = repository.getMedia(infoId, mimeType.toString(), msgId);
-        if (null != mediaInfo) {
-            int createTime = MapUtil.get(mediaInfo, "create_time", Number.class).intValue();
-            if (MediaExpireChecker.check(createTime)) {
-                return MapUtil.get(mediaInfo, "media_id");
-            }
-        }
-
-        String relativePath = getFileRelativePath(infoId, msgId);
-        String filePath = handler.getAbsolutePath(relativePath);
-
-        Object result = adapter.invoke(mediaClient, upload, new Object[] {null, filePath, mimeType}, appInfo);
-        if (null != result) {
-            Media media = Media.class.cast(result);
-            String mediaId = media.getMediaId();
-            int createTime = media.getCreatedAt();
-            repository.insertMedia(infoId, mimeType.toString(), msgId, mediaId, createTime);
-            return mediaId;
-        } else {
-            throw new MediaUploadException(String.format("failed to upload file ", msgId));
-        }
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        factory = beanFactory;
     }
-
-    protected abstract String getFileRelativePath(String infoId, String msgId);
-
-    public abstract Map<String, Object> enrichDisplayInfo(String infoId, String msgId);
 }

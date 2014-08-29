@@ -21,12 +21,9 @@ public class MasssendClient extends BaseClient {
     private String groupSendURL;
     @Value("${wx.messsent.openid.send}")
     private String openidSendURL;
-    @Value("${wx.messsent.video.convert}")
-    private String videoConvertURL;
     @Value("${wx.messsent.delete}")
     private String deleteURL;
 
-    // TODO 暂时不支持群发视频
     public MasssendResponse masssendByGroup(Authorization authorization, MasssendGroupArg body) {
         HttpEntity<String> request = new HttpEntity<String>(body.toJSON(), headers);
         String response = template.postForObject(groupSendURL, request, String.class, authorization.getAccessToken());
@@ -38,7 +35,6 @@ public class MasssendClient extends BaseClient {
         }
     }
 
-    // TODO 暂时不支持群发视频
     public MasssendResponse masssendByOpenid(Authorization authorization, MasssendOpenidArg body) {
         HttpEntity<String> request = new HttpEntity<String>(body.toJSON(), headers);
         String response = template.postForObject(openidSendURL, request, String.class, authorization.getAccessToken());

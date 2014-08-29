@@ -12,7 +12,6 @@ import com.yeapoo.odaesan.sdk.model.message.Message;
 public class MusicConstructor implements MessageConstructor {
     private static Logger logger = LoggerFactory.getLogger(MusicConstructor.class);
 
-
     @Override
     public Message construct(String msgId, Message input, Map<String, Object> params) {
         logger.warn("unable to construct music message");

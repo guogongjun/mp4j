@@ -24,10 +24,21 @@ public class MaterialRepository {
         return jdbcTemplate.queryForMap(sql, id);
     }
 
+    public String getTextContent(String infoId, String id) {
+        String sql = "SELECT `content` FROM `material_text` WHERE `id` = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
     public Map<String, Object> getImage(String infoId, String id) {
         String sql = "SELECT `name`, `url` FROM `material_image` WHERE `id` = ?";
         return jdbcTemplate.queryForMap(sql, id);
     }
+
+    public String getImageUrl(String infoId, String id) {
+        String sql = "SELECT `url` FROM `material_image` WHERE `id` = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, id);
+    }
+
     public List<Map<String, Object>> getNews(String infoId, String id) {
         String sql = "SELECT news.update_time, item.title, item.author, item.image_id, CONCAT('%s', image.url) AS url, item.digest, item.content, item.content_source_url"
                 + " FROM material_news news"

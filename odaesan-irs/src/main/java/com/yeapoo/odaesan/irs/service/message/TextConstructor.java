@@ -5,8 +5,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.material.repository.MaterialRepository;
+import com.yeapoo.odaesan.material.processor.TextHandler;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 import com.yeapoo.odaesan.sdk.model.message.Message;
 import com.yeapoo.odaesan.sdk.model.message.TextMessage;
 
@@ -14,13 +14,12 @@ import com.yeapoo.odaesan.sdk.model.message.TextMessage;
 public class TextConstructor implements MessageConstructor {
 
     @Autowired
-    private MaterialRepository repository;
+    private TextHandler handler;
 
     @Override
     public Message construct(String msgId, Message input, Map<String, Object> appInfo) {
-        String infoId = MapUtil.get(appInfo, "id");
-        Map<String, Object> map = repository.getText(infoId, msgId);
-        return new TextMessage(input, MapUtil.get(map, "content"));
+        String content = handler.prepareForReply(appInfo, msgId, Constants.MaterialType.TEXT);
+        return new TextMessage(input, content);
     }
 
 }
