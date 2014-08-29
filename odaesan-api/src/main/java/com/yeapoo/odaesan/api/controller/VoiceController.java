@@ -19,16 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yeapoo.odaesan.api.service.MusicService;
+import com.yeapoo.common.util.MapUtil;
+import com.yeapoo.odaesan.api.service.VoiceService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
 
 @Controller
-@RequestMapping("{infoId}/music")
-public class MusicController {
+@RequestMapping("{infoId}/voice")
+public class VoiceController {
 
     @Autowired
-    private MusicService service;
+    private VoiceService service;
 
     /**
      * 
@@ -57,7 +58,7 @@ public class MusicController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public DataWrapper listNews(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
+    public DataWrapper list(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
         Pagination pagination = new Pagination(index, size);
         List<Map<String, Object>> musicList = service.list(infoId, pagination);
         Map<String, Object> data = new HashMap<String, Object>();
@@ -66,10 +67,24 @@ public class MusicController {
         return new DataWrapper(data);
     }
 
+    /**
+     * 
+     * @return {"code":200, "message":"OK", "data":{"name":"$NAME", "url":"$URL"}}
+     */
+    @RequestMapping(value="url/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public DataWrapper get(@PathVariable String infoId, @PathVariable String id) {
+        Map<String, Object> data = service.get(infoId, id);
+        return new DataWrapper(data);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public void download(@PathVariable String infoId, @PathVariable String id, HttpServletResponse response) throws IOException {
-        InputStream in = service.get(infoId, id);
+        Map<String, Object> data = service.getWithStream(infoId, id);
+        InputStream in = MapUtil.get(data, "stream", InputStream.class);
+        String filename = generateName(data);
         response.setContentType("application/mp3");
+        response.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
         FileCopyUtils.copy(in, response.getOutputStream());
         response.flushBuffer();
     }
@@ -95,5 +110,13 @@ public class MusicController {
     public DataWrapper delete(@PathVariable String infoId, @PathVariable String id) {
         service.delete(infoId, id);
         return new DataWrapper();
+    }
+
+    private String generateName(Map<String, Object> data) {
+        String name = MapUtil.get(data, "name");
+        if (!name.endsWith(".mp3")) {
+            name = name + ".mp3";
+        }
+        return name;
     }
 }

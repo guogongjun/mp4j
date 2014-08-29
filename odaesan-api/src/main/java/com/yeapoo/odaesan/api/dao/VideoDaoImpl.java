@@ -1,4 +1,4 @@
-package com.yeapoo.odaesan.api.dao.impl;
+package com.yeapoo.odaesan.api.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.yeapoo.common.util.IDGenerator;
-import com.yeapoo.odaesan.api.dao.ImageDao;
 import com.yeapoo.odaesan.common.model.Pagination;
 
 @Repository
-public class ImageDaoImpl implements ImageDao {
+public class VideoDaoImpl implements VideoDao {
 
     @Value("${static.alias}")
     private String alias;
@@ -22,23 +21,35 @@ public class ImageDaoImpl implements ImageDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public String insert(String infoId, String name, String relativePath) {
+    public String insertUrl(String infoId, String relativeUrl) {
         String id = IDGenerator.generate(Object.class);
-        String sql = "INSERT INTO `material_image`(`id`,`info_id`,`name`,`url`,`create_time`) VALUES(?,?,?,?,NOW())";
-        jdbcTemplate.update(sql, id, infoId, name, relativePath);
+        String sql = "INSERT INTO `material_video`(`id`,`info_id`,`url`,`create_time`) VALUES(?,?,?,NOW())";
+        jdbcTemplate.update(sql, id, infoId, relativeUrl);
         return id;
     }
 
     @Override
+    public void update(String infoId, String id, String title, String description) {
+        String sql = "UPDATE `material_video` SET `title`=?,`description`=? WHERE `id` = ?";
+        jdbcTemplate.update(sql, title, description, id);
+    }
+
+    @Override
+    public void updateUrl(String infoId, String id, String relativeUrl) {
+        String sql = "UPDATE `material_video` SET `url`=? WHERE `id` = ?";
+        jdbcTemplate.update(sql, relativeUrl, id);
+    }
+
+    @Override
     public int count(String infoId) {
-        return jdbcTemplate.queryForObject("SELECT COUNT(id) FROM material_image WHERE info_id = ? AND delete_time IS NULL", Integer.class, infoId);
+        return jdbcTemplate.queryForObject("SELECT COUNT(id) FROM material_video WHERE info_id = ? AND delete_time IS NULL", Integer.class, infoId);
     }
 
     @Override
     public List<Map<String, Object>> findAll(String infoId, Pagination pagination) {
         int offset = pagination.getOffset();
         int size = pagination.getSize();
-        String sql ="SELECT id, name, CONCAT('%s', url) AS url FROM material_image"
+        String sql ="SELECT id, title, description, CONCAT('%s', url) AS url, create_time FROM material_video"
                 + "  WHERE info_id = ? AND delete_time IS NULL"
                 + "  ORDER BY create_time DESC LIMIT ?, ?";
         return jdbcTemplate.queryForList(String.format(sql, alias), infoId, offset, size);
@@ -46,19 +57,13 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public Map<String, Object> get(String infoId, String id) {
-        String sql = "SELECT `name`, `url` FROM `material_image` WHERE `id` = ?";
+        String sql = "SELECT `title`, `description`, `url`, `create_time` FROM `material_video` WHERE `id` = ?";
         return jdbcTemplate.queryForMap(sql, id);
     }
 
     @Override
-    public void update(String infoId, String id, String name) {
-        String sql = "UPDATE material_image SET name = ? WHERE id = ?";
-        jdbcTemplate.update(sql, name, id);
-    }
-
-    @Override
     public void delete(String infoId, String id) {
-        String sql = "UPDATE `material_image` SET `delete_time` = NOW() WHERE id = ?";
+        String sql = "UPDATE `material_video` SET `delete_time` = NOW() WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 

@@ -54,6 +54,7 @@ public class KeywordDaoImpl implements KeywordDao {
                 + " FROM `keyword_group` `g`"
                 + " JOIN `keyword` `k` ON `g`.`id` = `k`.`group_id`"
                 + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL AND `k`.`delete_time` IS NULL AND `g`.`name` != ? AND `g`.`name` != ?"
+                + " GROUP BY `g`.`id`"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, Constants.Keyword.SUBSCRIBE, Constants.Keyword.DEFAULT, pagination.getOffset(), pagination.getSize());
     }

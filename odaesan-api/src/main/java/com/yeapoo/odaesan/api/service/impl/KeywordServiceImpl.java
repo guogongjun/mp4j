@@ -40,8 +40,10 @@ public class KeywordServiceImpl implements KeywordService {
     @Override
     public Map<String, Object> get(String infoId, String id) {
         Map<String, Object> data = groupDao.get(infoId, id);
-        List<Map<String, Object>> keywords = keywordDao.get(infoId, id);
-        data.put("keyword", keywords);
+        if (null != data) {
+            List<Map<String, Object>> keywords = keywordDao.get(infoId, id);
+            data.put("keyword", keywords);
+        }
         return data;
     }
 

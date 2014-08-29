@@ -11,13 +11,13 @@ public interface VideoService {
 
     Map<String, Object> save(String infoId, MultipartFile file);
 
-    String save(String infoId, Map<String, Object> itemMap);
+    void update(String infoId, String id, String title, String description);
+
+    Map<String, Object> updateMedia(String infoId, String id, MultipartFile file);
 
     List<Map<String, Object>> list(String infoId, Pagination pagination);
 
     Map<String, Object> get(String infoId, String id);
-
-    void update(String infoId, String id, Map<String, Object> updatedItemMap);
 
     void delete(String infoId, String id);
 

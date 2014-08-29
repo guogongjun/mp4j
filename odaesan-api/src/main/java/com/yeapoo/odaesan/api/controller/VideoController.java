@@ -25,11 +25,6 @@ public class VideoController {
     @Autowired
     private VideoService service;
 
-    /**
-     * 
-     * @param file
-     * @return {"code":200, "message":"OK", "data":{"id":"$ID", "url":"$URL"}}
-     */
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper upload(@PathVariable String infoId, @RequestParam MultipartFile file) {
@@ -37,34 +32,22 @@ public class VideoController {
         return new DataWrapper(data);
     }
 
-    /**
-     * 
-     * @param itemMap {
-     *   "video_id": "$VIDEO_ID",
-     *   "title":"$TITLE",
-     *   "description":"$DESCRIPTION"}
-     * @return {"code":200, "message":"OK", "data":"$ID"}
-     */
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "{id}", method = RequestMethod.POST)
     @ResponseBody
-    public DataWrapper create(@PathVariable String infoId, @RequestBody Map<String, Object> itemMap) {
-        String id = service.save(infoId, itemMap);
-        return new DataWrapper(id);
+    public DataWrapper fillInInfo(@PathVariable String infoId, @PathVariable String id, @RequestBody Map<String, String> itemMap) {
+        String title = itemMap.get("title");
+        String description = itemMap.get("description");
+        service.update(infoId, id, title, description);
+        return new DataWrapper();
     }
 
-    /**
-     * 
-     * @param index
-     * @param size
-     * @return {"code":200, "message":"OK", "data":{
-     *      "pagination": {
-     *          "index": $INDEX,
-     *          "size": $SIZE,
-     *          "count": $COUNT
-     *      },
-     *      "video": [{...}, {...}]
-     *   }}
-     */
+    @RequestMapping(value = "upload/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper updateMedia(@PathVariable String infoId, @PathVariable String id, @RequestParam MultipartFile file) {
+        Map<String, Object> data = service.updateMedia(infoId, id, file);
+        return new DataWrapper(data);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public DataWrapper list(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
@@ -76,10 +59,6 @@ public class VideoController {
         return new DataWrapper(data);
     }
 
-    /**
-     * 
-     * @return {"code":200, "message":"OK", "data":{...}}
-     */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     @ResponseBody
     public DataWrapper get(@PathVariable String infoId, @PathVariable String id) {
@@ -87,27 +66,6 @@ public class VideoController {
         return new DataWrapper(data);
     }
 
-    /**
-     * 
-     * @param infoId
-     * @param id
-     * @param updatedItemMap {
-     *   "video_id":"$VIDEO_ID",
-     *   "title":"$TITLE",
-     *   "description":"$DESCRIPTION"}
-     * @return {"code":200, "message":"OK"}
-     */
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    @ResponseBody
-    public DataWrapper edit(@PathVariable String infoId, @PathVariable String id, @RequestBody Map<String, Object> updatedItemMap) {
-        service.update(infoId, id, updatedItemMap);
-        return new DataWrapper();
-    }
-
-    /**
-     * 
-     * @return {"code":200, "message":"OK"}
-     */
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public DataWrapper delete(@PathVariable String infoId, @PathVariable String id) {
