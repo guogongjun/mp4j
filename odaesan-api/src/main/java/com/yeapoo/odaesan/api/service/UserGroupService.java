@@ -11,8 +11,6 @@ public interface UserGroupService {
 
     List<Map<String, Object>> list(String infoId);
 
-    String getByWxGroupId(String infoId, String wxGroupId);
-
     void update(String infoId, String id, String name);
 
     void delete(String infoId, String id);

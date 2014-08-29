@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.UserGroupService;
 import com.yeapoo.odaesan.api.service.UserService;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.constants.Constants;
@@ -27,7 +26,6 @@ public class FetchFollowerTask implements Runnable {
     private List<String> openids;
 
     private UserService userService;
-    private UserGroupService groupService;
 
     private FollowerClient followerClient;
     private GroupClient groupClient;
@@ -45,7 +43,6 @@ public class FetchFollowerTask implements Runnable {
         this.openids = openids;
 
         this.userService = BeanFactoryUtil.getBean(UserService.class);
-        this.groupService = BeanFactoryUtil.getBean(UserGroupService.class);
         this.followerClient = BeanFactoryUtil.getBean(FollowerClient.class);
         this.groupClient = BeanFactoryUtil.getBean(GroupClient.class);
         this.adapter = BeanFactoryUtil.getBean(WeixinSDKAdapter.class);
@@ -74,7 +71,7 @@ public class FetchFollowerTask implements Runnable {
             }
 
             followerList.add(Follower.class.cast(infoResult));
-            groupMappingList.add(new Object[] {infoId, openid, groupService.getByWxGroupId(infoId, groupResult.toString())});
+            groupMappingList.add(new Object[] {infoId, openid, groupResult.toString()});
             groupMappingList.add(new Object[] {infoId, openid, Constants.UserGroup.ALL_ID});
             if (i % COMMIT_SIZE == 0) {
                 userService.save(infoId, followerList);

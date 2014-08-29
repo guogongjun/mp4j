@@ -1,10 +1,8 @@
 package com.yeapoo.odaesan.api.service.impl;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
-import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.dao.UserGroupDao;
 import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
 import com.yeapoo.odaesan.api.service.UserGroupService;
@@ -40,8 +37,6 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     private Method getGroup = ReflectionUtils.findMethod(GroupClient.class, "getGroup", new Class<?>[] {Authorization.class});
 
-    private Map<String, Map<String, String>> cache = new ConcurrentHashMap<String, Map<String,String>>();
-
     @Transactional
     @Override
     public void init(String infoId) {
@@ -52,7 +47,7 @@ public class UserGroupServiceImpl implements UserGroupService {
         GroupContainer container = GroupContainer.class.cast(result);
         List<Group> groups = container.getGroups();
         groupDao.batchInsert(infoId, groups);
-        groupDao.insert(infoId, Constants.UserGroup.ALL_ID, Constants.UserGroup.ALL);
+        groupDao.insert(infoId, Constants.UserGroup.ALL_ID, Constants.UserGroup.ALL_NAME);
     }
 
     @Transactional
@@ -64,18 +59,6 @@ public class UserGroupServiceImpl implements UserGroupService {
     @Override
     public List<Map<String, Object>> list(String infoId) {
         return groupDao.list(infoId);
-    }
-
-    @Override
-    public String getByWxGroupId(String infoId, String wxGroupId) {
-        Map<String, String> idMapping = cache.get(infoId);
-        if (null != idMapping) {
-            return idMapping.get(wxGroupId);
-        }
-        List<Map<String, Object>> list = groupDao.listWxGroupId(infoId);
-        Map<String, String> organized = organize(list);
-        cache.put(infoId, organized);
-        return organized.get(wxGroupId);
     }
 
     @Transactional
@@ -90,13 +73,4 @@ public class UserGroupServiceImpl implements UserGroupService {
         groupDao.delete(infoId, id);
         mappingDao.deleteByGroupId(infoId, id);
     }
-
-    private Map<String, String> organize(List<Map<String, Object>> list) {
-        Map<String, String> organized = new HashMap<String, String>();
-        for (Map<String, Object> map : list) {
-            organized.put(MapUtil.get(map, "wx_group_id"), MapUtil.get(map, "id"));
-        }
-        return organized;
-    }
-
 }

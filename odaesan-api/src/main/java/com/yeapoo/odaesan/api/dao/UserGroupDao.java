@@ -17,8 +17,6 @@ public interface UserGroupDao {
 
     List<Map<String, Object>> list(String infoId);
 
-    List<Map<String, Object>> listWxGroupId(String infoId);
-
     void update(String infoId, String id, String name);
 
     void delete(String infoId, String id);

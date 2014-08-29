@@ -7,6 +7,4 @@ public interface FollowerService {
 
     void unsubscribe(String infoId, String openid);
 
-    String getByWxGroupId(String infoId, String wxGroupId);
-
 }

@@ -18,7 +18,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void insert(String infoId, Follower follower) {
         String sql = "INSERT INTO `user`(`openid`,`info_id`,`nickname`,`country`,`province`,`city`,`gender`,`avatar`,`language`,`unionid`,`remark`,`subscribed`,`subscribe_time`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, 
+        try {
+            jdbcTemplate.update(sql, 
                 follower.getOpenid(),
                 infoId,
                 follower.getNickname(),
@@ -32,11 +33,27 @@ public class UserDaoImpl implements UserDao {
                 follower.getRemark(),
                 follower.getSubscribe(),
                 new Date(follower.getSubscribeTime() * 1000));
+        } catch (Exception e) {
+            sql = "UPDATE `user` SET `info_id`=?,`nickname`=?,`country`=?,`province`=?,`city`=?,`gender`=?,`avatar`=?,`language`=?,`unionid`=?,`remark`=?,`subscribed`=?,`subscribe_time`=?,`unsubscribe_time`=NULL";
+            jdbcTemplate.update(sql, 
+                    infoId,
+                    follower.getNickname(),
+                    follower.getCountry(),
+                    follower.getProvince(),
+                    follower.getCity(),
+                    follower.getGender(),
+                    follower.getHeadImageURL(),
+                    follower.getLanguage(),
+                    follower.getUnionid(),
+                    follower.getRemark(),
+                    follower.getSubscribe(),
+                    new Date(follower.getSubscribeTime() * 1000));
+        }
     }
 
     @Override
     public void updateUnsubscribeTime(String infoId, String openid) {
-        String sql = "UPDATE `user` SET `unsubscribe_time` = NOW() WHERE `openid` = ?";
+        String sql = "UPDATE `user` SET `subscribed` = 0, `unsubscribe_time` = NOW() WHERE `openid` = ?";
         jdbcTemplate.update(sql, openid);
     }
 

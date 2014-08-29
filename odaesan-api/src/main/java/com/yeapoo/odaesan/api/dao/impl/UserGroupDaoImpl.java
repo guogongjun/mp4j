@@ -34,13 +34,13 @@ public class UserGroupDaoImpl implements UserGroupDao {
 
     @Override
     public void batchInsert(String infoId, List<Group> groups) {
-        String sql = "INSERT INTO `user_group`(`id`,`wx_group_id`,`info_id`,`name`,`create_time`) VALUES(?,?,?,?,NOW())";
+        String sql = "INSERT INTO `user_group`(`id`,`info_id`,`wx_group_id`,`name`,`create_time`) VALUES(?,?,?,?,NOW())";
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         for (Group group : groups) {
             batchArgs.add(new Object[] {
-                    IDGenerator.generate(Object.class),
                     group.getId(),
                     infoId,
+                    group.getId(),
                     group.getName()
             });
         }
@@ -60,12 +60,6 @@ public class UserGroupDaoImpl implements UserGroupDao {
                 + " LEFT JOIN `user_group_mapping` `m` ON `g`.`id` = `m`.`group_id`"
                 + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL"
                 + " GROUP BY `g`.`id`;";
-        return jdbcTemplate.queryForList(sql, infoId);
-    }
-
-    @Override
-    public List<Map<String, Object>> listWxGroupId(String infoId) {
-        String sql = "SELECT `id`, `wx_group_id` FROM `user_group` WHERE `info_id` = ? AND `delete_time` IS NULL";
         return jdbcTemplate.queryForList(sql, infoId);
     }
 

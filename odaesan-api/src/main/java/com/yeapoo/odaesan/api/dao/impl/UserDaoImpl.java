@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "SELECT `u`.`openid`,`nickname`,`avatar`" +
                 " FROM `user` `u`" +
                 " JOIN `user_group_mapping` `m` ON `u`.`openid` = `m`.`openid`" +
-                " WHERE `u`.`info_id` = ? AND `m`.`group_id` = ?" +
+                " WHERE `u`.`info_id` = ? AND `m`.`group_id` = ? AND `u`.`subscribed` = 1" +
                 " ORDER BY `m`.`create_time` DESC" +
                 " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, groupId, pagination.getOffset(), pagination.getSize());

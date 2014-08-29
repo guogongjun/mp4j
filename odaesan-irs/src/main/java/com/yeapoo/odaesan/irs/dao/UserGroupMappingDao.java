@@ -4,4 +4,6 @@ public interface UserGroupMappingDao {
 
     void insert(String infoId, String openid, String groupId);
 
+    void removeByOpenid(String infoId, String openid);
+
 }
