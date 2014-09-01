@@ -122,12 +122,21 @@ public class MenuServiceImpl implements MenuService {
         return list;
     }
 
+    //XXX 此处对菜单顺序的更新不合理
     @Transactional
     @Override
     public void update(String infoId, String id, Map<String, Object> itemMap) {
         String name = MapUtil.get(itemMap, "name");
-        int sequence = MapUtil.get(itemMap, "sequence", Number.class).intValue();
-        menuDao.update(infoId, id, name, sequence);
+        int targetSequence = MapUtil.get(itemMap, "sequence", Number.class).intValue();
+        Map<String, Object> parentIdAndSequence = menuDao.getParentIdAndSequenceById(infoId, id);
+        int originalSequence = MapUtil.get(parentIdAndSequence, "sequence", Number.class).intValue();
+        if (targetSequence != originalSequence) {
+            // 先更新原有的
+            String parentId = MapUtil.get(parentIdAndSequence, "parent_id");
+            menuDao.updateByParentIdAndSequence(infoId, parentId, originalSequence, targetSequence);
+        }
+        // 再更新当前的
+        menuDao.update(infoId, id, name, targetSequence);
     }
 
     @Transactional

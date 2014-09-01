@@ -15,7 +15,11 @@ public interface MenuDao {
 
     List<Map<String, Object>> listByParentId(String infoId, String parentId);
 
+    Map<String, Object> getParentIdAndSequenceById(String infoId, String id);
+
     void update(String infoId, String id, String name, int sequence);
+
+    void updateByParentIdAndSequence(String infoId, String parentId, int originalSequence, int targetSequence);
 
     void bindClickReply(String infoId, String menuId, String keycode, String replyId, String replyType);
 

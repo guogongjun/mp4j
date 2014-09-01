@@ -50,9 +50,21 @@ public class MenuDaoImpl implements MenuDao {
     }
 
     @Override
+    public Map<String, Object> getParentIdAndSequenceById(String infoId, String id) {
+        String sql = "SELECT `parent_id`, `sequence` FROM `menu` WHERE `id` = ?";
+        return jdbcTemplate.queryForMap(sql, id);
+    }
+
+    @Override
     public void update(String infoId, String id, String name, int sequence) {
         String sql = "UPDATE `menu` SET `name` = ?, `sequence` = ? WHERE `id` = ?";
         jdbcTemplate.update(sql, name, sequence, id);
+    }
+
+    @Override
+    public void updateByParentIdAndSequence(String infoId, String parentId, int originalSequence, int targetSequence) {
+        String sql = "UPDATE `menu` SET `sequence` = ? WHERE `infoId` = ? AND `parent_id` = ? AND `sequence` = ?";
+        jdbcTemplate.update(sql, originalSequence, infoId, parentId, targetSequence);
     }
 
     @Override
