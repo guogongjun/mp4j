@@ -37,7 +37,7 @@ public class QRCodeClient extends BaseClient {
             }
             return new Ticket(ticket, expireSeconds);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 

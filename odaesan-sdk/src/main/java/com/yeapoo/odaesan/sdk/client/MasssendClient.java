@@ -31,7 +31,7 @@ public class MasssendClient extends BaseClient {
         try {
             return mapper.readValue(response, MasssendResponse.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -42,7 +42,7 @@ public class MasssendClient extends BaseClient {
         try {
             return mapper.readValue(response, MasssendResponse.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -55,7 +55,7 @@ public class MasssendClient extends BaseClient {
             int errcode =  error.getErrorCode();
             return errcode == 0;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 }

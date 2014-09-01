@@ -29,7 +29,7 @@ public class AuthClient extends BaseClient {
         try {
             return mapper.readValue(response, Authorization.class);
         } catch (IOException e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 }

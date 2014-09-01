@@ -35,7 +35,7 @@ public class FollowerClient extends BaseClient {
         try {
             return mapper.readValue(response, FollowerContainer.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -48,7 +48,7 @@ public class FollowerClient extends BaseClient {
         try {
             return mapper.readValue(response, Follower.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -63,7 +63,7 @@ public class FollowerClient extends BaseClient {
         try {
             return mapper.readValue(response, ErrorResponse.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 }

@@ -42,7 +42,7 @@ public class MenuClient extends BaseClient {
             int errcode =  error.getErrorCode();
             return errcode == 0;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -72,7 +72,7 @@ public class MenuClient extends BaseClient {
             }
             return buttonList;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -84,7 +84,7 @@ public class MenuClient extends BaseClient {
             int errcode =  error.getErrorCode();
             return errcode == 0;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 

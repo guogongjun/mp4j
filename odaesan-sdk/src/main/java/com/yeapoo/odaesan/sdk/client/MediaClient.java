@@ -77,7 +77,7 @@ public class MediaClient extends BaseClient {
         try {
             return mapper.readValue(response, Media.class);
         } catch (IOException e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -91,7 +91,7 @@ public class MediaClient extends BaseClient {
         try {
             return mapper.readValue(response, Media.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -106,7 +106,7 @@ public class MediaClient extends BaseClient {
         try {
             return mapper.readValue(response, Media.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 

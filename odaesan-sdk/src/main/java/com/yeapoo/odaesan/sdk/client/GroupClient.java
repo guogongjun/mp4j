@@ -43,7 +43,7 @@ public class GroupClient extends BaseClient {
             Map<String, Object> groupMap = Map.class.cast(groupContainer.get("group"));
             return mapper.convertValue(groupMap, Group.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -53,7 +53,7 @@ public class GroupClient extends BaseClient {
         try {
             return mapper.readValue(response, GroupContainer.class);
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class GroupClient extends BaseClient {
             Assert.notNull(groupId);
             return groupId;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -85,7 +85,7 @@ public class GroupClient extends BaseClient {
             int errcode =  error.getErrorCode();
             return errcode == 0;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
@@ -103,7 +103,7 @@ public class GroupClient extends BaseClient {
             int errcode =  error.getErrorCode();
             return errcode == 0;
         } catch (Exception e) {
-            throw new WeixinSDKException(e);
+            throw new WeixinSDKException(response, e);
         }
     }
 
