@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.dao.UserDao;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.util.StringUtil;
 import com.yeapoo.odaesan.sdk.model.Follower;
 
 @Repository
@@ -28,7 +29,7 @@ public class UserDaoImpl implements UserDao {
             batchArgs.add(new Object[] {
                     follower.getOpenid(),
                     infoId,
-                    follower.getNickname(),
+                    StringUtil.filterUTF8MB4(follower.getNickname()),
                     follower.getCountry(),
                     follower.getProvince(),
                     follower.getCity(),

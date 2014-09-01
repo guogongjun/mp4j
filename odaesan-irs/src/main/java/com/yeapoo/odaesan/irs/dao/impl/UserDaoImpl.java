@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.yeapoo.odaesan.common.util.StringUtil;
 import com.yeapoo.odaesan.irs.dao.UserDao;
 import com.yeapoo.odaesan.sdk.model.Follower;
 
@@ -22,7 +23,7 @@ public class UserDaoImpl implements UserDao {
             jdbcTemplate.update(sql, 
                 follower.getOpenid(),
                 infoId,
-                follower.getNickname(),
+                StringUtil.filterUTF8MB4(follower.getNickname()),
                 follower.getCountry(),
                 follower.getProvince(),
                 follower.getCity(),
@@ -37,7 +38,7 @@ public class UserDaoImpl implements UserDao {
             sql = "UPDATE `user` SET `info_id`=?,`nickname`=?,`country`=?,`province`=?,`city`=?,`gender`=?,`avatar`=?,`language`=?,`unionid`=?,`remark`=?,`subscribed`=?,`subscribe_time`=?,`unsubscribe_time`=NULL";
             jdbcTemplate.update(sql, 
                     infoId,
-                    follower.getNickname(),
+                    StringUtil.filterUTF8MB4(follower.getNickname()),
                     follower.getCountry(),
                     follower.getProvince(),
                     follower.getCity(),
