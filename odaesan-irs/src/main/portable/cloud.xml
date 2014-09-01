@@ -3,7 +3,7 @@
   <config-file path="WEB-INF/classes/db.properties">
     <replace key="jdbc.username">weixinapi</replace>
     <replace key="jdbc.password">yeapoo88</replace>
-    <replace key="jdbc.url">jdbc:mysql://localhost:31861/weixin_api?autoReconnect=true&amp;characterEncoding=utf-8</replace>
+    <replace key="jdbc.url">jdbc:mysql://localhost:31861/weixin_api?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true&amp;autoReconnect=true</replace>
   </config-file>
   <config-file path="WEB-INF/classes/log4j.properties">
     <replace key="log4j.rootLogger">INFO,console,file</replace>
