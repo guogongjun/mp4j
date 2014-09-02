@@ -42,7 +42,7 @@ public class NewsDaoImpl implements NewsDao {
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
                 + " WHERE news.info_id = ? AND news.delete_time IS NULL"
-                + " ORDER BY news.update_time DESC"
+                + " ORDER BY news.update_time DESC, item.sequence"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(String.format(sql, alias), infoId, pagination.getOffset(), pagination.getSize());
     }
