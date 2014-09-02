@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yeapoo.common.util.IDGenerator;
 import com.yeapoo.odaesan.api.dao.UserGroupDao;
+import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.sdk.model.Group;
 
 @Repository
@@ -58,9 +59,9 @@ public class UserGroupDaoImpl implements UserGroupDao {
         String sql = "SELECT `g`.`id`, `g`.`name`, COUNT(`m`.`openid`) AS `num`"
                 + " FROM `user_group` `g`"
                 + " LEFT JOIN `user_group_mapping` `m` ON `g`.`id` = `m`.`group_id`"
-                + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL"
+                + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL AND `g`.`id` != ?"
                 + " GROUP BY `g`.`id`;";
-        return jdbcTemplate.queryForList(sql, infoId);
+        return jdbcTemplate.queryForList(sql, infoId, Constants.UserGroup.ALL_ID);
     }
 
     @Override
