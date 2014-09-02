@@ -75,7 +75,7 @@ public class MenuDaoImpl implements MenuDao {
 
     @Override
     public void bindViewReply(String infoId, String menuId, String url) {
-        String sql = "UPDATE `menu` SET `type` = 'view`, `url` = ? WHERE `id` = ?";
+        String sql = "UPDATE `menu` SET `type` = 'view', `url` = ? WHERE `id` = ?";
         jdbcTemplate.update(sql, url, menuId);
     }
 
