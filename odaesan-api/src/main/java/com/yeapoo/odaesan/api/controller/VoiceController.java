@@ -2,6 +2,8 @@ package com.yeapoo.odaesan.api.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,11 +114,16 @@ public class VoiceController {
         return new DataWrapper();
     }
 
-    private String generateName(Map<String, Object> data) {
+    private String generateName(Map<String, Object> data) throws UnsupportedEncodingException {
         String name = MapUtil.get(data, "name");
-        if (!name.endsWith(".mp3")) {
-            name = name + ".mp3";
+        String url = MapUtil.get(data, "url");
+        if (!name.toLowerCase().endsWith(".mp3") && !name.toLowerCase().endsWith(".amr")) {
+            if (url.toLowerCase().endsWith(".amr")) {
+                name = name + ".amr";
+            } else {
+                name = name + ".mp3";
+            }
         }
-        return name;
+        return URLEncoder.encode(name, "UTF-8");
     }
 }
