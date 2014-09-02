@@ -63,7 +63,7 @@ public class MenuDaoImpl implements MenuDao {
 
     @Override
     public void updateByParentIdAndSequence(String infoId, String parentId, int originalSequence, int targetSequence) {
-        String sql = "UPDATE `menu` SET `sequence` = ? WHERE `infoId` = ? AND `parent_id` = ? AND `sequence` = ?";
+        String sql = "UPDATE `menu` SET `sequence` = ? WHERE `info_id` = ? AND `parent_id` = ? AND `sequence` = ?";
         jdbcTemplate.update(sql, originalSequence, infoId, parentId, targetSequence);
     }
 
