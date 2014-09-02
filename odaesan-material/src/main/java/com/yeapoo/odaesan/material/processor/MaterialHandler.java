@@ -3,8 +3,6 @@ package com.yeapoo.odaesan.material.processor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.activation.MimeType;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -30,7 +28,7 @@ public abstract class MaterialHandler implements BeanFactoryAware, InitializingB
     protected MediaClient mediaClient;
     protected StaticResourceHandler handler;
 
-    protected static Method upload = ReflectionUtils.findMethod(MediaClient.class, "upload", new Class<?>[] { Authorization.class, String.class, MimeType.class });
+    protected static Method upload = ReflectionUtils.findMethod(MediaClient.class, "upload", new Class<?>[] { Authorization.class, String.class, String.class });
 
     public String prepareForMasssend(Map<String, Object> appInfo, String msgId, String materialType) {
         return prepareForReply(appInfo, msgId, materialType);

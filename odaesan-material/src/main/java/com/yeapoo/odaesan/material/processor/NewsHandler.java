@@ -46,7 +46,7 @@ public class NewsHandler extends MaterialHandler {
                 Media media = Media.class.cast(result);
                 item.setThumbMediaId(media.getMediaId());
             } else {
-                logger.error("failed to upload thumb {} within news {}", filePath, news);
+                logger.error("failed to upload thumb {} within news {}", filePath, msgId);
             }
 
             news.addAtricle(item);
