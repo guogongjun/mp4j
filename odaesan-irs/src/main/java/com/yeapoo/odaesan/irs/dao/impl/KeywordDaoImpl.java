@@ -22,7 +22,8 @@ public class KeywordDaoImpl implements KeywordDao {
                 + " JOIN `keyword` `k` ON `g`.`id` = `k`.`group_id`"
                 + " WHERE `g`.`info_id` = ?"
                 + "   AND `k`.`delete_time` IS NULL AND `g`.`delete_time` IS NULL"
-                + "   AND `k`.`content` = ? AND `k`.`fuzzy` = ?";
+                + "   AND `k`.`content` = ? AND `k`.`fuzzy` = ?"
+                + " LIMIT 1";
         try {
             return jdbcTemplate.queryForMap(sql, infoId, content, false);
         } catch (DataAccessException e) {
@@ -44,7 +45,11 @@ public class KeywordDaoImpl implements KeywordDao {
 
     @Override
     public Map<String, Object> findByName(String infoId, String ruleName) {
-        String sql = "SELECT `reply_id`, `reply_type` FROM `keyword_group` WHERE `info_id` = ? AND `name` = ?";
+        String sql = "SELECT `reply_id`, `reply_type`"
+                + " FROM `keyword_group`"
+                + " WHERE `info_id` = ? AND `name` = ? AND `delete_time` IS NULL"
+                + " ORDER BY `create_time` DESC"
+                + " LIMIT 1";
         return jdbcTemplate.queryForMap(sql, infoId, ruleName);
     }
 }
