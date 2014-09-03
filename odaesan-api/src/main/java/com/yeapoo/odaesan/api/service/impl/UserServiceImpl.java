@@ -1,6 +1,8 @@
 package com.yeapoo.odaesan.api.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +18,13 @@ import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
 import com.yeapoo.odaesan.api.service.UserService;
 import com.yeapoo.odaesan.api.service.support.AppInfoProvider;
 import com.yeapoo.odaesan.api.task.FetchFollowerTask;
+import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
+import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.sdk.client.FollowerClient;
 import com.yeapoo.odaesan.sdk.client.GroupClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
-import com.yeapoo.odaesan.sdk.model.Follower;
 import com.yeapoo.odaesan.sdk.model.FollowerContainer;
 
 @Service
@@ -75,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void save(String infoId, List<Follower> followerList) {
+    public void save(String infoId, List<FollowerWrapper> followerList) {
         userDao.batchInsert(infoId, followerList);
     }
 
@@ -95,8 +98,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Map<String, Object>> listByGroup(String infoId, String groupId, Pagination pagination) {
-        pagination.setCount(userDao.count(infoId, groupId));
-        return userDao.findAll(infoId, groupId, pagination);
+        if (Constants.UserGroup.ALL_ID.equals(groupId)) {
+            pagination.setCount(userDao.count(infoId));
+            return userDao.findAll(infoId, pagination);
+        } else  {
+            pagination.setCount(userDao.count(infoId, groupId));
+            return userDao.findAll(infoId, groupId, pagination);
+        }
     }
 
     @Override
@@ -106,7 +114,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Map<String, Object>> listGroups(String infoId, String openid) {
-        return mappingDao.findByOpenid(infoId, openid);
+        List<Map<String, Object>> mapping = mappingDao.findByOpenid(infoId, openid);
+        if (mapping.isEmpty()) {
+            Map<String, Object> group = new HashMap<String, Object>();
+            group.put("group_id", Constants.UserGroup.UNGROUPED_ID);
+            mapping.add(group);
+        }
+        return mapping;
     }
 
     @Transactional
@@ -139,24 +153,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public void fakeRemoveUserFromGroup(String infoId, String openid, String groupId) {
         mappingDao.delete(infoId, openid, groupId);
+        List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
+        if (list.isEmpty()) {
+            userDao.updateUngrouped(infoId, openid, true);
+        }
     }
 
     @Transactional
     @Override
     public void fakeBatchRemoveUserFromGroup(String infoId, List<String> openidList, String groupId) {
         mappingDao.batchDelete(infoId, openidList, groupId);
+        Iterator<String> iterator = openidList.iterator();
+        while (iterator.hasNext()) {
+            String openid = iterator.next();
+            List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
+            if (!list.isEmpty()) {
+                iterator.remove();
+            }
+        }
+        userDao.batchUpdateUngrouped(infoId, openidList, true);
     }
 
     @Transactional
     @Override
     public void fakeAddUserToGroup(String infoId, String openid, String groupId) {
         mappingDao.insert(infoId, openid, groupId);
+        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            userDao.updateUngrouped(infoId, openid, false);
+        }
     }
 
     @Transactional
     @Override
     public void fakeBatchAddUserToGroup(String infoId, List<String> openidList, String groupId) {
         mappingDao.batchInsert(infoId, openidList, groupId);
+        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            userDao.batchUpdateUngrouped(infoId, openidList, false);
+        }
     }
 
 }

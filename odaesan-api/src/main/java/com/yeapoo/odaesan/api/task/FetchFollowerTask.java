@@ -11,6 +11,7 @@ import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.service.UserService;
+import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.common.util.BeanFactoryUtil;
@@ -52,7 +53,7 @@ public class FetchFollowerTask implements Runnable {
     public void run() {
         String infoId = MapUtil.get(appInfo, "id");
 
-        List<Follower> followerList = new ArrayList<Follower>();
+        List<FollowerWrapper> followerList = new ArrayList<FollowerWrapper>();
         List<Object[]> groupMappingList = new ArrayList<Object[]>();
         Object infoResult = null;
         Object groupResult = null;
@@ -70,9 +71,12 @@ public class FetchFollowerTask implements Runnable {
                 continue;
             }
 
-            followerList.add(Follower.class.cast(infoResult));
-            groupMappingList.add(new Object[] {infoId, openid, groupResult.toString()});
-            groupMappingList.add(new Object[] {infoId, openid, Constants.UserGroup.ALL_ID});
+            String groupId = groupResult.toString();
+            boolean ungrouped = Constants.UserGroup.UNGROUPED_ID.equals(groupId);
+            if (!ungrouped) {
+                groupMappingList.add(new Object[] {infoId, openid, groupId});
+            }
+            followerList.add(new FollowerWrapper(Follower.class.cast(infoResult), ungrouped));
             if (i % COMMIT_SIZE == 0) {
                 userService.save(infoId, followerList);
                 userService.save(groupMappingList);

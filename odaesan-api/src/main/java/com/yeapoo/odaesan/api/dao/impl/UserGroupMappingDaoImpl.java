@@ -24,7 +24,7 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
 
     @Override
     public void batchInsert(List<Object[]> groupMappingList) {
-        String sql = "INSERT INTO `user_group_mapping`(`info_id`,`openid`,`group_id`,`create_time`) VALUES(?,?,?,NOW())";
+        String sql = "INSERT IGNORE INTO `user_group_mapping`(`info_id`,`openid`,`group_id`,`create_time`) VALUES(?,?,?,NOW())";
         jdbcTemplate.batchUpdate(sql, groupMappingList);
     }
 

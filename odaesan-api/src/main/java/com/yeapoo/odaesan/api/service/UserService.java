@@ -3,8 +3,8 @@ package com.yeapoo.odaesan.api.service;
 import java.util.List;
 import java.util.Map;
 
+import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
-import com.yeapoo.odaesan.sdk.model.Follower;
 
 public interface UserService {
 
@@ -12,7 +12,7 @@ public interface UserService {
 
     void fetchInfo(String infoId, String nextOpenId);
 
-    void save(String infoId, List<Follower> followerList);
+    void save(String infoId, List<FollowerWrapper> followerList);
 
     void save(List<Object[]> groupMappingList);
 

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
-import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.irs.dao.UserDao;
 import com.yeapoo.odaesan.irs.dao.UserGroupMappingDao;
 import com.yeapoo.odaesan.irs.service.FollowerService;
@@ -49,8 +48,6 @@ public class FollowerServiceImpl implements FollowerService {
             logger.error("get follower info for openid {} failed", openid);
         }
         userDao.insert(infoId, Follower.class.cast(infoResult));
-        mappingDao.insert(infoId, openid, Constants.UserGroup.UNGROUPED_ID);
-        mappingDao.insert(infoId, openid, Constants.UserGroup.ALL_ID);
     }
 
     @Override

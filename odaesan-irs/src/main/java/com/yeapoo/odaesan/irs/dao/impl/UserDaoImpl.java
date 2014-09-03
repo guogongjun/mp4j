@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
                 follower.getSubscribe(),
                 new Date(follower.getSubscribeTime() * 1000));
         } catch (Exception e) {
-            sql = "UPDATE `user` SET `info_id`=?,`nickname`=?,`country`=?,`province`=?,`city`=?,`gender`=?,`avatar`=?,`language`=?,`unionid`=?,`remark`=?,`subscribed`=?,`subscribe_time`=?,`unsubscribe_time`=NULL";
+            sql = "UPDATE `user` SET `info_id`=?,`nickname`=?,`country`=?,`province`=?,`city`=?,`gender`=?,`avatar`=?,`language`=?,`unionid`=?,`remark`=?,`subscribed`=?,`subscribe_time`=?,`unsubscribe_time`=NULL,`ungrouped`=1";
             jdbcTemplate.update(sql, 
                     infoId,
                     StringUtil.filterUTF8MB4(follower.getNickname()),
