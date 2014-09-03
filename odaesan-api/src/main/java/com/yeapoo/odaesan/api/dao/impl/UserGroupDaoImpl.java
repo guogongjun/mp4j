@@ -60,7 +60,7 @@ public class UserGroupDaoImpl implements UserGroupDao {
                 + " LEFT JOIN `user_group_mapping` `m` ON `g`.`id` = `m`.`group_id`"
                 + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL"
                 + " GROUP BY `g`.`id`"
-                + " ORDER BY `g`.`id`";
+                + " ORDER BY CAST(`g`.`id` as SIGNED)";
         return jdbcTemplate.queryForList(sql, infoId);
     }
 

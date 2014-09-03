@@ -36,6 +36,7 @@ public class MasssendMessageDaoImpl implements MasssendMessageDao {
         String sql = "SELECT `id`,`msg_type`,`msg_id`,`create_time`"
                 + " FROM `masssend_message`"
                 + " WHERE `info_id` = ?"
+                + " ORDER BY `create_time` DESC"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
     }
