@@ -59,6 +59,7 @@ CREATE TABLE `keyword` (
   `content` varchar(500) NOT NULL,
   `keycode` varchar(100) NOT NULL,
   `fuzzy` tinyint(1) NOT NULL DEFAULT '0',
+  `create_time` datetime NOT NULL,
   `delete_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `keyword_keycode_index` (`keycode`)
