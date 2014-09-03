@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.api.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
+import com.yeapoo.odaesan.api.dao.UserDao;
 import com.yeapoo.odaesan.api.dao.UserGroupDao;
 import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
 import com.yeapoo.odaesan.api.service.UserGroupService;
@@ -26,6 +28,8 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Autowired
     private UserGroupDao groupDao;
+    @Autowired
+    private UserDao userDao;
     @Autowired
     private UserGroupMappingDao mappingDao;
     @Autowired
@@ -47,7 +51,6 @@ public class UserGroupServiceImpl implements UserGroupService {
         GroupContainer container = GroupContainer.class.cast(result);
         List<Group> groups = container.getGroups();
         groupDao.batchInsert(infoId, groups);
-        groupDao.insert(infoId, Constants.UserGroup.ALL_ID, Constants.UserGroup.ALL_NAME);
     }
 
     @Transactional
@@ -58,7 +61,14 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Override
     public List<Map<String, Object>> list(String infoId) {
-        return groupDao.list(infoId);
+        List<Map<String, Object>> list = groupDao.list(infoId);
+        Integer ungroupedCount = userDao.count(infoId, Constants.UserGroup.UNGROUPED_ID);
+        Map<String, Object> ungroupedInfo = new HashMap<String, Object>();
+        ungroupedInfo.put("id", Constants.UserGroup.UNGROUPED_ID);
+        ungroupedInfo.put("name", Constants.UserGroup.UNGROUPED_NAME);
+        ungroupedInfo.put("num", ungroupedCount);
+        list.add(ungroupedInfo);
+        return list;
     }
 
     @Transactional
