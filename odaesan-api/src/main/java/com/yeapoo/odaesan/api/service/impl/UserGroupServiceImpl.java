@@ -1,7 +1,6 @@
 package com.yeapoo.odaesan.api.service.impl;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
+import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.dao.UserDao;
 import com.yeapoo.odaesan.api.dao.UserGroupDao;
 import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
@@ -63,11 +63,14 @@ public class UserGroupServiceImpl implements UserGroupService {
     public List<Map<String, Object>> list(String infoId) {
         List<Map<String, Object>> list = groupDao.list(infoId);
         Integer ungroupedCount = userDao.count(infoId, Constants.UserGroup.UNGROUPED_ID);
-        Map<String, Object> ungroupedInfo = new HashMap<String, Object>();
-        ungroupedInfo.put("id", Constants.UserGroup.UNGROUPED_ID);
-        ungroupedInfo.put("name", Constants.UserGroup.UNGROUPED_NAME);
-        ungroupedInfo.put("num", ungroupedCount);
-        list.add(ungroupedInfo);
+        if (0 != ungroupedCount) {
+            for (Map<String, Object> map : list) {
+                String id = MapUtil.get(map, "id");
+                if (Constants.UserGroup.UNGROUPED_ID.equals(id)) {
+                    map.put("num", ungroupedCount);
+                }
+            }
+        }
         return list;
     }
 
