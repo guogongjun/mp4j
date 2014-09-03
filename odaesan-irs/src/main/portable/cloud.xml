@@ -7,7 +7,7 @@
   </config-file>
   <config-file path="WEB-INF/classes/log4j.properties">
     <replace key="log4j.rootLogger">INFO,console,file</replace>
-    <replace key="log4j.appender.file.file">/usr/local/tomcat_1/logs/odaesan-api.log</replace>
+    <replace key="log4j.appender.file.file">/usr/local/tomcat_1/logs/odaesan-irs.log</replace>
   </config-file>
   <config-file path="WEB-INF/classes/resource.properties">
     <replace key="project.baseURL">http://103.6.220.225/irs</replace>

@@ -86,13 +86,19 @@
               <port>8080</port>
             </connector>
           </connectors>
-          <systemProperties>
-            <systemProperty>
-              <name>org.mortbay.util.URI.charset</name>
-              <value>UTF-8</value>
-            </systemProperty>
-          </systemProperties>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.juvenxu.portable-config-maven-plugin</groupId>
+        <artifactId>portable-config-maven-plugin</artifactId>
+        <version>1.1.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>replace-package</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
