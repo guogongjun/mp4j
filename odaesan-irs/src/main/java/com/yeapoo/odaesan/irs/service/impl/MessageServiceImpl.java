@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -47,12 +48,13 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Async
     @Transactional
-    public AsyncResult<String> save(TextMessage message, Map<String, Object> params) {
+    public Future<String> save(TextMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
         return new AsyncResult<String>(id);
     }
 
+    @Async
     @Override
     @Transactional
     public void updateKeywordFlag(String infoId, String id, boolean ivrmsg) {
@@ -63,7 +65,7 @@ public class MessageServiceImpl implements MessageService {
     @SuppressWarnings("unchecked")
     @Async
     @Transactional
-    public AsyncResult<String> save(ImageMessage message, Map<String, Object> params) {
+    public Future<String> save(ImageMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
 
@@ -88,7 +90,7 @@ public class MessageServiceImpl implements MessageService {
     @SuppressWarnings("unchecked")
     @Async
     @Transactional
-    public AsyncResult<String> save(VoiceMessage message, Map<String, Object> params) {
+    public Future<String> save(VoiceMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
 
@@ -114,7 +116,7 @@ public class MessageServiceImpl implements MessageService {
     @SuppressWarnings("unchecked")
     @Async
     @Transactional
-    public AsyncResult<String> save(VideoMessage message, Map<String, Object> params) {
+    public Future<String> save(VideoMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
 
@@ -147,7 +149,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Async
     @Transactional
-    public AsyncResult<String> save(LocationMessage message, Map<String, Object> params) {
+    public Future<String> save(LocationMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
 
@@ -164,7 +166,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Async
     @Transactional
-    public AsyncResult<String> save(LinkMessage message, Map<String, Object> params) {
+    public Future<String> save(LinkMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
         String id = messageDao.insert(infoId, message);
 
