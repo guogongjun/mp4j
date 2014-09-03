@@ -24,7 +24,7 @@ public class KeywordDaoImpl implements KeywordDao {
 
     @Override
     public void batchInsert(String groupId, List<Map<String, Object>> keywordList) {
-        String sql = "INSERT INTO `keyword`(`id`,`group_id`,`content`,`keycode`,`fuzzy`) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO `keyword`(`id`,`group_id`,`content`,`keycode`,`fuzzy`,`create_time`) VALUES(?,?,?,?,?,NOW())";
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         for (Map<String, Object> map : keywordList) {
             String keycode = MapUtil.get(map, "keycode");
@@ -55,13 +55,14 @@ public class KeywordDaoImpl implements KeywordDao {
                 + " JOIN `keyword` `k` ON `g`.`id` = `k`.`group_id`"
                 + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL AND `k`.`delete_time` IS NULL AND `g`.`name` != ? AND `g`.`name` != ?"
                 + " GROUP BY `g`.`id`"
+                + " ORDER BY `g`.`create_time`, `k`.`create_time`"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, Constants.Keyword.SUBSCRIBE, Constants.Keyword.DEFAULT, pagination.getOffset(), pagination.getSize());
     }
 
     @Override
     public List<Map<String, Object>> get(String infoId, String id) {
-        String sql = "SELECT `id`,`content`,`fuzzy` FROM `keyword` WHERE `group_id` = ? AND `delete_time` IS NULL";
+        String sql = "SELECT `id`,`content`,`fuzzy` FROM `keyword` WHERE `group_id` = ? AND `delete_time` IS NULL ORDER BY `create_time`";
         return jdbcTemplate.queryForList(sql, id);
     }
 

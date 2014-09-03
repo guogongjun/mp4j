@@ -55,19 +55,6 @@ public class KeywordController {
         return new DataWrapper(id);
     }
 
-    /**
-     * 
-     * @param index optional, default 1
-     * @param size optional, default 10
-     * @return {"code":200, "message":"OK", "data":{
-     *      "pagination": {
-     *          "index": $INDEX,
-     *          "size": $SIZE,
-     *          "count": $COUNT
-     *      },
-     *      "keyword": [{...}, {...}]
-     *   }}
-     */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public DataWrapper list(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
