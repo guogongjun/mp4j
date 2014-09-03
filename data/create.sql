@@ -175,9 +175,9 @@ DROP TABLE IF EXISTS `material_media`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `material_media` (
-  `id` int(11) NOT NULL,
+  `id` varchar(45) NOT NULL,
   `info_id` varchar(45) NOT NULL,
-  `material_type` enum('image','voice','video','thumb') NOT NULL,
+  `material_type` enum('image','voice','video','thumb','mpvideo','mpnews') NOT NULL,
   `material_id` varchar(45) NOT NULL,
   `media_id` varchar(100) NOT NULL,
   `create_time` int(11) NOT NULL,

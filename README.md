@@ -651,7 +651,8 @@
 - HTTP URL: http://$BASE_URL/v1/$INFO_ID/menu
 - Params: 无
 - 返回示例:
-```{"code":200,"message":"OK","data":[{"id":"7fbd286b-d4eb-46de-9a80-9e601f76c861","name":"移动网站","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":1,"sub_button":[{"id":"2a759423-ac8d-48c1-8fab-d12c24936702","name":"Yeapoo","type":"view","keycode":null,"url":"http://m.yeapoo.com","reply_id":null,"reply_type":null,"sequence":1},{"id":"626aad83-25d8-4f15-b4af-f05459baea1f","name":"POP","type":"click","keycode":"V20131226171926_pop_199","url":null,"reply_id":null,"reply_type":null,"sequence":2},{"id":"96356d85-5def-4bdf-aaa7-780d23508672","name":"km","type":"click","keycode":"V20131226171935_km_199","url":null,"reply_id":null,"reply_type":null,"sequence":3},{"id":"c658e569-354a-4c54-9dd2-e57b8bc7ae2b","name":"伊顿","type":"click","keycode":"V20131226172002_YD_199","url":null,"reply_id":null,"reply_type":null,"sequence":4},{"id":"95c5a828-e8b6-42ba-83ab-9e39c50c2cd8","name":"qwe","type":"click","keycode":"V20131226172022_qwe_199","url":null,"reply_id":null,"reply_type":null,"sequence":5}]},{"id":"8d43c613-29f2-48ac-b49f-5e2e9159d9bb","name":"案例","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":2,"sub_button":[{"id":"40d7ae84-134a-41d9-802a-3f56c8d35d16","name":"果园","type":"click","keycode":"V20140603155931_GY_199","url":null,"reply_id":null,"reply_type":null,"sequence":1}]},{"id":"438a912a-de24-40cf-9c7a-39cd01848b40","name":"新闻","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":3,"sub_button":[{"id":"d26bf1d4-76df-44b2-82cd-b88e02a1c831","name":"社会","type":"click","keycode":"V20131226172719_SH_199","url":null,"reply_id":null,"reply_type":null,"sequence":1},{"id":"fee127ae-b36f-4f02-868e-9a7ea7220d79","name":"科技","type":"click","keycode":"V20131226172726_KJ_199","url":null,"reply_id":null,"reply_type":null,"sequence":2}]}]}
+```
+{"code":200,"message":"OK","data":[{"id":"7fbd286b-d4eb-46de-9a80-9e601f76c861","name":"移动网站","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":1,"sub_button":[{"id":"2a759423-ac8d-48c1-8fab-d12c24936702","name":"Yeapoo","type":"view","keycode":null,"url":"http://m.yeapoo.com","reply_id":null,"reply_type":null,"sequence":1},{"id":"626aad83-25d8-4f15-b4af-f05459baea1f","name":"POP","type":"click","keycode":"V20131226171926_pop_199","url":null,"reply_id":null,"reply_type":null,"sequence":2},{"id":"96356d85-5def-4bdf-aaa7-780d23508672","name":"km","type":"click","keycode":"V20131226171935_km_199","url":null,"reply_id":null,"reply_type":null,"sequence":3},{"id":"c658e569-354a-4c54-9dd2-e57b8bc7ae2b","name":"伊顿","type":"click","keycode":"V20131226172002_YD_199","url":null,"reply_id":null,"reply_type":null,"sequence":4},{"id":"95c5a828-e8b6-42ba-83ab-9e39c50c2cd8","name":"qwe","type":"click","keycode":"V20131226172022_qwe_199","url":null,"reply_id":null,"reply_type":null,"sequence":5}]},{"id":"8d43c613-29f2-48ac-b49f-5e2e9159d9bb","name":"案例","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":2,"sub_button":[{"id":"40d7ae84-134a-41d9-802a-3f56c8d35d16","name":"果园","type":"click","keycode":"V20140603155931_GY_199","url":null,"reply_id":null,"reply_type":null,"sequence":1}]},{"id":"438a912a-de24-40cf-9c7a-39cd01848b40","name":"新闻","type":null,"keycode":null,"url":null,"reply_id":null,"reply_type":null,"sequence":3,"sub_button":[{"id":"d26bf1d4-76df-44b2-82cd-b88e02a1c831","name":"社会","type":"click","keycode":"V20131226172719_SH_199","url":null,"reply_id":null,"reply_type":null,"sequence":1},{"id":"fee127ae-b36f-4f02-868e-9a7ea7220d79","name":"科技","type":"click","keycode":"V20131226172726_KJ_199","url":null,"reply_id":null,"reply_type":null,"sequence":2}]}]}
 ```
 
 ### 创建菜单按钮
@@ -846,13 +847,3 @@
 ```
 {"code":200,"message":"OK","data":{"status":"$STATUS","total_count":$,"filter_count":$,"sent_count":$,"error_count":$,}}
 ```
-
-
-
-
-
-
-
-
-
-
