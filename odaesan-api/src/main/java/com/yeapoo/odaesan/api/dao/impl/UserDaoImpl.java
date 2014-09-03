@@ -155,7 +155,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUngrouped(String infoId, String openid, boolean ungrouped) {
         String sql = "UPDATE `user` SET `ungrouped` = ? WHERE `openid` = ?";
-        jdbcTemplate.update(sql, infoId, openid);
+        jdbcTemplate.update(sql, ungrouped, openid);
     }
 
     @Override
