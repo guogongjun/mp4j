@@ -38,7 +38,7 @@ public class MessageDaoImpl implements MessageDao {
             sqlBuilder.append(" AND `ivrmsg` = 0");
         }
         if (null != filter) {
-            sqlBuilder.append(String.format(" AND `content` LIKE '%%s%'", filter));
+            sqlBuilder.append(" AND `content` LIKE '%" + filter +"%'");
         }
         return jdbcTemplate.queryForObject(sqlBuilder.toString(), Integer.class, args.toArray());
     }
@@ -66,7 +66,7 @@ public class MessageDaoImpl implements MessageDao {
         if (null != filter) {
             sqlBuilder.append(" AND `content` LIKE '%" + filter + "%'");
         }
-        sqlBuilder.append(" LIMIT ?,?");
+        sqlBuilder.append(" ORDER BY `create_time` DESC LIMIT ?,?");
         args.add(pagination.getOffset());
         args.add(pagination.getSize());
         return jdbcTemplate.queryForList(sqlBuilder.toString(), args.toArray());

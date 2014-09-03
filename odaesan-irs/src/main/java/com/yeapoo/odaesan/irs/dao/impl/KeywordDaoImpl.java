@@ -38,9 +38,9 @@ public class KeywordDaoImpl implements KeywordDao {
                 + " JOIN `keyword` `k` ON `g`.`id` = `k`.`group_id`"
                 + " WHERE `g`.`info_id` = ?"
                 + "   AND `k`.`delete_time` IS NULL AND `g`.`delete_time` IS NULL"
-                + "   AND `k`.`content` LIKE '%%s%' AND `k`.`fuzzy` = ?"
+                + "   AND `k`.`content` LIKE '%"+content+"%' AND `k`.`fuzzy` = ?"
                 + " LIMIT 1";
-        return jdbcTemplate.queryForMap(String.format(sql, content), infoId, true);
+        return jdbcTemplate.queryForMap(sql, infoId, true);
     }
 
     @Override
