@@ -505,6 +505,7 @@ CREATE TABLE `user` (
   `subscribed` tinyint(1) NOT NULL DEFAULT '0',
   `subscribe_time` datetime DEFAULT NULL,
   `unsubscribe_time` datetime DEFAULT NULL,
+  `ungrouped` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`openid`),
   KEY `user_info_id_index` (`info_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
