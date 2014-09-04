@@ -10,7 +10,7 @@
     <replace key="log4j.appender.file.file">/usr/local/tomcat_1/logs/odaesan-api.log</replace>
   </config-file>
   <config-file path="WEB-INF/classes/resource.properties">
-    <replace key="static.alias">http://58.215.179.106/api/static/</replace>
-    <replace key="static.folder">/data/web/api/static/</replace>
+    <replace key="static.alias">http://58.215.179.106/weixin/api/static/</replace>
+    <replace key="static.folder">/data/web/weixin/api/static/</replace>
   </config-file>
 </portable-config>
