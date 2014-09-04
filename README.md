@@ -719,8 +719,8 @@
 - HTTP Method: GET
 - HTTP URL: http://$BASE_URL/v1/$INFO_ID/msg
 - Params:
-    - start_date, date, 可选, 不包含
-    - end_date, date, 可选, 不包含, 示例: 设今天为2014－08-27, 若想获得今天的消息, 则start_date=2014-08-26, end_date=2014-08-28; 若想获得昨天的消息, 则start_date=2014-08-25, end_date=2014-08-27; 若想获得更多消息, 则end_date=2014-08-25
+    - start_date, date, 可选, 包含
+    - end_date, date, 可选, 不包含, 示例: 设今天为2014－08-27, 若想获得今天的消息, 则start_date=2014-08-27, end_date=2014-08-28; 若想获得昨天的消息, 则start_date=2014-08-26, end_date=2014-08-27; 若想获得更多消息, 则end_date=2014-08-25
     - filterivrmsg, 0/1, 可选, 是否过滤关键字
     - filter, string, 可选, 模糊搜索内容
     - index, int, 可选, 默认1

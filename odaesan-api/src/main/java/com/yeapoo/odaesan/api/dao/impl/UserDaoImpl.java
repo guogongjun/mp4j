@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "SELECT COUNT(`u`.`openid`)"
                 + " FROM `user` `u`"
                 + " LEFT JOIN `user_group_mapping` `m` ON `u`.`openid` = `m`.`openid`"
-                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND `m`.`group_id` != ?";
+                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND (`m`.`openid` IS NULL OR `m`.`group_id` != ?)";
         return jdbcTemplate.queryForObject(sql, Integer.class, infoId, Constants.UserGroup.BLACKLIST_ID);
     }
 
@@ -64,7 +64,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "SELECT `u`.`openid`,`nickname`,`avatar`"
                 + " FROM `user` `u`"
                 + " LEFT JOIN `user_group_mapping` `m` ON `u`.`openid` = `m`.`openid`"
-                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND `m`.`group_id` != ?"
+                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND (`m`.`openid` IS NULL OR `m`.`group_id` != ?)"
                 + " ORDER BY `u`.`subscribe_time` DESC"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, Constants.UserGroup.BLACKLIST_ID, pagination.getOffset(), pagination.getSize());
