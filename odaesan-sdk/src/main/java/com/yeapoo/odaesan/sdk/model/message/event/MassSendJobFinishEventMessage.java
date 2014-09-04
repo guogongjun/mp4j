@@ -19,6 +19,7 @@ public class MassSendJobFinishEventMessage extends EventMessage {
 
     public MassSendJobFinishEventMessage(Document document) {
         super(document);
+        messageId = XmlUtil.getNodeContent(document, "MsgID");
         status = XmlUtil.getNodeContent(document, Constants.XmlTag.STATUS);
         totalCount = Integer.parseInt(XmlUtil.getNodeContent(document, Constants.XmlTag.TOTAL_COUNT));
         filterCount = Integer.parseInt(XmlUtil.getNodeContent(document, Constants.XmlTag.FILTE_RCOUNT));

@@ -45,6 +45,7 @@ public class WeixinController {
     @ResponseBody
     public String handle(@PathVariable String infoId, @RequestBody String xml) {
         Assert.notNull(xml);
+        logger.info(xml);
         Message input = MessageConverter.xml2Message(xml);
 
         String msgType = input.getMessageType();
