@@ -23,9 +23,6 @@ import com.yeapoo.odaesan.common.model.DataWrapper;
 public class ExceptionAdvice {
     private static Logger logger = LoggerFactory.getLogger(ExceptionAdvice.class);
 
-    @Value("${project.baseURL}")
-    private String baseURL;
-
     @Autowired
     private ObjectMapper mapper;
 
