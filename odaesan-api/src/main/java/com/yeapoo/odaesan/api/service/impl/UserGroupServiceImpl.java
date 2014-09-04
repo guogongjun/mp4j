@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.api.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -82,8 +83,24 @@ public class UserGroupServiceImpl implements UserGroupService {
 
     @Transactional
     @Override
-    public void delete(String infoId, String id) {
-        groupDao.delete(infoId, id);
-        mappingDao.deleteByGroupId(infoId, id);
+    public void delete(String infoId, String groupId) {
+        // 获取分组下面现有的用户
+        List<String> openidList = mappingDao.findOpenidByGroupId(infoId, groupId);
+        // 删除分组下面现有的用户
+        mappingDao.deleteByGroupId(infoId, groupId);
+
+        // 处理现有用户，判断是否需要进行未分组操作
+        Iterator<String> iterator = openidList.iterator();
+        while (iterator.hasNext()) {
+            String openid = iterator.next();
+            List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
+            if (!list.isEmpty()) {
+                iterator.remove();
+            }
+        }
+        userDao.batchUpdateUngrouped(infoId, openidList, true);
+
+        // 删除分组
+        groupDao.delete(infoId, groupId);
     }
 }

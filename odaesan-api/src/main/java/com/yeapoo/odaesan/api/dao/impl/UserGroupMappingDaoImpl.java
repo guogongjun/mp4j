@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.dao.UserGroupMappingDao;
 
 @Repository
@@ -78,6 +79,13 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
     public void truncate(String infoId) {
         String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ?";
         jdbcTemplate.update(sql, infoId);
+    }
+
+    @Override
+    public List<String> findOpenidByGroupId(String infoId, String groupId) {
+        String sql = "SELECT `openid` FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, infoId, groupId);
+        return MapUtil.flat(list, "openid");
     }
 
 }

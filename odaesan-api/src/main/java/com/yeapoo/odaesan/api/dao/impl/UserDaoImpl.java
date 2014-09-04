@@ -118,7 +118,7 @@ public class UserDaoImpl implements UserDao {
             sql = "SELECT `openid` FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
             list = jdbcTemplate.queryForList(sql, infoId, groupId);
         }
-        return flat(list);
+        return MapUtil.flat(list, "openid");
     }
 
     @Override
@@ -135,21 +135,13 @@ public class UserDaoImpl implements UserDao {
                     + " WHERE `u`.`info_id` = ? AND `m`.`group_id` = ? AND `u`.`gender` = ?";
             list = jdbcTemplate.queryForList(sql, infoId, groupId, gender);
         }
-        return flat(list);
+        return MapUtil.flat(list, "openid");
     }
 
     @Override
     public void truncate(String infoId) {
         String sql = "DELETE FROM `user` WHERE `info_id` = ?";
         jdbcTemplate.update(sql, infoId);
-    }
-
-    private List<String> flat(List<Map<String, Object>> list) {
-        List<String> openidList = new ArrayList<String>();
-        for (Map<String, Object> map : list) {
-            openidList.add(MapUtil.get(map, "openid"));
-        }
-        return openidList;
     }
 
     @Override

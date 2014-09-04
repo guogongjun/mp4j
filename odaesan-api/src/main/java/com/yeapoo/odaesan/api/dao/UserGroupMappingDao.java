@@ -21,4 +21,6 @@ public interface UserGroupMappingDao {
 
     void truncate(String infoId);
 
+    List<String> findOpenidByGroupId(String infoId, String groupId);
+
 }
