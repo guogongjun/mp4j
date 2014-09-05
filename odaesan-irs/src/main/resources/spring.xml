@@ -82,7 +82,17 @@
 
   <bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
 
+  <bean id="allowAllHostnameVerifier" class="org.apache.http.conn.ssl.AllowAllHostnameVerifier" />
+  <bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder" factory-method="create">
+    <property name="hostnameVerifier" ref="allowAllHostnameVerifier" />
+  </bean>
+  <bean id="httpClient" factory-bean="httpClientBuilder" factory-method="build" />
+  <bean id="clientHttpRequestFactory" class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+    <constructor-arg ref="httpClient" />
+  </bean>
+<!-- 
   <bean id="clientHttpRequestFactory" class="org.springframework.http.client.SimpleClientHttpRequestFactory" />
+ -->
   <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
     <constructor-arg ref="clientHttpRequestFactory"/>
   </bean>

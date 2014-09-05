@@ -31,6 +31,7 @@
     <servlet.version>2.5</servlet.version>
     <junit.version>4.11</junit.version>
     <ansj.version>1.4.1</ansj.version>
+    <httpcomponents.version>4.3.5</httpcomponents.version>
   </properties>
 
   <dependencyManagement>
@@ -64,6 +65,17 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>${mysql.connector.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpcomponents.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpmime</artifactId>
+        <version>${httpcomponents.version}</version>
       </dependency>
 
       <dependency>

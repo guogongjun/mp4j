@@ -54,23 +54,27 @@ public class MenuClient extends BaseClient {
             Map<String, Object> menuMapMap = mapper.readValue(response, Map.class);
             Map<String, Object> buttonListMap = MapUtil.get(menuMapMap, "menu", Map.class);
 
-            List<Map<String, Object>> buttonMapList = MapUtil.get(buttonListMap, "button", List.class);
-            List<Button> buttonList = new ArrayList<Button>();
-            for (Map<String, Object> buttonMap : buttonMapList) {
-                String type = MapUtil.get(buttonMap, "type");
-                if (null == type) {
-                    String name = MapUtil.get(buttonMap, "name");
-                    ButtonContainer button = new ButtonContainer(name);
-                    List<Map<String, Object>> subButtonMapList = MapUtil.get(buttonMap, "sub_button", List.class);
-                    for (Map<String, Object> subButtonMap : subButtonMapList) {
-                        button.addSubButton(generateButton(subButtonMap));
+            if (null != buttonListMap) {
+                List<Map<String, Object>> buttonMapList = MapUtil.get(buttonListMap, "button", List.class);
+                List<Button> buttonList = new ArrayList<Button>();
+                for (Map<String, Object> buttonMap : buttonMapList) {
+                    String type = MapUtil.get(buttonMap, "type");
+                    if (null == type) {
+                        String name = MapUtil.get(buttonMap, "name");
+                        ButtonContainer button = new ButtonContainer(name);
+                        List<Map<String, Object>> subButtonMapList = MapUtil.get(buttonMap, "sub_button", List.class);
+                        for (Map<String, Object> subButtonMap : subButtonMapList) {
+                            button.addSubButton(generateButton(subButtonMap));
+                        }
+                        buttonList.add(button);
+                    } else {
+                        buttonList.add(generateButton(buttonMap));
                     }
-                    buttonList.add(button);
-                } else {
-                    buttonList.add(generateButton(buttonMap));
                 }
+                return buttonList;
+            } else {
+                return new ArrayList<Button>(1);
             }
-            return buttonList;
         } catch (Exception e) {
             throw new WeixinSDKException(response, e);
         }

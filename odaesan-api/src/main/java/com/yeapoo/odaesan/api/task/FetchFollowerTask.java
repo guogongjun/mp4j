@@ -33,7 +33,7 @@ public class FetchFollowerTask implements Runnable {
 
     private WeixinSDKAdapter adapter;
 
-    private static final int COMMIT_SIZE = 500;
+    private static final int COMMIT_SIZE = 50;
 
     private Method getFollowerInfo = ReflectionUtils.findMethod(FollowerClient.class, "getFollowerInfo", new Class<?>[] {Authorization.class, String.class});
     private Method getFollowerGroup = ReflectionUtils.findMethod(GroupClient.class, "getFollowerGroup", new Class<?>[] {Authorization.class, String.class});

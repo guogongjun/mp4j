@@ -30,22 +30,24 @@ public class UserDaoImpl implements UserDao {
         Follower follower = null;
         for (FollowerWrapper wrapper : followerList) {
             follower = wrapper.getFollower();
-            batchArgs.add(new Object[] {
-                    follower.getOpenid(),
-                    infoId,
-                    StringUtil.filterUTF8MB4(follower.getNickname()),
-                    follower.getCountry(),
-                    follower.getProvince(),
-                    follower.getCity(),
-                    follower.getGender(),
-                    follower.getHeadImageURL(),
-                    follower.getLanguage(),
-                    follower.getUnionid(),
-                    follower.getRemark(),
-                    follower.getSubscribe(),
-                    new Date(follower.getSubscribeTime() * 1000),
-                    wrapper.isUngrouped()
-            });
+            if (null != follower) {
+                batchArgs.add(new Object[] {
+                        follower.getOpenid(),
+                        infoId,
+                        StringUtil.filterUTF8MB4(follower.getNickname()),
+                        follower.getCountry(),
+                        follower.getProvince(),
+                        follower.getCity(),
+                        follower.getGender(),
+                        follower.getHeadImageURL(),
+                        follower.getLanguage(),
+                        follower.getUnionid(),
+                        follower.getRemark(),
+                        follower.getSubscribe(),
+                        new Date(follower.getSubscribeTime() * 1000),
+                        wrapper.isUngrouped()
+                });
+            }
         }
         jdbcTemplate.batchUpdate(sql, batchArgs);
     }
