@@ -159,7 +159,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Transactional
     @Override
-    public void unbindReply(int infoId, String menuId) {
+    public void unbindReply(String infoId, String menuId) {
         menuDao.unbindReply(infoId, menuId);
     }
 

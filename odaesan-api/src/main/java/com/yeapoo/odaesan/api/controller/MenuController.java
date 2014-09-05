@@ -127,7 +127,7 @@ public class MenuController {
      */
     @RequestMapping(value = "unbind", method = RequestMethod.POST)
     @ResponseBody
-    public DataWrapper unbindReply(@PathVariable int infoId, @RequestBody Map<String, String> itemMap) {
+    public DataWrapper unbindReply(@PathVariable String infoId, @RequestBody Map<String, String> itemMap) {
         String menuId = itemMap.get("menu_id");
         service.unbindReply(infoId, menuId);
         return new DataWrapper();

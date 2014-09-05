@@ -25,7 +25,7 @@ public interface MenuDao {
 
     void bindViewReply(String infoId, String menuId, String url);
 
-    void unbindReply(int infoId, String menuId);
+    void unbindReply(String infoId, String menuId);
 
     void delete(String infoId, String id);
 

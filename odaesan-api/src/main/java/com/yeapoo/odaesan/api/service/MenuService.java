@@ -23,6 +23,6 @@ public interface MenuService {
 
     void bindReply(String infoId, String menuId, String replyId, String replyType);
 
-    void unbindReply(int infoId, String menuId);
+    void unbindReply(String infoId, String menuId);
 
 }

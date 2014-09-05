@@ -80,7 +80,7 @@ public class MenuDaoImpl implements MenuDao {
     }
 
     @Override
-    public void unbindReply(int infoId, String menuId) {
+    public void unbindReply(String infoId, String menuId) {
         String sql = "UPDATE `menu` SET `type` = NULL, `keycode` = NULL, `url` = NULL, `reply_id` = NULL, `reply_type` = NULL WHERE `id` = ?";
         jdbcTemplate.update(sql, menuId);
     }
