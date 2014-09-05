@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
             jdbcTemplate.update(sql, 
                 follower.getOpenid(),
                 infoId,
-                StringUtil.filterUTF8MB4(follower.getNickname()),
+                StringUtil.filterUnusualChar(follower.getNickname()),
                 follower.getCountry(),
                 follower.getProvince(),
                 follower.getCity(),
@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
             sql = "UPDATE `user` SET `info_id`=?,`nickname`=?,`country`=?,`province`=?,`city`=?,`gender`=?,`avatar`=?,`language`=?,`unionid`=?,`remark`=?,`subscribed`=?,`subscribe_time`=?,`unsubscribe_time`=NULL,`ungrouped`=1 WHERE `openid` = ?";
             jdbcTemplate.update(sql, 
                     infoId,
-                    StringUtil.filterUTF8MB4(follower.getNickname()),
+                    StringUtil.filterUnusualChar(follower.getNickname()),
                     follower.getCountry(),
                     follower.getProvince(),
                     follower.getCity(),
