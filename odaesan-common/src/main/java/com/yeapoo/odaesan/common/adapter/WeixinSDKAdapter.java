@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.yeapoo.odaesan.sdk.client.BaseClient;
-import com.yeapoo.odaesan.sdk.exception.WeixinSDKException;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 
 @Component
@@ -34,10 +33,9 @@ public class WeixinSDKAdapter {
                 args[0] = auth;
                 result = method.invoke(client, args);
                 break;
-            } catch (WeixinSDKException e) {
+            } catch (Exception e) {
                 auth = authorizer.authorize(appInfo);
                 logger.info("Retry {} time to invoke method[{}] on client[{}]", retries, method.getName(), client.getClass().getName());
-            } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
         }
