@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
@@ -95,7 +96,8 @@ public class MenuServiceImpl implements MenuService {
         }
 
         Map<String, Object> appInfo = infoProvider.provide(infoId);
-        adapter.invoke(menuClient, createMenu, new Object[] {null, buttonList}, appInfo);
+        Object result = adapter.invoke(menuClient, createMenu, new Object[] {null, buttonList}, appInfo);
+        Assert.notNull(result, "publish menu failed");
     }
 
     @Transactional

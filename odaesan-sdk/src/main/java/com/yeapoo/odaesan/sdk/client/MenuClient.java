@@ -40,7 +40,11 @@ public class MenuClient extends BaseClient {
         try {
             ErrorResponse error = mapper.readValue(response, ErrorResponse.class);
             int errcode =  error.getErrorCode();
-            return errcode == 0;
+            if (errcode == 0) {
+                return true;
+            } else {
+                throw new WeixinSDKException(response);
+            }
         } catch (Exception e) {
             throw new WeixinSDKException(response, e);
         }
