@@ -483,6 +483,19 @@ LOCK TABLES `qrcode_scene` WRITE;
 /*!40000 ALTER TABLE `qrcode_scene` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `qrcode_stats`;
+
+CREATE TABLE `qrcode_stats` (
+  `id` varchar(45) NOT NULL,
+  `info_id` varchar(45) NOT NULL,
+  `scene_id` int(11) NOT NULL,
+  `openid` varchar(100) NOT NULL,
+  `ticket` varchar(500) NOT NULL,
+  `new` tinyint(1) NOT NULL,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Table structure for table `user`
 --
