@@ -177,18 +177,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void fakeAddUserToGroup(String infoId, String openid, String groupId) {
-        mappingDao.insert(infoId, openid, groupId);
         if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            mappingDao.insert(infoId, openid, groupId);
             userDao.updateUngrouped(infoId, openid, false);
+        } else {
+            mappingDao.deleteByOpenid(infoId, openid);
+            userDao.updateUngrouped(infoId, openid, true);
         }
     }
 
     @Transactional
     @Override
     public void fakeBatchAddUserToGroup(String infoId, List<String> openidList, String groupId) {
-        mappingDao.batchInsert(infoId, openidList, groupId);
         if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            mappingDao.batchInsert(infoId, openidList, groupId);
             userDao.batchUpdateUngrouped(infoId, openidList, false);
+        } else {
+            mappingDao.batchDeleteByOpenid(infoId, openidList);
+            userDao.batchUpdateUngrouped(infoId, openidList, true);
         }
     }
 

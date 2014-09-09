@@ -50,6 +50,13 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
     }
 
     @Override
+    public List<String> findOpenidByGroupId(String infoId, String groupId) {
+        String sql = "SELECT `openid` FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, infoId, groupId);
+        return MapUtil.flat(list, "openid");
+    }
+
+    @Override
     public void delete(String infoId, String openid, String current) {
         String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ? AND `openid` = ? AND `group_id` = ?";
         jdbcTemplate.update(sql, infoId, openid, current);
@@ -76,16 +83,28 @@ public class UserGroupMappingDaoImpl implements UserGroupMappingDao {
     }
 
     @Override
-    public void truncate(String infoId) {
-        String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ?";
-        jdbcTemplate.update(sql, infoId);
+    public void deleteByOpenid(String infoId, String openid) {
+        String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ? AND `openid` = ?";
+        jdbcTemplate.update(sql, infoId, openid);
     }
 
     @Override
-    public List<String> findOpenidByGroupId(String infoId, String groupId) {
-        String sql = "SELECT `openid` FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, infoId, groupId);
-        return MapUtil.flat(list, "openid");
+    public void batchDeleteByOpenid(String infoId, List<String> openidList) {
+        String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ? AND `openid` = ?";
+        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        for (String openid : openidList) {
+            batchArgs.add(new Object[] {
+                    infoId,
+                    openid
+            });
+        }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    @Override
+    public void truncate(String infoId) {
+        String sql = "DELETE FROM `user_group_mapping` WHERE `info_id` = ?";
+        jdbcTemplate.update(sql, infoId);
     }
 
 }

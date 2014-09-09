@@ -13,14 +13,18 @@ public interface UserGroupMappingDao {
 
     List<Map<String, Object>> findByOpenid(String infoId, String openid);
 
+    List<String> findOpenidByGroupId(String infoId, String groupId);
+
     void batchDelete(String infoId, List<String> openidList, String current);
 
     void delete(String infoId, String openid, String current);
 
     void deleteByGroupId(String infoId, String groupId);
 
-    void truncate(String infoId);
+    void deleteByOpenid(String infoId, String openid);
 
-    List<String> findOpenidByGroupId(String infoId, String groupId);
+    void batchDeleteByOpenid(String infoId, List<String> openidList);
+
+    void truncate(String infoId);
 
 }

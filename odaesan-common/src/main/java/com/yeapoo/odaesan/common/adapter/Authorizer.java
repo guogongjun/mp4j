@@ -33,7 +33,9 @@ public class Authorizer {
     public synchronized Authorization authorize(Map<String, Object> appInfo) {
         String infoId = MapUtil.get(appInfo, "id");
         Authorization auth = cache.get(infoId);
-        logger.info(String.format("access token [%s], request at [%s], expected expires in [%s]", auth.getAccessToken(), auth.getLastRequestTime(), auth.getExpiresIn()));
+        if (null != auth) {
+            logger.info(String.format("access token [%s], request at [%s], expected expires in [%s]", auth.getAccessToken(), auth.getLastRequestTime(), auth.getExpiresIn()));
+        }
 
         String appId = MapUtil.get(appInfo, "app_id");
         String appSecret = MapUtil.get(appInfo, "app_secret");
