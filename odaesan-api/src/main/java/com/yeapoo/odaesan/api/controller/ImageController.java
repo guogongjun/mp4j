@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,9 @@ import com.yeapoo.odaesan.common.model.Pagination;
 @RequestMapping("{infoId}/image")
 public class ImageController {
 
+    @Value("${wx.image.max.size}")
+    private long maxSize;
+
     @Autowired
     private ImageService service;
 
@@ -41,6 +45,14 @@ public class ImageController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper upload(@PathVariable String infoId, @RequestParam MultipartFile file) {
+        long size = file.getSize();
+        if (size > maxSize) {
+            return new DataWrapper(414, "file size exceeded limit");
+        }
+        String filename = file.getOriginalFilename();
+        if (null == filename || !filename.toLowerCase().contains(".jpg")) {
+            return new DataWrapper(406, "only JPG formated images are supported");
+        }
         Map<String, Object> data = service.save(infoId, file);
         return new DataWrapper(data);
     }
