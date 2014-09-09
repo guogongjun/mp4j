@@ -87,8 +87,8 @@ public class MenuDaoImpl implements MenuDao {
 
     @Override
     public void delete(String infoId, String id) {
-        String sql = "DELETE FROM `menu` WHERE `id` = ?";
-        jdbcTemplate.update(sql, id);
+        String sql = "DELETE FROM `menu` WHERE `id` = ? OR `parent_id` = ?";
+        jdbcTemplate.update(sql, id, id);
     }
 
     @Override
