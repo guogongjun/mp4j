@@ -418,7 +418,7 @@ CREATE TABLE `message` (
   `create_time` datetime NOT NULL,
   `delete_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`info_id`),
-  KEY `message_sender_id_index` (`sender_id`)
+  UNIQUE INDEX `unique_msg` (`sender_id` ASC, `create_time` ASC)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

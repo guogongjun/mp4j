@@ -11,6 +11,7 @@ import com.yeapoo.odaesan.sdk.model.message.LocationMessage;
 import com.yeapoo.odaesan.sdk.model.message.TextMessage;
 import com.yeapoo.odaesan.sdk.model.message.VideoMessage;
 import com.yeapoo.odaesan.sdk.model.message.VoiceMessage;
+import com.yeapoo.odaesan.sdk.model.message.event.ClickEventMessage;
 
 public interface MessageService {
 
@@ -18,7 +19,9 @@ public interface MessageService {
 
     //================== following is for IRS ============================
 
-    Future<String> save(TextMessage message, Map<String, Object> params);
+    String save(TextMessage message, Map<String, Object> params);
+
+    void save(ClickEventMessage message, Map<String, Object> params);
 
     void updateKeywordFlag(String infoId, String id, boolean ivrmsg);
 

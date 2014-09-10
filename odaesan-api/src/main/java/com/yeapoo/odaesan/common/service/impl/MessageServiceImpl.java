@@ -30,6 +30,7 @@ import com.yeapoo.odaesan.sdk.model.message.LocationMessage;
 import com.yeapoo.odaesan.sdk.model.message.TextMessage;
 import com.yeapoo.odaesan.sdk.model.message.VideoMessage;
 import com.yeapoo.odaesan.sdk.model.message.VoiceMessage;
+import com.yeapoo.odaesan.sdk.model.message.event.ClickEventMessage;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -79,12 +80,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    @Async
     @Transactional
-    public Future<String> save(TextMessage message, Map<String, Object> params) {
+    public String save(TextMessage message, Map<String, Object> params) {
         String infoId = MapUtil.get(params, "info_id");
-        String id = messageDao.insert(infoId, message);
-        return new AsyncResult<String>(id);
+        return messageDao.insert(infoId, message);
+    }
+
+    @Override
+    @Transactional
+    public void save(ClickEventMessage message, Map<String, Object> params) {
+        String infoId = MapUtil.get(params, "info_id");
+        messageDao.insert(infoId, message);
     }
 
     @Async
@@ -211,5 +217,4 @@ public class MessageServiceImpl implements MessageService {
 
         return new AsyncResult<String>(id);
     }
-
 }

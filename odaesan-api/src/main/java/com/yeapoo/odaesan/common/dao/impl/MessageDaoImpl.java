@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.yeapoo.common.util.IDGenerator;
 import com.yeapoo.odaesan.common.dao.MessageDao;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.sdk.model.message.Message;
@@ -85,6 +86,9 @@ public class MessageDaoImpl implements MessageDao {
     public String insert(String infoId, Message msg) {
         String sql = "INSERT INTO `message`(`id`,`info_id`,`type`,`sender_id`,`create_time`) VALUES(?,?,?,?,?)";
         String id = msg.getMessageId();
+        if (!StringUtils.hasText(id)) {
+            id = IDGenerator.generate(Object.class);
+        }
         jdbcTemplate.update(sql, id, infoId, msg.getMessageType(), msg.getFromUserName(), msg.getCreateTime());
         return id;
     }
