@@ -54,7 +54,7 @@ public class MessageDaoImpl implements MessageDao {
         String basicSql = "SELECT `m`.`id`, `m`.`type`, `m`.`content`, `m`.`sender_id`, `u`.`nickname`,`u`.`avatar`, `m`.`create_time`"
                 + " FROM `message` `m`"
                 + " JOIN `user` `u` ON `m`.`sender_id` = `u`.`openid`"
-                + " WHERE `m`.`info_id` = ?";
+                + " WHERE `m`.`info_id` = ? AND `m`.`type` != 'event'";
         StringBuilder sqlBuilder = new StringBuilder(basicSql);
         List<Object> args = new ArrayList<Object>();
         args.add(infoId);
