@@ -69,13 +69,13 @@ public class MenuDaoImpl implements MenuDao {
 
     @Override
     public void bindClickReply(String infoId, String menuId, String keycode, String replyId, String replyType) {
-        String sql = "UPDATE `menu` SET `type` = 'click', `keycode` = ?, `reply_id` = ?, `reply_type` = ? WHERE `id` = ?";
+        String sql = "UPDATE `menu` SET `type` = 'click', `keycode` = ?, `reply_id` = ?, `reply_type` = ?, `url` = NULL WHERE `id` = ?";
         jdbcTemplate.update(sql, keycode, replyId, replyType, menuId);
     }
 
     @Override
     public void bindViewReply(String infoId, String menuId, String url) {
-        String sql = "UPDATE `menu` SET `type` = 'view', `url` = ? WHERE `id` = ?";
+        String sql = "UPDATE `menu` SET `type` = 'view', `url` = ?, `keycode` = NULL, `reply_id` = NULL, `reply_type` = NULL WHERE `id` = ?";
         jdbcTemplate.update(sql, url, menuId);
     }
 

@@ -40,7 +40,11 @@ public class KeywordDaoImpl implements KeywordDao {
                 + "   AND `k`.`delete_time` IS NULL AND `g`.`delete_time` IS NULL"
                 + "   AND `k`.`content` LIKE '%"+content+"%' AND `k`.`fuzzy` = ?"
                 + " LIMIT 1";
-        return jdbcTemplate.queryForMap(sql, infoId, true);
+        try {
+            return jdbcTemplate.queryForMap(sql, infoId, true);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
