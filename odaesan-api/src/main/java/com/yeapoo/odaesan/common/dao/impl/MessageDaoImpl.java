@@ -85,7 +85,11 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public String insert(String infoId, Message msg) {
         String sql = "INSERT INTO `message`(`id`,`info_id`,`type`,`sender_id`,`create_time`) VALUES(?,?,?,?,?)";
-        String id = msg.getMessageId();
+        String id = null;
+        try {
+            id = msg.getMessageId();
+        } catch (Exception e) {
+        }
         if (!StringUtils.hasText(id)) {
             id = IDGenerator.generate(Object.class);
         }
