@@ -116,7 +116,10 @@ public class UserDaoImpl implements UserDao {
     public List<String> findByGroup(String infoId, String groupId) {
         String sql = null;
         List<Map<String, Object>> list = null;
-        if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+        if (Constants.UserGroup.ALL_ID.equals(groupId)) {
+            sql = "SELECT `openid` FROM `user` WHERE `info_id` = ? AND `subscribed` = 1";
+            list = jdbcTemplate.queryForList(sql, infoId);
+        } else if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
             sql = "SELECT `openid` FROM `user` WHERE `info_id` = ? AND `subscribed` = 1 AND `ungrouped` = 1";
             list = jdbcTemplate.queryForList(sql, infoId);
         } else {
@@ -130,7 +133,10 @@ public class UserDaoImpl implements UserDao {
     public List<String> findByGroupAndGender(String infoId, String groupId, String gender) {
         String sql = null;
         List<Map<String, Object>> list = null;
-        if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+        if (Constants.UserGroup.ALL_ID.equals(groupId)) {
+            sql = "SELECT `openid` FROM `user` WHERE `info_id` = ? AND `gender` = ? AND `subscribed` = 1";
+            list = jdbcTemplate.queryForList(sql, infoId, gender);
+        } else if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
             sql = "SELECT `openid` FROM `user` WHERE `info_id` = ? AND `gender` = ? AND `subscribed` = 1 AND `ungrouped` = 1";
             list = jdbcTemplate.queryForList(sql, infoId, gender);
         } else {
