@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yeapoo.odaesan.api.service.MenuService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
+import com.yeapoo.odaesan.common.service.MenuService;
 
 @Controller
-@RequestMapping("{infoId}/menu")
+@RequestMapping("v1/{infoId}/menu")
 public class MenuController {
     private static Logger logger = LoggerFactory.getLogger(MenuController.class);
 

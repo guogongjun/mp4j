@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yeapoo.odaesan.api.service.MasssendService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.MasssendService;
 
 @Controller
-@RequestMapping("{infoId}/masssend")
+@RequestMapping("v1/{infoId}/masssend")
 public class MasssendController {
 
     @Autowired

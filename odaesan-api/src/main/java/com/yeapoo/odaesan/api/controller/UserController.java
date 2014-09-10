@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.UserGroupService;
-import com.yeapoo.odaesan.api.service.UserService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.UserGroupService;
+import com.yeapoo.odaesan.common.service.UserService;
 
 @Controller
-@RequestMapping("{infoId}/user")
+@RequestMapping("v1/{infoId}/user")
 public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 

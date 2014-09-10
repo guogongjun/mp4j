@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yeapoo.odaesan.api.service.TextService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
+import com.yeapoo.odaesan.common.service.TextService;
 
 @Controller
-@RequestMapping("{infoId}/text")
+@RequestMapping("v1/{infoId}/text")
 public class TextController {
 
     @Autowired

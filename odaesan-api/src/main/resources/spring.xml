@@ -27,6 +27,53 @@
   <task:executor id="executor" keep-alive="60" pool-size="20-40" queue-capacity="250" rejection-policy="CALLER_RUNS" />
   <!-- <task:annotation-driven scheduler="scheduler" /> <task:scheduler id="scheduler" pool-size="4" /> -->
 
+  <util:map id="processors">
+    <entry key="text" value-ref="textProcessor"></entry>
+    <entry key="image" value-ref="imageProcessor"></entry>
+    <entry key="voice" value-ref="voiceProcessor"></entry>
+    <entry key="video" value-ref="videoProcessor"></entry>
+    <entry key="location" value-ref="locationProcessor"></entry>
+    <entry key="link" value-ref="linkProcessor"></entry>
+    <entry key="event" value-ref="eventProcessor"></entry>
+  </util:map>
+
+  <util:map id="eventResolvers">
+    <entry key="subscribe" value-ref="subscribeResolverChain"></entry>
+    <entry key="unsubscribe" value-ref="unsubscribeResolver"></entry>
+    <entry key="SCAN" value-ref="scanResolver"></entry>
+    <entry key="LOCATION" value-ref="locationEventResolver"></entry>
+    <entry key="CLICK" value-ref="clickResolverChain"></entry>
+    <entry key="VIEW" value-ref="viewResolver"></entry>
+    <entry key="MASSSENDJOBFINISH" value-ref="masssendJobFinishResolver"></entry>
+  </util:map>
+
+  <bean id="subscribeResolverChain" class="com.yeapoo.odaesan.framework.resolver.ResolverChain">
+    <constructor-arg>
+      <list>
+        <ref bean="subscribeResolver" />
+        <ref bean="scanResolver" />
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <bean id="clickResolverChain" class="com.yeapoo.odaesan.framework.resolver.ResolverChain">
+    <constructor-arg>
+      <list>
+        <ref bean="clickResolver" />
+        <ref bean="defaultResolver" />
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <util:map id="msgConstructors">
+    <entry key="text" value-ref="textConstructor"></entry>
+    <entry key="image" value-ref="imageConstructor"></entry>
+    <entry key="voice" value-ref="voiceConstructor"></entry>
+    <entry key="video" value-ref="videoConstructor"></entry>
+    <entry key="music" value-ref="musicConstructor"></entry>
+    <entry key="news" value-ref="newsConstructor"></entry>
+  </util:map>
+
   <util:map id="materialHandlers">
     <entry key="text" value-ref="textHandler"></entry>
     <entry key="image" value-ref="imageHandler"></entry>

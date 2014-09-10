@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yeapoo.common.util.IDGenerator;
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.support.AppInfoProvider;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.model.DataWrapper;
+import com.yeapoo.odaesan.common.support.AppInfoProvider;
 import com.yeapoo.odaesan.material.support.StaticResourceHandler;
 import com.yeapoo.odaesan.sdk.client.QRCodeClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
@@ -31,7 +31,7 @@ import com.yeapoo.odaesan.sdk.model.Ticket;
 import com.yeapoo.odaesan.sdk.model.TicketArgs;
 
 @Controller
-@RequestMapping("{infoId}/qr")
+@RequestMapping("v1/{infoId}/qr")
 public class QRCodeController {
 
     @Autowired

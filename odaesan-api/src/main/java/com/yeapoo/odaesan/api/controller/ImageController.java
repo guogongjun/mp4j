@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.ImageService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.ImageService;
 
 @Controller
-@RequestMapping("{infoId}/image")
+@RequestMapping("v1/{infoId}/image")
 public class ImageController {
 
     @Value("${wx.image.max.size}")

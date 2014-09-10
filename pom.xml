@@ -15,7 +15,6 @@
     <module>odaesan-common</module>
     <module>odaesan-material</module>
     <module>odaesan-api</module>
-    <module>odaesan-irs</module>
   </modules>
 
   <properties>

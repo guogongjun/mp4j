@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yeapoo.odaesan.api.service.UserGroupService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
+import com.yeapoo.odaesan.common.service.UserGroupService;
 
 @Controller
-@RequestMapping("{infoId}/group")
+@RequestMapping("v1/{infoId}/group")
 public class UserGroupController {
 
     @Autowired

@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yeapoo.odaesan.api.service.VideoService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.VideoService;
 
 @Controller
-@RequestMapping("{infoId}/video")
+@RequestMapping("v1/{infoId}/video")
 public class VideoController {
 
     @Value("${wx.video.max.size}")

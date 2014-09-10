@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yeapoo.odaesan.api.service.NewsService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.NewsService;
 
 @Controller
-@RequestMapping("{infoId}/news")
+@RequestMapping("v1/{infoId}/news")
 public class NewsController {
 
     @Autowired

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.KeywordService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.KeywordService;
 
 @Controller
-@RequestMapping("{infoId}/keyword")
+@RequestMapping("v1/{infoId}/keyword")
 public class KeywordController {
 
     @Autowired

@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.UserService;
 import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.constants.Constants;
+import com.yeapoo.odaesan.common.service.UserService;
 import com.yeapoo.odaesan.common.util.BeanFactoryUtil;
 import com.yeapoo.odaesan.sdk.client.FollowerClient;
 import com.yeapoo.odaesan.sdk.client.GroupClient;

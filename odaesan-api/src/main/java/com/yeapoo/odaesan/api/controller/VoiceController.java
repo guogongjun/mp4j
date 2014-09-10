@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yeapoo.common.util.MapUtil;
-import com.yeapoo.odaesan.api.service.VoiceService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.VoiceService;
 
 @Controller
-@RequestMapping("{infoId}/voice")
+@RequestMapping("v1/{infoId}/voice")
 public class VoiceController {
 
     @Value("${wx.voice.max.size}")

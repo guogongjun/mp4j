@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yeapoo.odaesan.api.service.MessageService;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
+import com.yeapoo.odaesan.common.service.MessageService;
 
 @Controller
-@RequestMapping("{infoId}/msg")
+@RequestMapping("v1/{infoId}/msg")
 public class MessageController {
 
     @Autowired

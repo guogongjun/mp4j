@@ -35,6 +35,9 @@ public class Authorizer {
         Authorization auth = cache.get(infoId);
         if (null != auth) {
             logger.info(String.format("access token [%s], request at [%s], expected expires in [%s]", auth.getAccessToken(), auth.getLastRequestTime(), auth.getExpiresIn()));
+            if (!auth.isExpired()) {
+                return auth;
+            }
         }
 
         String appId = MapUtil.get(appInfo, "app_id");
