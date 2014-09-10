@@ -549,7 +549,7 @@ CREATE TABLE `user_group` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `delete_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`,`info_id`),
-  UNIQUE KEY `name` (`info_id`,`name`),
+  UNIQUE KEY `name` (`info_id`,`name`,`delete_time`),
   KEY `user_group_info_id_index` (`info_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
