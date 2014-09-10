@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,24 @@ import com.yeapoo.odaesan.common.model.Pagination;
 @RequestMapping("{infoId}/video")
 public class VideoController {
 
+    @Value("${wx.video.max.size}")
+    private long maxSize;
+
     @Autowired
     private VideoService service;
 
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper upload(@PathVariable String infoId, @RequestParam MultipartFile file) {
+        long size = file.getSize();
+        if (size > maxSize) {
+            return new DataWrapper(414, "file size exceeded limit");
+        }
+        String filename = file.getOriginalFilename();
+        if (null == filename || !filename.toLowerCase().contains(".mp4")) {
+            return new DataWrapper(406, "only MP4 formated videos are supported");
+        }
+
         Map<String, Object> data = service.save(infoId, file);
         return new DataWrapper(data);
     }

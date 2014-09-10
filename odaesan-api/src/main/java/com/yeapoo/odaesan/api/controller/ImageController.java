@@ -53,6 +53,7 @@ public class ImageController {
         if (null == filename || !filename.toLowerCase().contains(".jpg")) {
             return new DataWrapper(406, "only JPG formated images are supported");
         }
+
         Map<String, Object> data = service.save(infoId, file);
         return new DataWrapper(data);
     }
