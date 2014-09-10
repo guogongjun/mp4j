@@ -70,7 +70,7 @@ public class MaterialRepository {
     }
 
     public Map<String, Object> getMedia(String infoId, String materialType, String materialId) {
-        String sql = "SELECT `media_id`, `create_time` FROM `material_media` WHERE `info_id` = ? AND `material_type` = ? AND `material_id` = ?";
+        String sql = "SELECT `media_id`, `create_time` FROM `material_media` WHERE `info_id` = ? AND `material_type` = ? AND `material_id` = ? ORDER BY `create_time` DESC LIMIT 1";
         try {
             return jdbcTemplate.queryForMap(sql, infoId, materialType, materialId);
         } catch (Exception e) {
