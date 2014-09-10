@@ -112,6 +112,10 @@ public class KeywordDaoImpl implements KeywordDao {
                 + " WHERE `info_id` = ? AND `name` = ? AND `delete_time` IS NULL"
                 + " ORDER BY `create_time` DESC"
                 + " LIMIT 1";
-        return jdbcTemplate.queryForMap(sql, infoId, ruleName);
+        try {
+            return jdbcTemplate.queryForMap(sql, infoId, ruleName);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

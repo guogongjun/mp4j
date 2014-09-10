@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,7 @@ import com.yeapoo.odaesan.sdk.model.message.TextMessage;
 
 @Repository
 public class MessageDaoImpl implements MessageDao {
+    private static Logger logger = LoggerFactory.getLogger(MessageDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -89,6 +92,7 @@ public class MessageDaoImpl implements MessageDao {
         try {
             id = msg.getMessageId();
         } catch (Exception e) {
+            logger.warn(e.getMessage(), e);
         }
         if (!StringUtils.hasText(id)) {
             id = IDGenerator.generate(Object.class);
