@@ -4,7 +4,7 @@
 
   <groupId>com.yeapoo</groupId>
   <artifactId>odaesan</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Odaesan</name>
@@ -200,7 +200,7 @@
     </repository>
 
     <repository>
-        <id>mvn-repo</id>
+        <id>mvn-ansj-repo</id>
         <url>http://maven.ansj.org/</url>
     </repository>
   </repositories>
