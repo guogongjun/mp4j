@@ -14,8 +14,8 @@ import com.yeapoo.odaesan.api.dao.UserDao;
 import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.common.model.Pagination;
-import com.yeapoo.odaesan.common.util.StringUtil;
 import com.yeapoo.odaesan.sdk.model.Follower;
+import com.yeapoo.odaesan.sdk.util.StringUtil;
 
 @Repository
 public class UserDaoImpl implements UserDao {

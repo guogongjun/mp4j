@@ -1,4 +1,4 @@
-package com.yeapoo.odaesan.common.util;
+package com.yeapoo.odaesan.sdk.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;

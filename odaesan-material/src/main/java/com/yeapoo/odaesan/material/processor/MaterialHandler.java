@@ -17,7 +17,7 @@ import com.yeapoo.odaesan.material.support.StaticResourceHandler;
 import com.yeapoo.odaesan.sdk.client.MediaClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Media;
-import com.yeapoo.odaesan.sdk.util.MediaExpireChecker;
+import com.yeapoo.odaesan.sdk.util.MediaUtil;
 
 public abstract class MaterialHandler implements BeanFactoryAware, InitializingBean {
 
@@ -39,7 +39,7 @@ public abstract class MaterialHandler implements BeanFactoryAware, InitializingB
         Map<String, Object> mediaInfo = repository.getMedia(infoId, materialType, msgId);
         if (null != mediaInfo) {
             int createTime = MapUtil.get(mediaInfo, "create_time", Number.class).intValue();
-            if (MediaExpireChecker.check(createTime)) {
+            if (!MediaUtil.hasExpired(createTime)) {
                 return MapUtil.get(mediaInfo, "media_id");
             }
         }

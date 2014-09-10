@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.yeapoo.odaesan.common.util.StringUtil;
 import com.yeapoo.odaesan.irs.dao.UserDao;
 import com.yeapoo.odaesan.sdk.model.Follower;
+import com.yeapoo.odaesan.sdk.util.StringUtil;
 
 @Repository
 public class UserDaoImpl implements UserDao {

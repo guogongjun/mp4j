@@ -11,7 +11,7 @@ import com.yeapoo.odaesan.common.exception.MediaUploadException;
 import com.yeapoo.odaesan.sdk.client.MediaClient;
 import com.yeapoo.odaesan.sdk.model.Authorization;
 import com.yeapoo.odaesan.sdk.model.Media;
-import com.yeapoo.odaesan.sdk.util.MediaExpireChecker;
+import com.yeapoo.odaesan.sdk.util.MediaUtil;
 
 @Component
 public class VideoHandler extends MaterialHandler {
@@ -27,7 +27,7 @@ public class VideoHandler extends MaterialHandler {
         Map<String, Object> mediaInfo = repository.getMedia(infoId, materialType, msgId);
         if (null != mediaInfo) {
             int createTime = MapUtil.get(mediaInfo, "create_time", Number.class).intValue();
-            if (MediaExpireChecker.check(createTime)) {
+            if (!MediaUtil.hasExpired(createTime)) {
                 return MapUtil.get(mediaInfo, "media_id");
             }
         }

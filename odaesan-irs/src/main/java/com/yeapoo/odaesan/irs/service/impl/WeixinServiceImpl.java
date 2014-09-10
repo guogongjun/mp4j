@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.yeapoo.odaesan.irs.dao.AppInfoDao;
 import com.yeapoo.odaesan.irs.service.WeixinService;
-import com.yeapoo.odaesan.sdk.util.Validator;
+import com.yeapoo.odaesan.sdk.util.TokenValidator;
 
 @Service
 public class WeixinServiceImpl implements WeixinService {
@@ -16,7 +16,7 @@ public class WeixinServiceImpl implements WeixinService {
     @Override
     public boolean validate(String infoId, String signature, String timestamp, String nonce, String echostr) {
         String token = appInfoDao.getToken(infoId);
-        return Validator.validate(signature, timestamp, nonce, token);
+        return TokenValidator.validate(signature, timestamp, nonce, token);
     }
 
 }

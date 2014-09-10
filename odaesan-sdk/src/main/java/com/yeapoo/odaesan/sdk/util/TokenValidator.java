@@ -4,10 +4,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-public class Validator {
+public class TokenValidator {
 
     public static boolean validate(String signature, String timestamp, String nonce, String token) {
-        String encrypted = Validator.generateSignature(timestamp, nonce, token);
+        String encrypted = TokenValidator.generateSignature(timestamp, nonce, token);
         return signature.equalsIgnoreCase(encrypted);
     }
 
@@ -21,7 +21,7 @@ public class Validator {
         }
         sorted = bf.toString();
 
-        String encrypted = Validator.encryptWithSha1(sorted);
+        String encrypted = TokenValidator.encryptWithSha1(sorted);
 
         return encrypted;
     }
@@ -37,7 +37,7 @@ public class Validator {
         if (null != msgDigest) {
             byte[] bt = input.getBytes();
             msgDigest.update(bt);
-            str = Validator.byte2hex(msgDigest.digest());
+            str = TokenValidator.byte2hex(msgDigest.digest());
         }
 
         return str;
