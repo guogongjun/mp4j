@@ -37,7 +37,7 @@
     <dependencies>
       <dependency>
         <groupId>com.yeapoo</groupId>
-        <artifactId>commom</artifactId>
+        <artifactId>common</artifactId>
         <version>${yeapoo.common.version}</version>
       </dependency>
 
@@ -158,7 +158,7 @@
   <dependencies>
     <dependency>
       <groupId>com.yeapoo</groupId>
-      <artifactId>commom</artifactId>
+      <artifactId>common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
