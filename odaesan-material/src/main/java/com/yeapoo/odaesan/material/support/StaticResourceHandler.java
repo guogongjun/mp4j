@@ -16,6 +16,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yeapoo.common.util.MapUtil;
+import com.yeapoo.common.util.RandomEngine;
 import com.yeapoo.odaesan.common.exception.APIException;
 
 @Component
@@ -56,16 +57,16 @@ public class StaticResourceHandler {
         }
 
         // copy file
-        String name = file.getOriginalFilename();
+        String randomedName = RandomEngine.random(6) + "_" +file.getOriginalFilename();
         try {
-            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(absolutePath + name));
+            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(absolutePath + randomedName));
         } catch (IOException e) {
-            logger.error("Error occured when upload image {} for {}", name, infoId, e);
+            logger.error("Error occured when upload image {} for {}", randomedName, infoId, e);
             throw new APIException(e);
         }
 
         // construct relative url
-        String relativeUrl = relativePath + name;
+        String relativeUrl = relativePath + randomedName;
         return relativeUrl;
     }
 
