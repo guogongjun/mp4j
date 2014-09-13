@@ -263,6 +263,7 @@ CREATE TABLE `material_news_item` (
   `title` varchar(100) NOT NULL,
   `author` varchar(100) DEFAULT NULL,
   `image_id` varchar(45) NOT NULL,
+  `show_cover_pic` TINYINT(1) NOT NULL DEFAULT 1,
   `digest` varchar(500) NOT NULL,
   `content` longtext NOT NULL,
   `content_source_url` varchar(2000) DEFAULT NULL,

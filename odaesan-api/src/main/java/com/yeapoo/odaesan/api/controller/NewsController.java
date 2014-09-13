@@ -51,17 +51,6 @@ public class NewsController {
         return new DataWrapper(data);
     }
 
-    /**
-     * 
-     * @param itemMap {
-     *   "title":"$TITLE",
-     *   "author":"$AUTHOR",
-     *   "image_id":"$IMAGE_ID",
-     *   "digest":"$DIGEST",
-     *   "content":"$CONTENT",
-     *   "content_source_url":"$URL"}
-     * @return {"code":200, "message":"OK", "data":"$ID"}
-     */
     @RequestMapping(value = "single", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper createSingle(@PathVariable String infoId, @RequestBody Map<String, Object> itemMap) {
@@ -69,17 +58,6 @@ public class NewsController {
         return new DataWrapper(id);
     }
 
-    /**
-     * 
-     * @param itemMapList [{
-     *   "title":"$TITLE",
-     *   "author":"$AUTHOR",
-     *   "image_id":"$IMAGE_ID",
-     *   "digest":"$DIGEST",
-     *   "content":"$CONTENT",
-     *   "content_source_url":"$URL"}, ...]
-     * @return {"code":200, "message":"OK", "data":"$ID"}
-     */
     @RequestMapping(value = "multiple", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper createMultiple(@PathVariable String infoId, @RequestBody List<Map<String, Object>> itemMapList) {
@@ -122,18 +100,6 @@ public class NewsController {
         return new DataWrapper(data);
     }
 
-    /**
-     * 
-     * @param id
-     * @param updatedItemMap {
-     *   "title":"$TITLE",
-     *   "author":"$AUTHOR",
-     *   "image_id":"$IMAGE_ID",
-     *   "digest":"$DIGEST",
-     *   "content":"$CONTENT",
-     *   "content_source_url":"$URL"}
-     * @return {"code":200, "message":"OK"}
-     */
     @RequestMapping(value = "single/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public DataWrapper editSingle(@PathVariable String infoId, @PathVariable String id, @RequestBody Map<String, Object> updatedItemMap) {
@@ -141,18 +107,6 @@ public class NewsController {
         return new DataWrapper();
     }
 
-    /**
-     * 
-     * @param id
-     * @param updatedItemMapList [{
-     *   "title":"$TITLE",
-     *   "author":"$AUTHOR",
-     *   "image_id":"$IMAGE_ID",
-     *   "digest":"$DIGEST",
-     *   "content":"$CONTENT",
-     *   "content_source_url":"$URL"}, ...]
-     * @return {"code":200, "message":"OK"}
-     */
     @RequestMapping(value = "multiple/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public DataWrapper editMultiple(@PathVariable String infoId, @PathVariable String id, @RequestBody List<Map<String, Object>> updatedItemMapList) {

@@ -21,12 +21,13 @@ public class NewsItemDaoImpl implements NewsItemDao {
     public void insert(String infoId, String newsId, Map<String, Object> itemMap) {
         String id = IDGenerator.generate(Object.class);
         String sql = "INSERT INTO `material_news_item`(`id`,`news_id`,`info_id`,"
-                + " `title`,`author`,`image_id`,`digest`,`content`,`content_source_url`)"
-                + " VALUES(?,?,?,?,?,?,?,?,?)";
+                + " `title`,`author`,`image_id`,`show_cover_pic`,`digest`,`content`,`content_source_url`)"
+                + " VALUES(?,?,?,?,?,?,?,?,?,?)";
         jdbcTemplate.update(sql, id, newsId, infoId,
                 itemMap.get("title"),
                 itemMap.get("author"),
                 itemMap.get("image_id"),
+                itemMap.get("show_cover_pic"),
                 itemMap.get("digest"),
                 itemMap.get("content"),
                 itemMap.get("content_source_url"));
@@ -35,8 +36,8 @@ public class NewsItemDaoImpl implements NewsItemDao {
     @Override
     public void batchInsert(String infoId, String newsId, List<Map<String, Object>> itemMapList) {
         String sql = "INSERT INTO `material_news_item`(`id`,`news_id`,`info_id`,"
-                + " `title`,`author`,`image_id`,`digest`,`content`,`content_source_url`,`sequence`)"
-                + " VALUES(?,?,?,?,?,?,?,?,?,?)";
+                + " `title`,`author`,`image_id`,`show_cover_pic`,`digest`,`content`,`content_source_url`,`sequence`)"
+                + " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         for (Map<String, Object> itemMap : itemMapList) {
             batchArgs.add(new Object[] {
@@ -46,6 +47,7 @@ public class NewsItemDaoImpl implements NewsItemDao {
                     itemMap.get("title"),
                     itemMap.get("author"),
                     itemMap.get("image_id"),
+                    itemMap.get("show_cover_pic"),
                     itemMap.get("digest"),
                     itemMap.get("content"),
                     itemMap.get("content_source_url"),
