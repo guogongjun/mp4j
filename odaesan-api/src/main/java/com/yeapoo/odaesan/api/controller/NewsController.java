@@ -40,11 +40,11 @@ public class NewsController {
     public DataWrapper uploadImage(@PathVariable String infoId, @RequestParam MultipartFile file) {
         long size = file.getSize();
         if (size > maxSize) {
-            return new DataWrapper(414, "file size exceeded limit");
+            return new DataWrapper(413, "file size exceeded limit");
         }
         String filename = file.getOriginalFilename();
         if (null == filename || !filename.toLowerCase().contains(".jpg")) {
-            return new DataWrapper(406, "only JPG formated images are supported");
+            return new DataWrapper(415, "only JPG formated images are supported");
         }
 
         Map<String, Object> data = service.saveImage(infoId, file);

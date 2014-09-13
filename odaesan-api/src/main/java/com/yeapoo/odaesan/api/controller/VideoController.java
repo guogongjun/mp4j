@@ -34,11 +34,11 @@ public class VideoController {
     public DataWrapper upload(@PathVariable String infoId, @RequestParam MultipartFile file) {
         long size = file.getSize();
         if (size > maxSize) {
-            return new DataWrapper(414, "file size exceeded limit");
+            return new DataWrapper(413, "file size exceeded limit");
         }
         String filename = file.getOriginalFilename();
         if (null == filename || !filename.toLowerCase().contains(".mp4")) {
-            return new DataWrapper(406, "only MP4 formated videos are supported");
+            return new DataWrapper(415, "only MP4 formated videos are supported");
         }
 
         Map<String, Object> data = service.save(infoId, file);
