@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,9 @@ import com.yeapoo.odaesan.common.service.NewsService;
 @RequestMapping("v1/{infoId}/news")
 public class NewsController {
 
+    @Value("${wx.image.max.size}")
+    private long maxSize;
+
     @Autowired
     private NewsService service;
 
@@ -34,6 +38,15 @@ public class NewsController {
     @RequestMapping(value = "image", method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper uploadImage(@PathVariable String infoId, @RequestParam MultipartFile file) {
+        long size = file.getSize();
+        if (size > maxSize) {
+            return new DataWrapper(414, "file size exceeded limit");
+        }
+        String filename = file.getOriginalFilename();
+        if (null == filename || !filename.toLowerCase().contains(".jpg")) {
+            return new DataWrapper(406, "only JPG formated images are supported");
+        }
+
         Map<String, Object> data = service.saveImage(infoId, file);
         return new DataWrapper(data);
     }
