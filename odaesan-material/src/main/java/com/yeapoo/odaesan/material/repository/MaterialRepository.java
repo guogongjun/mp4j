@@ -60,7 +60,7 @@ public class MaterialRepository {
     }
 
     public List<Map<String, Object>> getNewsForReply(String infoId, String id) {
-        String sql = "SELECT item.title, item.digest, CONCAT('%s', image.url) AS pic_url, item.content_source_url AS url"
+        String sql = "SELECT item.id, item.title, item.digest, CONCAT('%s', image.url) AS pic_url"
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"

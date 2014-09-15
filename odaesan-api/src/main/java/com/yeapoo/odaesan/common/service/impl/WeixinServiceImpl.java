@@ -1,5 +1,7 @@
 package com.yeapoo.odaesan.common.service.impl;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,11 @@ public class WeixinServiceImpl implements WeixinService {
     public boolean validate(String infoId, String signature, String timestamp, String nonce, String echostr) {
         String token = appInfoDao.getToken(infoId);
         return TokenValidator.validate(signature, timestamp, nonce, token);
+    }
+
+    @Override
+    public Map<String, Object> getName(String infoId) {
+        return appInfoDao.getName(infoId);
     }
 
 }

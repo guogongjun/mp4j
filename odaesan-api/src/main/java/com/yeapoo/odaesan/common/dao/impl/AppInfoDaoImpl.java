@@ -26,4 +26,10 @@ public class AppInfoDaoImpl implements AppInfoDao {
         return jdbcTemplate.queryForObject(sql, String.class, infoId);
     }
 
+    @Override
+    public Map<String, Object> getName(String infoId) {
+        String sql = "SELECT `weixin_id`,`name` FROM `app_info` WHERE `id` = ?";
+        return jdbcTemplate.queryForMap(sql, infoId);
+    }
+
 }

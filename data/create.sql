@@ -26,6 +26,7 @@ CREATE TABLE `app_info` (
   `id` varchar(45) NOT NULL,
   `tenant_id` varchar(45) NOT NULL COMMENT '用户ID',
   `weixin_id` varchar(100) NOT NULL COMMENT '微信号原始id',
+  `name` VARCHAR(100) NOT NULL AFTER `weixin_id`，
   `app_id` varchar(100) DEFAULT NULL COMMENT '公众号appid',
   `app_secret` varchar(100) DEFAULT NULL COMMENT '公众号appsecret',
   `token` varchar(100) DEFAULT NULL COMMENT '开发者填写的token',

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,9 @@ import com.yeapoo.odaesan.common.dao.NewsItemDao;
 
 @Repository
 public class NewsItemDaoImpl implements NewsItemDao {
+
+    @Value("${static.alias}")
+    private String alias;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -55,6 +59,15 @@ public class NewsItemDaoImpl implements NewsItemDao {
             });
         }
         jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    @Override
+    public Map<String, Object> get(String infoId, String itemId) {
+        String sql = "SELECT `item`.*, CONCAT('%s', `image`.`url`) AS `url`, `image`.`create_time`"
+                + " FROM `material_news_item` `item`"
+                + " JOIN `material_news_image` `image` ON `item`.`image_id` = `image`.`id`"
+                + " WHERE `item`.`info_id` = ? AND `item`.`id` = ?";
+        return jdbcTemplate.queryForMap(String.format(sql, alias), infoId, itemId);
     }
 
     @Override

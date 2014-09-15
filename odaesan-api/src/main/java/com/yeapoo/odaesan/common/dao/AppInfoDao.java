@@ -6,5 +6,7 @@ public interface AppInfoDao {
 
     Map<String, Object> get(String infoId);
 
-    String getToken(String weixinId);
+    String getToken(String infoId);
+
+    Map<String, Object> getName(String infoId);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.yeapoo.common.util.MapUtil;
@@ -14,6 +15,10 @@ import com.yeapoo.odaesan.sdk.model.message.NewsMessage;
 
 @Component
 public class NewsConstructor implements MessageConstructor {
+
+    @Value("${app.baseURL}")
+    private String baseURL;
+    private static final String URL_TEMPLATE = "%s/page/%s/%s";
 
     @Autowired
     private MaterialRepository repository;
@@ -26,7 +31,7 @@ public class NewsConstructor implements MessageConstructor {
         NewsMessage message = new NewsMessage(input);
         NewsItem item = null;
         for (Map<String, Object> map : newsList) {
-            item = new NewsItem(MapUtil.get(map, "title"), MapUtil.get(map, "digest"), MapUtil.get(map, "pic_url"), MapUtil.get(map, "url"));
+            item = new NewsItem(MapUtil.get(map, "title"), MapUtil.get(map, "digest"), MapUtil.get(map, "pic_url"), String.format(URL_TEMPLATE, baseURL, infoId, MapUtil.get(map, "id")));
             message.addAtricle(item);
         }
         return message;

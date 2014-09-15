@@ -75,6 +75,11 @@ public class NewsServiceImpl implements NewsService {
         return newsDao.get(infoId, id);
     }
 
+    @Override
+    public Map<String, Object> getOneItem(String infoId, String itemId) {
+        return newsItemDao.get(infoId, itemId);
+    }
+
     @Transactional
     @Override
     public void update(String infoId, String id, Map<String, Object> updatedItemMap) {

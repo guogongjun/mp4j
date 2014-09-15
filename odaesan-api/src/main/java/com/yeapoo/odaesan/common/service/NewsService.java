@@ -20,6 +20,8 @@ public interface NewsService {
 
     List<Map<String, Object>> get(String infoId, String id);
 
+    Map<String, Object> getOneItem(String infoId, String itemId);
+
     void update(String infoId, String id, Map<String, Object> updatedItemMap);
 
     void update(String infoId, String id, List<Map<String, Object>> updatedItemMapList);
