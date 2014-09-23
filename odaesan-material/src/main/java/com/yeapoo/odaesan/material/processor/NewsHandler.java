@@ -26,7 +26,7 @@ public class NewsHandler extends MaterialHandler {
     private static Method uploadNews = ReflectionUtils.findMethod(MediaClient.class, "uploadNews", new Class<?>[] {Authorization.class, MasssendNews.class});
 
     @Override
-    protected Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
+    public Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
         String infoId = MapUtil.get(appInfo, "id");
         List<Map<String, Object>> newsList = repository.getNewsForMasssend(infoId, msgId);
 

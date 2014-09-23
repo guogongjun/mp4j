@@ -13,13 +13,20 @@ import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.dao.VideoDao;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.common.service.VideoService;
+import com.yeapoo.odaesan.common.support.AppInfoProvider;
+import com.yeapoo.odaesan.material.support.AsyncUploader;
 import com.yeapoo.odaesan.material.support.StaticResourceHandler;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 
 @Service
 public class VideoServiceImpl implements VideoService {
 
     @Autowired
     private VideoDao videoDao;
+    @Autowired
+    private AsyncUploader uploader;
+    @Autowired
+    private AppInfoProvider infoProvider;
     @Autowired
     private StaticResourceHandler handler;
 
@@ -28,6 +35,9 @@ public class VideoServiceImpl implements VideoService {
     public Map<String, Object> save(String infoId, MultipartFile file) {
         String relativeUrl = handler.handleUploading(infoId, "video", file);
         String id = videoDao.insertUrl(infoId, relativeUrl);
+
+        Map<String, Object> appInfo = infoProvider.provide(infoId);
+        uploader.uploadVideoToWeixin(appInfo, id, Constants.MaterialType.VIDEO);
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("id", id);

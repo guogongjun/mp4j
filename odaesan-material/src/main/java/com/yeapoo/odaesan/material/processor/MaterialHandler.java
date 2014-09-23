@@ -54,7 +54,7 @@ public abstract class MaterialHandler implements BeanFactoryAware, InitializingB
 
     public abstract Map<String, Object> enrichDisplayInfo(String infoId, String msgId);
 
-    protected Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
+    public Media uploadToWeixin(Map<String, Object> appInfo, String msgId, String materialType) {
         String infoId = MapUtil.get(appInfo, "id");
         String relativePath = getFileRelativePath(infoId, msgId);
         String filePath = handler.getAbsolutePath(relativePath);

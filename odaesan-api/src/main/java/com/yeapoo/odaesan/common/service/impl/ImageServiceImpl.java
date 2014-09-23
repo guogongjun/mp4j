@@ -14,13 +14,20 @@ import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.dao.ImageDao;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.common.service.ImageService;
+import com.yeapoo.odaesan.common.support.AppInfoProvider;
+import com.yeapoo.odaesan.material.support.AsyncUploader;
 import com.yeapoo.odaesan.material.support.StaticResourceHandler;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 
 @Service
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
     private ImageDao imageDao;
+    @Autowired
+    private AsyncUploader uploader;
+    @Autowired
+    private AppInfoProvider infoProvider;
     @Autowired
     private StaticResourceHandler handler;
 
@@ -30,6 +37,9 @@ public class ImageServiceImpl implements ImageService {
         String relativeUrl = handler.handleUploading(infoId, "image", file);
         String name = file.getOriginalFilename();
         String id = imageDao.insert(infoId, name, relativeUrl);
+
+        Map<String, Object> appInfo = infoProvider.provide(infoId);
+        uploader.uploadVideoToWeixin(appInfo, id, Constants.MaterialType.IMAGE);
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("id", id);

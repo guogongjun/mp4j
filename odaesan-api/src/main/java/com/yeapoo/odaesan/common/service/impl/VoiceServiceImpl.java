@@ -14,13 +14,20 @@ import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.dao.VoiceDao;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.common.service.VoiceService;
+import com.yeapoo.odaesan.common.support.AppInfoProvider;
+import com.yeapoo.odaesan.material.support.AsyncUploader;
 import com.yeapoo.odaesan.material.support.StaticResourceHandler;
+import com.yeapoo.odaesan.sdk.constants.Constants;
 
 @Service
 public class VoiceServiceImpl implements VoiceService {
 
     @Autowired
     private VoiceDao voiceDao;
+    @Autowired
+    private AsyncUploader uploader;
+    @Autowired
+    private AppInfoProvider infoProvider;
     @Autowired
     private StaticResourceHandler handler;
 
@@ -30,6 +37,9 @@ public class VoiceServiceImpl implements VoiceService {
         String relativeUrl = handler.handleUploading(infoId, "voice", file);
         String name = file.getOriginalFilename();
         String id = voiceDao.insert(infoId, name, relativeUrl);
+
+        Map<String, Object> appInfo = infoProvider.provide(infoId);
+        uploader.uploadVideoToWeixin(appInfo, id, Constants.MaterialType.VOICE);
 
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("id", id);
