@@ -15,8 +15,6 @@ public interface NewsDao {
 
     List<Map<String, Object>> get(String infoId, String id);
 
-    List<Map<String, Object>> getForMasssend(String infoId, String id);
-
     void update(String infoId, String id);
 
     void delete(String infoId, String id);

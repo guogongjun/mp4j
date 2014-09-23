@@ -72,7 +72,7 @@ public class NewsItemDaoImpl implements NewsItemDao {
 
     @Override
     public void deleteByNewsId(String infoId, String id) {
-        String sql = "DELETE FROM material_news_item WHERE news_id = ?";
+        String sql = "UPDATE `material_news_item` SET `delete_time` = NOW() WHERE news_id = ?";
         jdbcTemplate.update(sql, id);
     }
 

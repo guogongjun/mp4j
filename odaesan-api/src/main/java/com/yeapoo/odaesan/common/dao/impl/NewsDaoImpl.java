@@ -37,11 +37,11 @@ public class NewsDaoImpl implements NewsDao {
 
     @Override
     public List<Map<String, Object>> findAll(String infoId, Pagination pagination) {
-        String sql = "SELECT news.id, news.update_time, item.title, CONCAT('%s', image.url) AS url, item.digest"
+        String sql = "SELECT news.id, news.update_time, item.title, CONCAT('%s', image.url) AS url, item.show_cover_pic, item.digest"
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.info_id = ? AND news.delete_time IS NULL"
+                + " WHERE news.info_id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
                 + " ORDER BY news.update_time DESC, item.sequence"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(String.format(sql, alias), infoId, pagination.getOffset(), pagination.getSize());
@@ -49,24 +49,13 @@ public class NewsDaoImpl implements NewsDao {
 
     @Override
     public List<Map<String, Object>> get(String infoId, String id) {
-        String sql = "SELECT news.update_time, item.title, item.author, item.image_id, CONCAT('%s', image.url) AS url, item.digest, item.content, item.content_source_url"
+        String sql = "SELECT news.update_time, item.title, item.author, item.image_id, CONCAT('%s', image.url) AS url, item.show_cover_pic, item.digest, item.content, item.content_source_url"
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.id = ? AND news.delete_time IS NULL"
+                + " WHERE news.id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
                 + " ORDER BY item.sequence";
         return jdbcTemplate.queryForList(String.format(sql, alias), id);
-    }
-
-    @Override
-    public List<Map<String, Object>> getForMasssend(String infoId, String id) {
-        String sql = "SELECT item.title, item.author, image.url, item.digest, item.content, item.content_source_url"
-                + " FROM material_news news"
-                + " JOIN material_news_item item ON news.id = item.news_id"
-                + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.id = ? AND news.delete_time IS NULL"
-                + " ORDER BY item.sequence";
-        return jdbcTemplate.queryForList(sql, id);
     }
 
     @Override

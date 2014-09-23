@@ -44,7 +44,7 @@ public class MaterialRepository {
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.id = ? AND news.delete_time IS NULL"
+                + " WHERE news.id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
                 + " ORDER BY item.sequence";
         return jdbcTemplate.queryForList(String.format(sql, alias), id);
     }
@@ -54,7 +54,7 @@ public class MaterialRepository {
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.id = ? AND news.delete_time IS NULL"
+                + " WHERE news.id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
                 + " ORDER BY item.sequence";
         return jdbcTemplate.queryForList(sql, id);
     }
@@ -64,9 +64,9 @@ public class MaterialRepository {
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.id = ? AND news.delete_time IS NULL"
+                + " WHERE news.id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
                 + " ORDER BY item.sequence";
-        return jdbcTemplate.queryForList(sql, id);
+        return jdbcTemplate.queryForList(String.format(sql, alias), id);
     }
 
     public Map<String, Object> getMedia(String infoId, String materialType, String materialId) {

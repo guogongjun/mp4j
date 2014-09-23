@@ -8,6 +8,7 @@ public class MasssendNewsItem {
     private String content;
     private String contentSourceUrl;
     private String thumbMediaId;
+    private boolean showCoverPic;
 
     private static final String EMPTY_STR = "";
 
@@ -70,17 +71,26 @@ public class MasssendNewsItem {
         this.thumbMediaId = thumbMediaId;
     }
 
+    public boolean isShowCoverPic() {
+        return showCoverPic;
+    }
+
+    public void setShowCoverPic(boolean showCoverPic) {
+        this.showCoverPic = showCoverPic;
+    }
+
     private static final String MP_NEWS_TEMPLATE = 
             "{" + "\n" +
                     "\"title\":\"%s\"," + "\n" +
                     "\"author\":\"%s\"," + "\n" +
                     "\"digest\":\"%s\"," + "\n" +
+                    "\"show_cover_pic\":\"%s\"," + "\n" +
                     "\"content\":\"%s\"," + "\n" +
                     "\"content_source_url\":\"%s\"," + "\n" +
                     "\"thumb_media_id\":\"%s\"" + "\n" +
             "}" + "\n";
 
     public String toJSON() {
-        return String.format(MP_NEWS_TEMPLATE, title, author, digest, content, contentSourceUrl, thumbMediaId);
+        return String.format(MP_NEWS_TEMPLATE, title, author, digest, showCoverPic ? "1" : "0", content, contentSourceUrl, thumbMediaId);
     }
 }
