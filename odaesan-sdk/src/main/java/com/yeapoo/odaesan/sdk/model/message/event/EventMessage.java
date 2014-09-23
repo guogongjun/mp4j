@@ -26,14 +26,15 @@ public class EventMessage extends Message {
     @Deprecated
     @JsonIgnore
     public String getMessageId() {
-        throw new UnsupportedOperationException("Event Message do not has message id");
+        //throw new UnsupportedOperationException("Event Message do not has message id");
+        return null;
     }
 
     @Override
     @Deprecated
     @JsonIgnore
     public void setMessageId(String messageId) {
-        throw new UnsupportedOperationException("Event Message do not has message id");
+        //throw new UnsupportedOperationException("Event Message do not has message id");
     }
 
     public void setEvent(String event) {
