@@ -45,6 +45,12 @@ public class MenuDaoImpl implements MenuDao {
     }
 
     @Override
+    public List<Map<String, Object>> findMinimalByParentId(String infoId, String parentId) {
+        String sql = "SELECT `id` FROM `menu` WHERE `info_id` = ? AND `parent_id` = ? ORDER BY `sequence`";
+        return jdbcTemplate.queryForList(sql, infoId, parentId);
+    }
+
+    @Override
     public List<Map<String, Object>> listByParentId(String infoId, String parentId) {
         String sql = "SELECT `id`,`name`,`type`,`keycode`,`url`,`reply_id`,`reply_type`,`sequence` FROM `menu` WHERE `info_id` = ? AND `parent_id` = ? ORDER BY `sequence`";
         return jdbcTemplate.queryForList(sql, infoId, parentId);
@@ -66,6 +72,12 @@ public class MenuDaoImpl implements MenuDao {
     public void updateByParentIdAndSequence(String infoId, String parentId, int originalSequence, int targetSequence) {
         String sql = "UPDATE `menu` SET `sequence` = ? WHERE `info_id` = ? AND `parent_id` = ? AND `sequence` = ?";
         jdbcTemplate.update(sql, originalSequence, infoId, parentId, targetSequence);
+    }
+
+    @Override
+    public void updateSequence(List<Object[]> batchArgs) {
+        String sql = "UPDATE `menu` SET `sequence` = ? WHERE `id` = ?";
+        jdbcTemplate.batchUpdate(sql, batchArgs);
     }
 
     @Override

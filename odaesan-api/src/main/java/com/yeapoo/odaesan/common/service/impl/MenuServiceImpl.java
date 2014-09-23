@@ -151,7 +151,22 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public void delete(String infoId, String id) {
+        // 获取当前菜单的父级菜单
+        Map<String, Object> pidAndSeq = menuDao.getParentIdAndSequenceById(infoId, id);
+        String parentId = MapUtil.get(pidAndSeq, "parent_id");
+        // 删除当前菜单
         menuDao.delete(infoId, id);
+        // 重新排列ID
+        List<Map<String, Object>> ids = menuDao.findMinimalByParentId(infoId, parentId);
+        int sequence = 0;
+        List<Object[]> batchArgs = new ArrayList<Object[]>(ids.size());
+        for (Map<String, Object> idMap : ids) {
+            batchArgs.add(new Object[] {
+                    ++sequence,
+                    idMap.get("id")
+            });
+        }
+        menuDao.updateSequence(batchArgs);
     }
 
     @Transactional
