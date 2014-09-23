@@ -10,6 +10,7 @@
     <replace key="log4j.appender.file.file">/usr/local/tomcat_1/logs/odaesan-api.log</replace>
   </config-file>
   <config-file path="WEB-INF/classes/resource.properties">
+    <replace key="app.baseURL">http://103.6.220.225/api</replace>
     <replace key="static.alias">http://103.6.220.225/api/static/</replace>
     <replace key="static.folder">/data/web/api/static/</replace>
   </config-file>

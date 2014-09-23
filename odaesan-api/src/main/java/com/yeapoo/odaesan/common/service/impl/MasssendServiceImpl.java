@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.common.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
 import com.yeapoo.odaesan.common.dao.MasssendMessageDao;
 import com.yeapoo.odaesan.common.dao.UserDao;
+import com.yeapoo.odaesan.common.exception.APIException;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.common.service.MasssendService;
 import com.yeapoo.odaesan.common.support.AppInfoProvider;
@@ -59,6 +61,9 @@ public class MasssendServiceImpl implements MasssendService {
         } else {
             openidList = userDao.findByGroup(infoId, groupId);
         }
+        if (null == openidList || openidList.isEmpty()) {
+            throw new APIException("invalid openid list under selection condition");
+        }
         MasssendOpenidArg body = new MasssendOpenidArg(openidList, mediaId, msgType);
         Object result = adapter.invoke(masssendClient, masssendByOpenid, new Object[] {null, body}, appInfo);
 
@@ -69,14 +74,24 @@ public class MasssendServiceImpl implements MasssendService {
 
     @Override
     public List<Map<String, Object>> list(String infoId, Pagination pagination) {
-        pagination.setCount(masssendDao.count(infoId));
-        List<Map<String, Object>> list = masssendDao.findAll(infoId, pagination);
-        for (Map<String, Object> map : list) {
-            String msgType = MapUtil.get(map, "msg_type");
-            String msgId = MapUtil.get(map, "msg_id");
-            MaterialHandler handler = materialHandlers.get(msgType);
-            Map<String, Object> additional = handler.enrichDisplayInfo(infoId, msgId);
-            map.putAll(additional);
+        int count = masssendDao.count(infoId);
+        pagination.setCount(count);
+        List<Map<String, Object>> list = null;
+        if (count != 0) {
+            list = masssendDao.findAll(infoId, pagination);
+            Iterator<Map<String, Object>> iterator = list.iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> map = iterator.next();
+                String msgType = MapUtil.get(map, "msg_type");
+                String msgId = MapUtil.get(map, "msg_id");
+                MaterialHandler handler = materialHandlers.get(msgType);
+                Map<String, Object> additional = handler.enrichDisplayInfo(infoId, msgId);
+                if (null == additional) {
+                    iterator.remove();
+                } else {
+                    map.putAll(additional);
+                }
+            }
         }
         return list;
     }

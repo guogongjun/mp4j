@@ -28,7 +28,7 @@ public class MessageDaoImpl implements MessageDao {
     public int count(String infoId, String startDate, String endDate, boolean filterivrmsg, String filter) {
         String basicSql = "SELECT COUNT(`id`)"
                 + " FROM `message`"
-                + " WHERE `info_id` = ?";
+                + " WHERE `info_id` = ? AND `m`.`type` != 'event'";
         StringBuilder sqlBuilder = new StringBuilder(basicSql);
         List<Object> args = new ArrayList<Object>();
         args.add(infoId);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yeapoo.odaesan.common.exception.APIException;
 import com.yeapoo.odaesan.common.model.DataWrapper;
 import com.yeapoo.odaesan.common.model.Pagination;
 import com.yeapoo.odaesan.common.service.MasssendService;
@@ -41,8 +42,12 @@ public class MasssendController {
         String gender = itemMap.get("gender");
         String msgType = itemMap.get("msg_type");
         String msgId = itemMap.get("msg_id");
-        service.submitMasssendTask(infoId, groupId, gender, msgType, msgId);
-        return new DataWrapper();
+        try {
+            service.submitMasssendTask(infoId, groupId, gender, msgType, msgId);
+            return new DataWrapper();
+        } catch (APIException e) {
+            return new DataWrapper(400, e.getMessage());
+        }
     }
 
     /**
