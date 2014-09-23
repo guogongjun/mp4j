@@ -1,6 +1,5 @@
 package com.yeapoo.odaesan.api.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +44,8 @@ public class UserGroupController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public DataWrapper list(@PathVariable String infoId) {
-        List<Map<String, Object>> list = service.list(infoId);
-        return new DataWrapper(list);
+        Map<String, Object> data = service.list(infoId);
+        return new DataWrapper(data);
     }
 
     /**

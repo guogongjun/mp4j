@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.common.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,6 @@ import org.springframework.util.ReflectionUtils;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
-import com.yeapoo.odaesan.common.constants.Constants;
 import com.yeapoo.odaesan.common.dao.UserDao;
 import com.yeapoo.odaesan.common.dao.UserGroupDao;
 import com.yeapoo.odaesan.common.dao.UserGroupMappingDao;
@@ -61,18 +61,18 @@ public class UserGroupServiceImpl implements UserGroupService {
     }
 
     @Override
-    public List<Map<String, Object>> list(String infoId) {
-        List<Map<String, Object>> list = groupDao.list(infoId);
-        Integer ungroupedCount = userDao.count(infoId, Constants.UserGroup.UNGROUPED_ID);
-        if (0 != ungroupedCount) {
-            for (Map<String, Object> map : list) {
-                String id = MapUtil.get(map, "id");
-                if (Constants.UserGroup.UNGROUPED_ID.equals(id)) {
-                    map.put("num", ungroupedCount);
-                }
-            }
+    public Map<String, Object> list(String infoId) {
+        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> list = groupDao.findAll(infoId);
+        for (Map<String, Object> map : list) {
+            String id = MapUtil.get(map, "id");
+            int num = userDao.count(infoId, id);
+            map.put("num", num);
         }
-        return list;
+        int total = userDao.count(infoId);
+        data.put("groups", list);
+        data.put("total", total);
+        return data;
     }
 
     @Transactional

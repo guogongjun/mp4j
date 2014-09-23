@@ -54,13 +54,8 @@ public class UserGroupDaoImpl implements UserGroupDao {
     }
 
     @Override
-    public List<Map<String, Object>> list(String infoId) {
-        String sql = "SELECT `g`.`id`, `g`.`name`, COUNT(`m`.`openid`) AS `num`"
-                + " FROM `user_group` `g`"
-                + " LEFT JOIN `user_group_mapping` `m` ON `g`.`id` = `m`.`group_id`"
-                + " WHERE `g`.`info_id` = ? AND `g`.`delete_time` IS NULL"
-                + " GROUP BY `g`.`id`"
-                + " ORDER BY CAST(`g`.`id` as SIGNED)";
+    public List<Map<String, Object>> findAll(String infoId) {
+        String sql = "SELECT `id`, `name` FROM `user_group` WHERE `info_id` = ? AND `delete_time` IS NULL ORDER BY CAST(`id` as SIGNED)";
         return jdbcTemplate.queryForList(sql, infoId);
     }
 

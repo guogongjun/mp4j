@@ -15,7 +15,7 @@ public interface UserGroupDao {
 
     int count(String infoId);
 
-    List<Map<String, Object>> list(String infoId);
+    List<Map<String, Object>> findAll(String infoId);
 
     void update(String infoId, String id, String name);
 
