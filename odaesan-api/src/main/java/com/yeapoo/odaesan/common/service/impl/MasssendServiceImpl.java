@@ -74,8 +74,7 @@ public class MasssendServiceImpl implements MasssendService {
 
     @Override
     public List<Map<String, Object>> list(String infoId, Pagination pagination) {
-        int count = masssendDao.count(infoId);
-        pagination.setCount(count);
+        int count = masssendDao.count(infoId);//XXX 此处还是有总数不准确的问题
         List<Map<String, Object>> list = null;
         if (count != 0) {
             list = masssendDao.findAll(infoId, pagination);
@@ -88,11 +87,13 @@ public class MasssendServiceImpl implements MasssendService {
                 Map<String, Object> additional = handler.enrichDisplayInfo(infoId, msgId);
                 if (null == additional) {
                     iterator.remove();
+                    count--;
                 } else {
                     map.putAll(additional);
                 }
             }
         }
+        pagination.setCount(count);
         return list;
     }
 
