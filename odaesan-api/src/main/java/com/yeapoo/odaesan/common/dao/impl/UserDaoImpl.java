@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "SELECT `openid`,`nickname`,`avatar`"
                 + " FROM `user`"
                 + " WHERE `info_id` = ? AND `subscribed` = 1 AND `blocked` = 0"
-                + " ORDER BY `u`.`subscribe_time` DESC"
+                + " ORDER BY `subscribe_time` DESC"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
     }
