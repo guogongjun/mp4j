@@ -21,6 +21,8 @@ public interface UserDao {
 
     Map<String, Object> get(String infoId, String openid);
 
+    Map<String, Object> getInWhichGroup(String infoId, String openid);
+
     List<String> findByGroup(String infoId, String groupId);
 
     List<String> findByGroupAndGender(String infoId, String groupId, String gender);
@@ -29,7 +31,11 @@ public interface UserDao {
 
     void updateUngrouped(String infoId, String openid, boolean ungrouped);
 
+    void updateBlocked(String infoId, String openid, boolean blocked);
+
     void batchUpdateUngrouped(String infoId, List<String> openidList, boolean ungrouped);
+
+    void batchUpdateBlocked(String infoId, List<String> openidList, boolean blocked);
 
     //================== following is for IRS ============================
 

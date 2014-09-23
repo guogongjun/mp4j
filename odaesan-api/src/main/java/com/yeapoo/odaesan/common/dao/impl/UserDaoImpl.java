@@ -57,28 +57,29 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int count(String infoId) {
-        String sql = "SELECT COUNT(`u`.`openid`)"
-                + " FROM `user` `u`"
-                + " LEFT JOIN `user_group_mapping` `m` ON `u`.`openid` = `m`.`openid`"
-                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND (`m`.`openid` IS NULL OR `m`.`group_id` != ?)";
-        return jdbcTemplate.queryForObject(sql, Integer.class, infoId, Constants.UserGroup.BLACKLIST_ID);
+        String sql = "SELECT COUNT(`openid`)"
+                + " FROM `user` "
+                + " WHERE `info_id` = ? AND `subscribed` = 1 AND `blocked` = 0";
+        return jdbcTemplate.queryForObject(sql, Integer.class, infoId);
     }
 
     @Override
     public List<Map<String, Object>> findAll(String infoId, Pagination pagination) {
-        String sql = "SELECT `u`.`openid`,`nickname`,`avatar`"
-                + " FROM `user` `u`"
-                + " LEFT JOIN `user_group_mapping` `m` ON `u`.`openid` = `m`.`openid`"
-                + " WHERE `u`.`info_id` = ? AND `u`.`subscribed` = 1 AND (`m`.`openid` IS NULL OR `m`.`group_id` != ?)"
+        String sql = "SELECT `openid`,`nickname`,`avatar`"
+                + " FROM `user`"
+                + " WHERE `info_id` = ? AND `subscribed` = 1 AND `blocked` = 0"
                 + " ORDER BY `u`.`subscribe_time` DESC"
                 + " LIMIT ?,?";
-        return jdbcTemplate.queryForList(sql, infoId, Constants.UserGroup.BLACKLIST_ID, pagination.getOffset(), pagination.getSize());
+        return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
     }
 
     @Override
     public int count(String infoId, String groupId) {
         if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
             String sql = "SELECT COUNT(`openid`) FROM `user` WHERE `info_id` = ? AND `subscribed` = 1 AND `ungrouped` = 1";
+            return jdbcTemplate.queryForObject(sql, Integer.class, infoId);
+        } else if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+            String sql = "SELECT COUNT(`openid`) FROM `user` WHERE `info_id` = ? AND `subscribed` = 1 AND `blocked` = 1";
             return jdbcTemplate.queryForObject(sql, Integer.class, infoId);
         } else {
             String sql = "SELECT COUNT(`openid`) FROM `user_group_mapping` WHERE `info_id` = ? AND `group_id` = ?";
@@ -92,6 +93,13 @@ public class UserDaoImpl implements UserDao {
             String sql = "SELECT `openid`,`nickname`,`avatar`"
                     + " FROM `user`"
                     + " WHERE `info_id` = ? AND `subscribed` = 1 AND `ungrouped` = 1"
+                    + " ORDER BY `subscribe_time` DESC"
+                    + " LIMIT ?,?";
+            return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
+        } else if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+            String sql = "SELECT `openid`,`nickname`,`avatar`"
+                    + " FROM `user`"
+                    + " WHERE `info_id` = ? AND `subscribed` = 1 AND `blocked` = 1"
                     + " ORDER BY `subscribe_time` DESC"
                     + " LIMIT ?,?";
             return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
@@ -109,6 +117,12 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Map<String, Object> get(String infoId, String openid) {
         String sql = "SELECT * FROM `user` WHERE `openid` = ?";
+        return jdbcTemplate.queryForMap(sql, openid);
+    }
+
+    @Override
+    public Map<String, Object> getInWhichGroup(String infoId, String openid) {
+        String sql = "SELECT `ungrouped`, `blocked` FROM `user` WHERE `openid` = ?";
         return jdbcTemplate.queryForMap(sql, openid);
     }
 
@@ -162,11 +176,27 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void updateBlocked(String infoId, String openid, boolean blocked) {
+        String sql = "UPDATE `user` SET `blocked` = ? WHERE `openid` = ?";
+        jdbcTemplate.update(sql, blocked, openid);
+    }
+
+    @Override
     public void batchUpdateUngrouped(String infoId, List<String> openidList, boolean ungrouped) {
         String sql = "UPDATE `user` SET `ungrouped` = ? WHERE `openid` = ?";
         List<Object[]> batchArgs = new ArrayList<Object[]>();
         for (String openid : openidList) {
             batchArgs.add(new Object[] {ungrouped, openid});
+        }
+        jdbcTemplate.batchUpdate(sql, batchArgs);
+    }
+
+    @Override
+    public void batchUpdateBlocked(String infoId, List<String> openidList, boolean blocked) {
+        String sql = "UPDATE `user` SET `blocked` = ? WHERE `openid` = ?";
+        List<Object[]> batchArgs = new ArrayList<Object[]>();
+        for (String openid : openidList) {
+            batchArgs.add(new Object[] {blocked, openid});
         }
         jdbcTemplate.batchUpdate(sql, batchArgs);
     }

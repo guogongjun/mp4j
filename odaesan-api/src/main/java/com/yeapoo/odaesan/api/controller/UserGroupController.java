@@ -18,7 +18,7 @@ import com.yeapoo.odaesan.common.service.UserGroupService;
 public class UserGroupController {
 
     @Autowired
-    UserGroupService service;
+    private UserGroupService service;
 
     /**
      * 

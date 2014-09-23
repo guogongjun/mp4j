@@ -24,14 +24,6 @@ public interface UserService {
 
     List<Map<String, Object>> listGroups(String infoId, String openid);
 
-    void fakeMoveUserToGroup(String infoId, String openid, String current, String target);
-
-    void fakeCopyUserToGroup(String infoId, String openid, String current, String target);
-
-    void fakeBatchMoveUserToGroup(String infoId, List<String> openidList, String current, String target);
-
-    void fakeBatchCopyUserToGroup(String infoId, List<String> openidList, String current, String target);
-
     void fakeRemoveUserFromGroup(String infoId, String openid, String groupId);
 
     void fakeBatchRemoveUserFromGroup(String infoId, List<String> openidList, String groupId);

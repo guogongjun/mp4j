@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.api.task.FetchFollowerTask;
 import com.yeapoo.odaesan.common.adapter.FollowerWrapper;
 import com.yeapoo.odaesan.common.adapter.WeixinSDKAdapter;
@@ -122,85 +123,96 @@ public class UserServiceImpl implements UserService {
     public List<Map<String, Object>> listGroups(String infoId, String openid) {
         List<Map<String, Object>> mapping = mappingDao.findByOpenid(infoId, openid);
         if (mapping.isEmpty()) {
-            Map<String, Object> group = new HashMap<String, Object>();
-            group.put("group_id", Constants.UserGroup.UNGROUPED_ID);
-            mapping.add(group);
+            Map<String, Object> groupInfo = userDao.getInWhichGroup(infoId, openid);
+
+            boolean ungrouped = MapUtil.get(groupInfo, "ungrouped", Boolean.class);
+            if (ungrouped) {
+                Map<String, Object> group = new HashMap<String, Object>();
+                group.put("group_id", Constants.UserGroup.UNGROUPED_ID);
+                mapping.add(group);
+            }
+            boolean blocked = MapUtil.get(groupInfo, "blocked", Boolean.class);
+            if (blocked) {
+                Map<String, Object> group = new HashMap<String, Object>();
+                group.put("group_id", Constants.UserGroup.BLACKLIST_ID);
+                mapping.add(group);
+            }
         }
         return mapping;
     }
 
     @Transactional
     @Override
-    public void fakeMoveUserToGroup(String infoId, String openid, String current, String target) {
-        mappingDao.delete(infoId, openid, current);
-        mappingDao.insert(infoId, openid, target);
-    }
-
-    @Transactional
-    @Override
-    public void fakeCopyUserToGroup(String infoId, String openid, String current, String target) {
-        mappingDao.insert(infoId, openid, target);
-    }
-
-    @Transactional
-    @Override
-    public void fakeBatchMoveUserToGroup(String infoId, List<String> openidList, String current, String target) {
-        mappingDao.batchDelete(infoId, openidList, current);
-        mappingDao.batchInsert(infoId, openidList, target);
-    }
-
-    @Transactional
-    @Override
-    public void fakeBatchCopyUserToGroup(String infoId, List<String> openidList, String current, String target) {
-        mappingDao.batchInsert(infoId, openidList, target);
-    }
-
-    @Transactional
-    @Override
     public void fakeRemoveUserFromGroup(String infoId, String openid, String groupId) {
-        mappingDao.delete(infoId, openid, groupId);
-        List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
-        if (list.isEmpty()) {
-            userDao.updateUngrouped(infoId, openid, true);
+        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+                userDao.updateBlocked(infoId, openid, false);
+                userDao.updateUngrouped(infoId, openid, true);
+            } else {
+                mappingDao.delete(infoId, openid, groupId);
+                List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
+                if (list.isEmpty()) {
+                    userDao.updateUngrouped(infoId, openid, true);
+                }
+            }
         }
     }
 
     @Transactional
     @Override
     public void fakeBatchRemoveUserFromGroup(String infoId, List<String> openidList, String groupId) {
-        mappingDao.batchDelete(infoId, openidList, groupId);
-        Iterator<String> iterator = openidList.iterator();
-        while (iterator.hasNext()) {
-            String openid = iterator.next();
-            List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
-            if (!list.isEmpty()) {
-                iterator.remove();
+        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
+            if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+                userDao.batchUpdateBlocked(infoId, openidList, false);
+                userDao.batchUpdateUngrouped(infoId, openidList, true);
+            } else {
+                mappingDao.batchDelete(infoId, openidList, groupId);
+                Iterator<String> iterator = openidList.iterator();
+                while (iterator.hasNext()) {
+                    String openid = iterator.next();
+                    List<Map<String, Object>> list = mappingDao.findByOpenid(infoId, openid);
+                    if (!list.isEmpty()) {
+                        iterator.remove();
+                    }
+                }
+                userDao.batchUpdateUngrouped(infoId, openidList, true);
             }
         }
-        userDao.batchUpdateUngrouped(infoId, openidList, true);
     }
 
     @Transactional
     @Override
     public void fakeAddUserToGroup(String infoId, String openid, String groupId) {
-        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
-            mappingDao.insert(infoId, openid, groupId);
-            userDao.updateUngrouped(infoId, openid, false);
-        } else {
+        if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
             mappingDao.deleteByOpenid(infoId, openid);
             userDao.updateUngrouped(infoId, openid, true);
+            userDao.updateBlocked(infoId, openid, false);
+        } else if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+            mappingDao.deleteByOpenid(infoId, openid);
+            userDao.updateUngrouped(infoId, openid, false);
+            userDao.updateBlocked(infoId, openid, true);
+        } else {
+            mappingDao.insert(infoId, openid, groupId);
+            userDao.updateUngrouped(infoId, openid, false);
+            userDao.updateBlocked(infoId, openid, false);
         }
     }
 
     @Transactional
     @Override
     public void fakeBatchAddUserToGroup(String infoId, List<String> openidList, String groupId) {
-        if (!Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
-            mappingDao.batchInsert(infoId, openidList, groupId);
-            userDao.batchUpdateUngrouped(infoId, openidList, false);
-        } else {
+        if (Constants.UserGroup.UNGROUPED_ID.equals(groupId)) {
             mappingDao.batchDeleteByOpenid(infoId, openidList);
             userDao.batchUpdateUngrouped(infoId, openidList, true);
+            userDao.batchUpdateBlocked(infoId, openidList, false);
+        } else if (Constants.UserGroup.BLACKLIST_ID.equals(groupId)) {
+            mappingDao.batchDeleteByOpenid(infoId, openidList);
+            userDao.batchUpdateUngrouped(infoId, openidList, false);
+            userDao.batchUpdateBlocked(infoId, openidList, true);
+        } else {
+            mappingDao.batchInsert(infoId, openidList, groupId);
+            userDao.batchUpdateUngrouped(infoId, openidList, false);
+            userDao.batchUpdateBlocked(infoId, openidList, false);
         }
     }
 
