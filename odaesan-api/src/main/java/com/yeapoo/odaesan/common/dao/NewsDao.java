@@ -13,6 +13,8 @@ public interface NewsDao {
 
     List<Map<String, Object>> findAll(String infoId, Pagination pagination);
 
+    List<Map<String, Object>> getBasic(String infoId, String id);
+
     List<Map<String, Object>> get(String infoId, String id);
 
     void update(String infoId, String id);

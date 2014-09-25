@@ -7,8 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yeapoo.common.util.MapUtil;
@@ -59,13 +57,15 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public MultiValueMap<String, Map<String, Object>> list(String infoId, Pagination pagination) {
+    public Map<String, List<Map<String, Object>>> list(String infoId, Pagination pagination) {
         pagination.setCount(newsDao.count(infoId));
-        List<Map<String, Object>> itemMapList = newsDao.findAll(infoId, pagination);
-        MultiValueMap<String, Map<String, Object>> organized = new LinkedMultiValueMap<String, Map<String,Object>>();
-        for (Map<String, Object> itemMap : itemMapList) {
-            String id = MapUtil.getAndRemove(itemMap, "id");
-            organized.add(id, itemMap);
+        List<Map<String, Object>> idMapList = newsDao.findAll(infoId, pagination);
+        List<Map<String, Object>> itemList = null;
+        Map<String, List<Map<String, Object>>> organized = new HashMap<String, List<Map<String,Object>>>();
+        for (Map<String, Object> idMap : idMapList) {
+            String id = MapUtil.get(idMap, "id");
+            itemList = newsDao.getBasic(infoId, id);
+            organized.put(id, itemList);
         }
         return organized;
     }

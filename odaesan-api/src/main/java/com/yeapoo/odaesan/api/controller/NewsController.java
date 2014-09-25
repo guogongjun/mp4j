@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +81,7 @@ public class NewsController {
     @ResponseBody
     public DataWrapper list(@PathVariable String infoId, @RequestParam(defaultValue = "1") int index, @RequestParam(defaultValue = "10") int size) {
         Pagination pagination = new Pagination(index, size);
-        MultiValueMap<String, Map<String, Object>> list = service.list(infoId, pagination);
+        Map<String, List<Map<String, Object>>> list = service.list(infoId, pagination);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("news", list);
         data.put("pagination", pagination);

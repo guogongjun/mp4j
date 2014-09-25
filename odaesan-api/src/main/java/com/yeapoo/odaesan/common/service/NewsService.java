@@ -3,7 +3,6 @@ package com.yeapoo.odaesan.common.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yeapoo.odaesan.common.model.Pagination;
@@ -16,7 +15,7 @@ public interface NewsService {
 
     String save(String infoId, List<Map<String, Object>> itemMapList);
 
-    MultiValueMap<String, Map<String, Object>> list(String infoId, Pagination pagination);
+    Map<String, List<Map<String, Object>>> list(String infoId, Pagination pagination);
 
     List<Map<String, Object>> get(String infoId, String id);
 

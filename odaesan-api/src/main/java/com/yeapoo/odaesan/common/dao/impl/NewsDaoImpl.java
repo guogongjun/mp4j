@@ -37,14 +37,23 @@ public class NewsDaoImpl implements NewsDao {
 
     @Override
     public List<Map<String, Object>> findAll(String infoId, Pagination pagination) {
-        String sql = "SELECT news.id, news.update_time, item.title, CONCAT('%s', image.url) AS url, item.show_cover_pic, item.digest"
+        String sql = "SELECT id"
+                + " FROM material_news"
+                + " WHERE info_id = ? AND delete_time IS NULL"
+                + " ORDER BY news.update_time DESC"
+                + " LIMIT ?,?";
+        return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
+    }
+
+    @Override
+    public List<Map<String, Object>> getBasic(String infoId, String id) {
+        String sql = "SELECT news.update_time, item.title, CONCAT('%s', image.url) AS url, item.show_cover_pic, item.digest"
                 + " FROM material_news news"
                 + " JOIN material_news_item item ON news.id = item.news_id"
                 + " JOIN material_news_image image ON item.image_id = image.id"
-                + " WHERE news.info_id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
-                + " ORDER BY news.update_time DESC, item.sequence"
-                + " LIMIT ?,?";
-        return jdbcTemplate.queryForList(String.format(sql, alias), infoId, pagination.getOffset(), pagination.getSize());
+                + " WHERE news.id = ? AND news.delete_time IS NULL AND item.delete_time IS NULL"
+                + " ORDER BY item.sequence";
+        return jdbcTemplate.queryForList(String.format(sql, alias), id);
     }
 
     @Override
