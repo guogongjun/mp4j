@@ -40,7 +40,7 @@ public class NewsDaoImpl implements NewsDao {
         String sql = "SELECT id"
                 + " FROM material_news"
                 + " WHERE info_id = ? AND delete_time IS NULL"
-                + " ORDER BY news.update_time DESC"
+                + " ORDER BY update_time DESC"
                 + " LIMIT ?,?";
         return jdbcTemplate.queryForList(sql, infoId, pagination.getOffset(), pagination.getSize());
     }

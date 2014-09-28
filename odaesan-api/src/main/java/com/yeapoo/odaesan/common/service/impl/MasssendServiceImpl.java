@@ -52,9 +52,7 @@ public class MasssendServiceImpl implements MasssendService {
         MaterialHandler handler = materialHandlers.get(msgType);
         Assert.notNull(handler, String.format("invalid msgType %s", msgType));
 
-        Map<String, Object> appInfo = infoProvider.provide(infoId);
-        String mediaId = handler.prepareForMasssend(appInfo, msgId, msgType);
-
+        // 先进行群发人数的判断
         List<String> openidList = null;
         if (StringUtils.hasText(gender)) {
             openidList = userDao.findByGroupAndGender(infoId, groupId, gender);
@@ -64,6 +62,10 @@ public class MasssendServiceImpl implements MasssendService {
         if (null == openidList || openidList.isEmpty()) {
             throw new APIException("invalid openid list under selection condition");
         }
+
+        Map<String, Object> appInfo = infoProvider.provide(infoId);
+        String mediaId = handler.prepareForMasssend(appInfo, msgId, msgType);
+
         MasssendOpenidArg body = new MasssendOpenidArg(openidList, mediaId, msgType);
         Object result = adapter.invoke(masssendClient, masssendByOpenid, new Object[] {null, body}, appInfo);
 
