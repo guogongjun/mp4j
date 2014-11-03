@@ -3,6 +3,9 @@
 <!-- MarkdownTOC depth=3 autolink=true bracket=round -->
 
 - [文档说明](#文档说明)
+- [微信绑定](#微信绑定)
+    - [绑定微信ID](#绑定微信id)
+    - [补充账号的App ID和App Secret](#补充账号的app-id和app-secret)
 - [用户信息](#用户信息)
     - [从微信拉取用户信息](#从微信拉取用户信息)
     - [创建用户分组](#创建用户分组)
@@ -85,6 +88,34 @@
     - 2XX 请求成功
     - 4XX 客户端错误
     - 5XX 服务器错误
+
+## 微信绑定
+
+### 绑定微信ID
+- HTTP Method: POST/Raw
+- HTTP URL: http://$BASE_URL/v1/bind
+- HTTP Header:
+    - Content-Type: application/json
+- Params: JSON Object, key-value格式如下
+    - weixin_id, string, 必须
+- 返回示例:
+```
+{"code":200,"message":"OK","data":{"id":"$ID","url":"$URL","token":"$TOKEN"}}
+```
+
+### 补充账号的App ID和App Secret
+- HTTP Method: POST/Raw
+- HTTP URL: http://$BASE_URL/v1/bind/fillin
+- HTTP Header:
+    - Content-Type: application/json
+- Params: JSON Object, key-value格式如下
+    - weixin_id, string, 必须
+    - app_id, string, 必须
+    - app_secret, string, 必须
+- 返回示例:
+```
+{"code":200,"message":"OK"}
+```
 
 ## 用户信息
 

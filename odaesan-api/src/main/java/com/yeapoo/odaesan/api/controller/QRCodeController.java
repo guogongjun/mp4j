@@ -53,7 +53,7 @@ public class QRCodeController {
         Method method = ReflectionUtils.findMethod(QRCodeClient.class, "requestTicket", new Class<?>[] {Authorization.class, TicketArgs.class});
         TicketArgs args = null;
         Ticket ticket = null;
-        for (int i = 1; i < 2; i++) {
+        for (int i = 1020; i < 1021; i++) {
             args = new TicketArgs(i);
             ticket = Ticket.class.cast(adapter.invoke(client, method, new Object[] {null, args}, appInfo));
             jdbcTemplate.update("INSERT INTO `qrcode_scene`(`id`,`scene_id`,`info_id`,`data`,`ticket`) VALUES(?,?,?,?,?)",

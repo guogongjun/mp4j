@@ -9,3 +9,7 @@ ADD COLUMN `delete_time` DATETIME NULL AFTER `sequence`;
 
 ALTER TABLE `user` 
 ADD COLUMN `blocked` TINYINT(1) NOT NULL DEFAULT 0 AFTER `ungrouped`;
+
+ALTER TABLE `app_info` 
+DROP COLUMN `tenant_id`,
+CHANGE COLUMN `name` `name` VARCHAR(100) NULL ;
