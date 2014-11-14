@@ -55,9 +55,9 @@ public class AppInfoDaoImpl implements AppInfoDao {
     }
 
     @Override
-    public void updateByWeixinID(String weixinId, String appId, String appSecret) {
-        String sql = "UPDATE `app_info` SET `app_id` = ?, `app_secret` = ? WHERE `weixin_id` = ?";
-        jdbcTemplate.update(sql, appId, appSecret, weixinId);
+    public void updateById(String id, String appId, String appSecret) {
+        String sql = "UPDATE `app_info` SET `app_id` = ?, `app_secret` = ? WHERE `id` = ?";
+        jdbcTemplate.update(sql, appId, appSecret, id);
     }
 
 }

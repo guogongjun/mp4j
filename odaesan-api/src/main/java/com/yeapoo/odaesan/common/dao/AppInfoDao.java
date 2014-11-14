@@ -12,6 +12,6 @@ public interface AppInfoDao {
 
     Map<String, Object> getName(String infoId);
 
-    void updateByWeixinID(String weixinId, String appId, String appSecret);
+    void updateById(String id, String appId, String appSecret);
 
 }

@@ -22,8 +22,8 @@ public class AppInfoServiceImpl implements AppInfoService {
     }
 
     @Override
-    public void updateByWeixinID(String weixinId, String appId, String appSecret) {
-        appInfoDao.updateByWeixinID(weixinId, appId, appSecret);
+    public void updateById(String id, String appId, String appSecret) {
+        appInfoDao.updateById(id, appId, appSecret);
     }
 
 }

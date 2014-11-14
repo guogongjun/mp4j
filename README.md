@@ -109,7 +109,7 @@
 - HTTP Header:
     - Content-Type: application/json
 - Params: JSON Object, key-value格式如下
-    - weixin_id, string, 必须
+    - id, string, 必须, 上一步绑定时返回结果中的id
     - app_id, string, 必须
     - app_secret, string, 必须
 - 返回示例:

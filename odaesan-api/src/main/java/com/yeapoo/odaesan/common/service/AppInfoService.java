@@ -6,5 +6,5 @@ public interface AppInfoService {
 
     Map<String, Object> save(String weixinId);
 
-    void updateByWeixinID(String weixinId, String appId, String appSecret);
+    void updateById(String weixinId, String appId, String appSecret);
 }

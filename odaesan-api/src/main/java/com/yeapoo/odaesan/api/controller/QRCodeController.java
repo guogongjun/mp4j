@@ -46,14 +46,14 @@ public class QRCodeController {
     @Autowired
     private AppInfoProvider infoProvider;
 
-    @RequestMapping(value="test",method=RequestMethod.GET)
+    @RequestMapping(value="test/{start}/{end}",method=RequestMethod.GET)
     @ResponseBody
-    public DataWrapper test(@PathVariable String infoId) {
+    public DataWrapper test(@PathVariable String infoId, @PathVariable Integer start, @PathVariable Integer end) {
         Map<String, Object> appInfo = infoProvider.provide(infoId);
         Method method = ReflectionUtils.findMethod(QRCodeClient.class, "requestTicket", new Class<?>[] {Authorization.class, TicketArgs.class});
         TicketArgs args = null;
         Ticket ticket = null;
-        for (int i = 1020; i < 1021; i++) {
+        for (int i = start; i < end; i++) {
             args = new TicketArgs(i);
             ticket = Ticket.class.cast(adapter.invoke(client, method, new Object[] {null, args}, appInfo));
             jdbcTemplate.update("INSERT INTO `qrcode_scene`(`id`,`scene_id`,`info_id`,`data`,`ticket`) VALUES(?,?,?,?,?)",

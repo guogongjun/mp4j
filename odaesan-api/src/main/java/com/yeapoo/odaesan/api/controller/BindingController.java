@@ -40,12 +40,12 @@ public class BindingController {
     @RequestMapping(value="fillin", method=RequestMethod.POST)
     @ResponseBody
     public DataWrapper fillIn(@RequestBody Map<String, String> params) {
-        String weixinId = params.get("weixin_id");
-        Assert.notNull(weixinId);
+        String id = params.get("id");
+        Assert.notNull(id);
         String appId = params.get("app_id");
         String appSecret = params.get("app_secret");
 
-        appInfoService.updateByWeixinID(weixinId, appId, appSecret);
+        appInfoService.updateById(id, appId, appSecret);
 
         return new DataWrapper();
     }
