@@ -24,4 +24,10 @@ public class AppInfoProvider {
         }
         return info;
     }
+
+    public Map<String, Object> refresh(String infoId) {
+        Map<String, Object> info = appInfoDao.get(infoId);
+        cache.put(infoId, info);
+        return info;
+    }
 }

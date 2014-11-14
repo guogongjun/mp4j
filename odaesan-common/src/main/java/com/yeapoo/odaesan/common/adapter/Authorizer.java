@@ -30,6 +30,11 @@ public class Authorizer {
         return auth;
     }
 
+    public void refresh(Map<String, Object> appInfo) {
+        String infoId = MapUtil.get(appInfo, "id");
+        cache.remove(infoId);
+    }
+
     public synchronized Authorization authorize(Map<String, Object> appInfo) {
         String infoId = MapUtil.get(appInfo, "id");
         Authorization auth = cache.get(infoId);
