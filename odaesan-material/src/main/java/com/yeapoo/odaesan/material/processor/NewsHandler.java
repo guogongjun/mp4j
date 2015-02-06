@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.yeapoo.common.util.MapUtil;
 import com.yeapoo.odaesan.common.exception.MediaUploadException;
@@ -37,7 +38,7 @@ public class NewsHandler extends MaterialHandler {
             item.setTitle(MapUtil.get(map, "title"));
             item.setAuthor(MapUtil.get(map, "author"));
             item.setDigest(MapUtil.get(map, "digest"));
-            item.setContent(MapUtil.get(map, "content"));
+            item.setContent(StringUtils.replace(MapUtil.get(map, "content"), "\"", "\\\""));
             item.setContentSourceUrl(MapUtil.get(map, "content_source_url"));
             String relativePath = MapUtil.get(map, "url");
             String filePath = handler.getAbsolutePath(relativePath);
