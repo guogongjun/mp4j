@@ -30,9 +30,6 @@ public class UserDaoImpl implements UserDao {
         Follower follower = null;
         for (FollowerWrapper wrapper : followerList) {
             follower = wrapper.getFollower();
-            System.out.println(follower.getNickname());
-            System.out.println(StringUtil.filterUnusualChar(follower.getNickname()));
-            System.out.println(StringUtil.filterUTF8MB4(follower.getNickname()));
             if (null != follower) {
                 batchArgs.add(new Object[] {
                         follower.getOpenid(),

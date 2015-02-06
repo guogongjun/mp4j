@@ -22,7 +22,7 @@
     <yeapoo.common.version>0.0.1-SNAPSHOT</yeapoo.common.version>
     <joda.version>2.3</joda.version>
     <jackson.version>1.9.13</jackson.version>
-    <mysql.connector.version>5.1.31</mysql.connector.version>
+    <mysql.connector.version>5.1.30</mysql.connector.version>
     <spring.version>3.2.9.RELEASE</spring.version>
     <c3p0.version>0.9.2.1</c3p0.version>
     <aspectj.version>1.7.4</aspectj.version>
@@ -181,7 +181,7 @@
     </dependency>
   </dependencies>
 
-  <repositories>
+  <repositories><!--
     <repository>
       <id>nexus</id>
       <name>local private nexus</name>
@@ -203,11 +203,25 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-    </repository>
+    </repository>-->
 
     <repository>
         <id>mvn-ansj-repo</id>
         <url>http://maven.ansj.org/</url>
     </repository>
   </repositories>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
