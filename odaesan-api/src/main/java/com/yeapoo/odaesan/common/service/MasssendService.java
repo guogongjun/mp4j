@@ -13,6 +13,8 @@ public interface MasssendService {
 
     Map<String, Object> getStatistics(String infoId, String id);
 
+    void sendPreviewMessage(String infoId, String openid, String msgType, String msgId);
+
     //================== following is for IRS ============================
 
     void updateStatistics(String infoId, String wxMsgId, String status, int totalCount, int filterCount, int sentCount, int errorCount);

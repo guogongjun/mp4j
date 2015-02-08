@@ -1,6 +1,7 @@
 package com.yeapoo.odaesan.common.service.impl;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class MasssendServiceImpl implements MasssendService {
     private Map<String, MaterialHandler> materialHandlers;
 
     private Method masssendByOpenid = ReflectionUtils.findMethod(MasssendClient.class, "masssendByOpenid", new Class<?>[] {Authorization.class, MasssendOpenidArg.class});
+    private Method previewMasssend = ReflectionUtils.findMethod(MasssendClient.class, "previewMasssend", new Class<?>[] {Authorization.class, MasssendOpenidArg.class});
 
     @Override
     public void submitMasssendTask(String infoId, String groupId, String gender, String msgType, String msgId) {
@@ -72,6 +74,23 @@ public class MasssendServiceImpl implements MasssendService {
         Assert.notNull(result);
         MasssendResponse response = MasssendResponse.class.cast(result);
         masssendDao.insert(infoId, msgType, msgId, response);
+    }
+
+    @Override
+    public void sendPreviewMessage(String infoId, String openid, String msgType, String msgId) {
+        MaterialHandler handler = materialHandlers.get(msgType);
+        Assert.notNull(handler, String.format("invalid msgType %s", msgType));
+
+        Assert.hasText(openid, String.format("openid must exists"));
+        List<String> singleOpenid = new ArrayList<String>(1);
+        singleOpenid.add(openid);
+
+        Map<String, Object> appInfo = infoProvider.provide(infoId);
+        String mediaId = handler.prepareForMasssend(appInfo, msgId, msgType);
+
+        MasssendOpenidArg body = new MasssendOpenidArg(singleOpenid, mediaId, msgType);
+        Object result = adapter.invoke(masssendClient, previewMasssend, new Object[] {null, body}, appInfo);
+        Assert.notNull(result);
     }
 
     @Override

@@ -50,6 +50,20 @@ public class MasssendController {
         }
     }
 
+    @RequestMapping(value = "preview", method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper preview(@PathVariable String infoId, @RequestBody Map<String, String> itemMap) {
+        String openid = itemMap.get("openid");
+        String msgType = itemMap.get("msg_type");
+        String msgId = itemMap.get("msg_id");
+        try {
+            service.sendPreviewMessage(infoId, openid, msgType, msgId);
+            return new DataWrapper();
+        } catch (APIException e) {
+            return new DataWrapper(400, e.getMessage());
+        }
+    }
+
     /**
      * 
      * @param index optional, default 1
@@ -90,4 +104,5 @@ public class MasssendController {
         Map<String, Object> data = service.getStatistics(infoId, id);
         return new DataWrapper(data);
     }
+
 }
