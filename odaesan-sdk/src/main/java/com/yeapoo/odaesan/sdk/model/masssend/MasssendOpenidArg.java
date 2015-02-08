@@ -51,29 +51,35 @@ public class MasssendOpenidArg {
              "\"msgtype\":\"%s\"\n" +
         "}";
 
-    public String toJSON() {
+    public String toJSON(boolean isPreview) {
         String result = null;
-        Iterator<String> it = openidList.iterator();
-        if (!it.hasNext()) {
-            result = "[]";
+        if (isPreview) {
+            result = openidList.get(0);
         } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[\"");
-            String e = null;
-            while (null != (e = it.next())) {
-                sb.append(e);
-                if (!it.hasNext()) {
-                    result = sb.append("\"]").toString();
-                    break;
-                } else {
-                    sb.append("\",\"");
+            Iterator<String> it = openidList.iterator();
+            if (!it.hasNext()) {
+                result = "[]";
+            } else {
+                StringBuilder sb = new StringBuilder();
+                sb.append("[\"");
+                String e = null;
+                while (null != (e = it.next())) {
+                    sb.append(e);
+                    if (!it.hasNext()) {
+                        result = sb.append("\"]").toString();
+                        break;
+                    } else {
+                        sb.append("\",\"");
+                    }
                 }
             }
         }
+
         String key = "media_id";
         if ("text".equals(msgtype)) {
             key = "content";
         }
+
         return String.format(JSON_TEMPLATE, result, msgtype, key, mediaId, msgtype);
     }
 }

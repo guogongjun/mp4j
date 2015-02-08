@@ -23,6 +23,8 @@ public class MasssendClient extends BaseClient {
     private String openidSendURL;
     @Value("${wx.messsent.delete}")
     private String deleteURL;
+    @Value("${wx.messsent.preview}")
+    private String previewURL;
 
     public MasssendResponse masssendByGroup(Authorization authorization, MasssendGroupArg body) {
         HttpEntity<String> request = new HttpEntity<String>(body.toJSON(), headers);
@@ -36,7 +38,7 @@ public class MasssendClient extends BaseClient {
     }
 
     public MasssendResponse masssendByOpenid(Authorization authorization, MasssendOpenidArg body) {
-        HttpEntity<String> request = new HttpEntity<String>(body.toJSON(), headers);
+        HttpEntity<String> request = new HttpEntity<String>(body.toJSON(false), headers);
         String response = template.postForObject(openidSendURL, request, String.class, authorization.getAccessToken());
         logger.debug(String.format("Weixin Response => %s", response));
         try {
@@ -54,6 +56,17 @@ public class MasssendClient extends BaseClient {
             ErrorResponse error = mapper.readValue(response, ErrorResponse.class);
             int errcode =  error.getErrorCode();
             return errcode == 0;
+        } catch (Exception e) {
+            throw new WeixinSDKException(response, e);
+        }
+    }
+
+    public MasssendResponse previewMasssend(Authorization authorization, MasssendOpenidArg body) {
+        HttpEntity<String> request = new HttpEntity<String>(body.toJSON(true), headers);
+        String response = template.postForObject(previewURL, request, String.class, authorization.getAccessToken());
+        logger.debug(String.format("Weixin Response => %s", response));
+        try {
+            return mapper.readValue(response, MasssendResponse.class);
         } catch (Exception e) {
             throw new WeixinSDKException(response, e);
         }
