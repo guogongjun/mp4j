@@ -1,4 +1,4 @@
-# Odaesan(微信API)V1版接口文档 
+# 微信API V1版接口文档 
 
 <!-- MarkdownTOC depth=3 autolink=true bracket=round -->
 
