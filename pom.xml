@@ -3,18 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.yeapoo</groupId>
-  <artifactId>odaesan</artifactId>
+  <artifactId>mp4j</artifactId>
   <version>0.0.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Odaesan</name>
-  <url>http://odaesan.yeapoo.com</url>
+  <name>mp4j</name>
 
   <modules>
-    <module>odaesan-sdk</module>
-    <module>odaesan-common</module>
-    <module>odaesan-material</module>
-    <module>odaesan-api</module>
+    <module>mp4j-sdk</module>
+    <module>mp4j-common</module>
+    <module>mp4j-material</module>
+    <module>mp4j-api</module>
   </modules>
 
   <properties>
@@ -36,12 +35,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.yeapoo</groupId>
-        <artifactId>common</artifactId>
-        <version>${yeapoo.common.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>joda-time</groupId>
         <artifactId>joda-time</artifactId>
@@ -163,10 +156,6 @@
 
   <!-- 添加项目通用依赖，包括：公司内部通用类、日志、测试框架 -->
   <dependencies>
-    <dependency>
-      <groupId>com.yeapoo</groupId>
-      <artifactId>common</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>

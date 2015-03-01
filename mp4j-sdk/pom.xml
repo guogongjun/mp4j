@@ -4,14 +4,14 @@
 
   <parent>
     <groupId>com.yeapoo</groupId>
-    <artifactId>odaesan</artifactId>
+    <artifactId>mp4j</artifactId>
     <version>0.0.7-SNAPSHOT</version>
   </parent>
 
-  <artifactId>odaesan-sdk</artifactId>
+  <artifactId>mp4j-sdk</artifactId>
 
-  <name>Odaesan SDK</name>
-  <url>http://odaesan.yeapoo.com</url>
+  <name>mp4j SDK</name>
+  <url>http://mp4j.yeapoo.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
